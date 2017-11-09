@@ -178,4 +178,20 @@ class Factory implements \ILIAS\UI\Factory
 		return new Component\Chart\Factory();
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	public function layout()
+	{
+		throw new \ILIAS\UI\NotImplementedException();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function mainControls()
+	{
+		throw new \ILIAS\UI\NotImplementedException();
+	}
+
 }

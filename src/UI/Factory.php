@@ -690,5 +690,23 @@ interface Factory {
 	 */
 	public function chart();
 
+	/**
+	 * ---
+	 * description:
+	 *   purpose: Layout elements
+	 * ---
+	 *
+	 * @return \ILIAS\UI\Component\Layout\Factory
+	 **/
+	public function layout();
 
+	/**
+	 * ---
+	 * description:
+	 *   purpose: main controls
+	 * ---
+	 *
+	 * @return \ILIAS\UI\Component\MainControls\Factory
+	 **/
+	public function mainControls();
 }
