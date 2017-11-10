@@ -207,5 +207,42 @@ interface Factory {
 	 */
 	public function tag($label, $action);
 
+	/**
+	 * ---
+	 * description:
+	 *   purpose: >
+	 *     The iconographic button combines the recognisability of a graphical
+	 *     element with the explicity of a text-label.
+	 *     These button are used in prominent places as triggers for navigation.
+	 *     They are not to be used as e.g. form controls.
+	 *
+	 *   composition: >
+	 *     The iconographic button consists of an icon and a (very short) text below.
+	 *
+	 *   effect: >
+	 *     Both, icon and text, form an entity an can only be operated together.
+	 *     When clicked, the iconographic button triggers a navigation or shows
+	 *     further elements with primarily navigational charachter, e.g. a search-modal.
+	 *
+	 *     --active state?
+	 *
+	 * context:
+	 *
+	 * rules:
+	 *   style:
+	 *       1: MUST trigger navigation
+	 *       2: MUST NOT be used in forms.
+	 *
+	 *   accessibility:
+	 *       1: >
+	 *           111
+	 * ---
+	 * @param	\ILIAS\UI\Component\Icon		$icon
+	 * @param	string		$label
+	 * @param	string		$action
+	 * @return  \ILIAS\UI\Component\Button\Iconograhic
+	 */
+	public function iconographic($icon, $label, $action);
+
 
 }

@@ -48,4 +48,11 @@ class Factory implements B\Factory {
 	public function month($default) {
 		return new Month($default);
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function iconographic($icon, $label, $action) {
+		throw new \ILIAS\UI\NotImplementedException();
+	}
 }
