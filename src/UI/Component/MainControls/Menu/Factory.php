@@ -1,7 +1,7 @@
 <?php
 namespace ILIAS\UI\Component\MainControls\Menu;
 /**
- * This is what a factory for prompts looks like.
+ * This is what a factory for menu-elements looks like.
  */
 interface Factory {
 	/**

@@ -183,7 +183,7 @@ class Factory implements \ILIAS\UI\Factory
 	 */
 	public function layout()
 	{
-		throw new \ILIAS\UI\NotImplementedException();
+		return new Component\Layout\Factory();
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Factory implements \ILIAS\UI\Factory
 	 */
 	public function mainControls()
 	{
-		throw new \ILIAS\UI\NotImplementedException();
+		return new Component\MainControls\Factory();
 	}
 
 }
