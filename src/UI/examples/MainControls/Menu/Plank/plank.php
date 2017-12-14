@@ -6,8 +6,8 @@ function plank() {
 	$f = $DIC->ui()->factory();
 	$renderer = $DIC->ui()->renderer();
 
-
-	$plank = $f->maincontrols()->menu()->plank();
+	$c = $f->legacy('some content');
+	$plank = $f->maincontrols()->menu()->plank($c);
 
 	return $renderer->render($plank);
 }

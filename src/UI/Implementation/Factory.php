@@ -191,7 +191,7 @@ class Factory implements \ILIAS\UI\Factory
 	 */
 	public function mainControls()
 	{
-		return new Component\MainControls\Factory();
+		return new Component\MainControls\Factory(new SignalGenerator());
 	}
 
 }

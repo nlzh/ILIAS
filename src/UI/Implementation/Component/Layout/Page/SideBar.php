@@ -5,9 +5,11 @@ namespace ILIAS\UI\Implementation\Component\Layout\Page;
 
 use ILIAS\UI\Component as C;
 use ILIAS\UI\Implementation\Component\ComponentHelper;
+use ILIAS\UI\Implementation\Component\JavaScriptBindable;
 
 class SideBar implements C\Layout\Page\SideBar {
 	use ComponentHelper;
+	use JavaScriptBindable;
 
 	/**
 	 * @var Slate[]

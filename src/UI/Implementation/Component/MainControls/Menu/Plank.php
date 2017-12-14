@@ -12,12 +12,16 @@ class Plank implements C\MainControls\Menu\Plank {
 	/**
 	 * @var
 	 */
-	private $x;
+	private $content;
 
 
-	public function __construct() {
+	public function __construct($content) {
 		//$this->checkStringArg("string", $icon_path);
+		$this->content = $content;
 	}
 
+	public function getContent() {
+		return $this->content;
+	}
 
 }

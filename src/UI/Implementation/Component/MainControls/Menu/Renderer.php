@@ -20,7 +20,9 @@ class Renderer extends AbstractComponentRenderer {
         }
         if ($component instanceof Component\MainControls\Menu\Plank) {
             $tpl = $this->getTemplate("Menu/tpl.plank.html", true, true);
-            $tpl->setVariable("NAME",'dummy-name');
+            $tpl->setVariable("CONTENT",
+                $default_renderer->render($component->getContent())
+            );
             return $tpl->get();
         }
 
@@ -29,8 +31,20 @@ class Renderer extends AbstractComponentRenderer {
     protected function renderSlate(Component\MainControls\Menu\Slate $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("Menu/tpl.slate.html", true, true);
 
-//        $button = $component->getButton();
-//        $tpl->setVariable("BUTTON", $default_renderer->render($button));
+        $internal_signal = $component->getToggleSignal();
+
+        $component = $component->withOnLoadCode(function($id) use ($internal_signal) {
+            return "$(document).on('{$internal_signal}', function(event, signalData) {
+                        il.UI.maincontrols.menu.slate.onClickTigger(event, signalData, '{$id}');
+                        return false;
+                    })";
+        });
+
+        $id = $this->bindJavaScript($component);
+        $tpl->setVariable('ID', $id);
+
+        $button = $component->getButton();
+        $tpl->setVariable("BUTTON", $default_renderer->render($button));
 
         foreach ($component->getPlanks() as $plank) {
             $tpl->setCurrentBlock("plank_item");
@@ -41,6 +55,14 @@ class Renderer extends AbstractComponentRenderer {
         return $tpl->get();
     }
 
+
+    /**
+     * @inheritdoc
+     */
+    public function registerResources(\ILIAS\UI\Implementation\Render\ResourceRegistry $registry) {
+        parent::registerResources($registry);
+        $registry->register('./src/UI/templates/js/MainControls/Menu/slate.js');
+    }
 
     /**
      * @inheritdoc

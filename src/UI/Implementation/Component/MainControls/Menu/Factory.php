@@ -4,18 +4,31 @@
 namespace ILIAS\UI\Implementation\Component\MainControls\Menu;
 
 use ILIAS\UI\Component\MainControls\Menu as Menu;
+use ILIAS\UI\Implementation\Component\SignalGeneratorInterface;
 
 class Factory implements Menu\Factory {
+	/**
+	 * @var SignalGeneratorInterface
+	 */
+	protected $signal_generator;
+
+	/**
+	 * @param SignalGeneratorInterface $signal_generator
+	 */
+	public function __construct(SignalGeneratorInterface $signal_generator) {
+		$this->signal_generator = $signal_generator;
+	}
+
 	/**
 	 * @inheritdoc
 	 */
 	public function slate(\ILIAS\UI\Component\Button\Iconographic $button, array $planks){
-		return new Slate($button, $planks);
+		return new Slate($button, $planks, $this->signal_generator);
 	}
 	/**
 	 * @inheritdoc
 	 */
-	public function plank(){
-		return new Plank();
+	public function plank($content){
+		return new Plank($content);
 	}
 }

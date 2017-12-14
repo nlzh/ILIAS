@@ -28,18 +28,32 @@ class Renderer extends AbstractComponentRenderer {
     protected function renderSidebar(Component\Layout\Page\SideBar $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("Page/tpl.sidebar.html", true, true);
 
+        $toggle_signals = array();
+
         foreach ($component->getSlates() as $slate) {
-
-            $button = $slate->getButton();
-            $tpl->setCurrentBlock("slate_trigger");
-            $tpl->setVariable("SLATE_TRIGGER", $default_renderer->render($button));
-            $tpl->parseCurrentBlock();
-
-
             $tpl->setCurrentBlock("slate_item");
             $tpl->setVariable("SLATE", $default_renderer->render($slate));
             $tpl->parseCurrentBlock();
+
+            $toggle_signals[] = $slate->getToggleSignal();
         }
+
+
+
+        $component = $component->withOnLoadCode(function($id) use ($toggle_signals) {
+            $registry = '';
+            foreach ($toggle_signals as $signal) {
+                $registry .= "$(document).on('{$signal}', function() {
+                    $('#{$id} .slate.engaged').each( function() {
+                            il.UI.maincontrols.menu.slate.toggle($(this));
+                        });
+                });";
+            }
+            return $registry;
+        });
+
+        $id = $this->bindJavaScript($component);
+        $tpl->setVariable('ID', $id);
 
         return $tpl->get();
     }
