@@ -16,16 +16,31 @@ class Renderer extends AbstractComponentRenderer {
         $this->checkComponent($component);
 
         if ($component instanceof Component\MainControls\Menu\Slate) {
-            $tpl = $this->getTemplate("Menu/tpl.slate.html", true, true);
-            $tpl->setVariable("NAME",'dummy-name');
+            return $this->renderSlate($component, $default_renderer);
         }
         if ($component instanceof Component\MainControls\Menu\Plank) {
             $tpl = $this->getTemplate("Menu/tpl.plank.html", true, true);
             $tpl->setVariable("NAME",'dummy-name');
+            return $tpl->get();
+        }
+
+    }
+
+    protected function renderSlate(Component\MainControls\Menu\Slate $component, RendererInterface $default_renderer) {
+        $tpl = $this->getTemplate("Menu/tpl.slate.html", true, true);
+
+//        $button = $component->getButton();
+//        $tpl->setVariable("BUTTON", $default_renderer->render($button));
+
+        foreach ($component->getPlanks() as $plank) {
+            $tpl->setCurrentBlock("plank_item");
+            $tpl->setVariable("PLANK", $default_renderer->render($plank));
+            $tpl->parseCurrentBlock();
         }
 
         return $tpl->get();
     }
+
 
     /**
      * @inheritdoc

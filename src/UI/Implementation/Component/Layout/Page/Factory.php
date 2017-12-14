@@ -15,7 +15,7 @@ class Factory implements Page\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function sidebar(){
-		return new SideBar();
+	public function sidebar(array $slates){
+		return new SideBar($slates);
 	}
 }

@@ -9,8 +9,8 @@ class Factory implements Menu\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function slate(){
-		return new Slate();
+	public function slate(\ILIAS\UI\Component\Button\Iconographic $button, array $planks){
+		return new Slate($button, $planks);
 	}
 	/**
 	 * @inheritdoc

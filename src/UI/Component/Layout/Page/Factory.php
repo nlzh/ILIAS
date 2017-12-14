@@ -29,7 +29,7 @@ interface Factory {
      *
      * @return  \ILIAS\UI\Component\Layout\Page\TopBar
      */
-    public function TopBar();
+    public function topbar();
 
     /**
      * ---
@@ -82,7 +82,7 @@ interface Factory {
      *
      * @return  \ILIAS\UI\Component\Layout\Page\SideBar
      */
-    public function SideBar();
+    public function sidebar(array $slates);
 
 
 }

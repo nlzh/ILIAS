@@ -16,12 +16,29 @@ class Renderer extends AbstractComponentRenderer {
         $this->checkComponent($component);
 
         if ($component instanceof Component\Layout\Page\SideBar) {
-            $tpl = $this->getTemplate("Page/tpl.sidebar.html", true, true);
-            $tpl->setVariable("NAME",'dummy-name');
+            return $this->renderSidebar($component, $default_renderer);
         }
         if ($component instanceof Component\Layout\Page\TopBar) {
             $tpl = $this->getTemplate("Page/tpl.topbar.html", true, true);
             $tpl->setVariable("NAME",'dummy-name');
+            return $tpl->get();
+        }
+    }
+
+    protected function renderSidebar(Component\Layout\Page\SideBar $component, RendererInterface $default_renderer) {
+        $tpl = $this->getTemplate("Page/tpl.sidebar.html", true, true);
+
+        foreach ($component->getSlates() as $slate) {
+
+            $button = $slate->getButton();
+            $tpl->setCurrentBlock("slate_trigger");
+            $tpl->setVariable("SLATE_TRIGGER", $default_renderer->render($button));
+            $tpl->parseCurrentBlock();
+
+
+            $tpl->setCurrentBlock("slate_item");
+            $tpl->setVariable("SLATE", $default_renderer->render($slate));
+            $tpl->parseCurrentBlock();
         }
 
         return $tpl->get();

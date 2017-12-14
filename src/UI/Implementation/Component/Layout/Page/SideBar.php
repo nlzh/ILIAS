@@ -10,14 +10,20 @@ class SideBar implements C\Layout\Page\SideBar {
 	use ComponentHelper;
 
 	/**
-	 * @var
+	 * @var Slate[]
 	 */
-	private $x;
+	private $slates;
 
 
-	public function __construct() {
-		//$this->checkStringArg("string", $icon_path);
+	public function __construct($slates) {
+		$this->slates = $slates;
 	}
+
+	public function getSlates() {
+		return $this->slates;
+	}
+
+
 
 
 }

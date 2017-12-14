@@ -19,6 +19,8 @@ class Renderer extends AbstractComponentRenderer {
 			return $this->renderClose($component);
 		} else if ($component instanceof Component\Button\Month) {
 			return $this->renderMonth($component, $default_renderer);
+		} else if ($component instanceof Component\Button\Iconographic) {
+			return $this->renderIconographic($component, $default_renderer);
 		} else {
 			return $this->renderButton($component, $default_renderer);
 		}
@@ -160,7 +162,17 @@ class Renderer extends AbstractComponentRenderer {
 		if($forecol) {
 			$tpl->setVariable("FORECOL", $forecol->asHex());
 		}
+	}
 
+
+	protected function renderIconographic(Component\Button\Button $component, RendererInterface $default_renderer) {
+		$tpl = $this->getTemplate("tpl.iconographic.html", true, true);
+		$tpl->setVariable("ICON", $default_renderer->render($component->getIcon()));
+		$label = $component->getLabel();
+		if ($label !== null) {
+			$tpl->setVariable("LABEL", $label);
+		}
+		return $tpl->get();
 	}
 
 	/**
@@ -174,6 +186,7 @@ class Renderer extends AbstractComponentRenderer {
 		, Component\Button\Shy::class
 		, Component\Button\Month::class
 		, Component\Button\Tag::class
+		, Component\Button\Iconographic::class
 		);
 	}
 }
