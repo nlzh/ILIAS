@@ -43,8 +43,8 @@ class Renderer extends AbstractComponentRenderer {
         $id = $this->bindJavaScript($component);
         $tpl->setVariable('ID', $id);
 
-        $button = $component->getButton();
-        $tpl->setVariable("BUTTON", $default_renderer->render($button));
+        //$button = $component->getButton();
+        //$tpl->setVariable("BUTTON", $default_renderer->render($button));
 
         foreach ($component->getPlanks() as $plank) {
             $tpl->setCurrentBlock("plank_item");

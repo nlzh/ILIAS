@@ -18,5 +18,5 @@ function slate() {
 
 	$slate = $f->maincontrols()->menu()->slate($button, $planks);
 
-	return $renderer->render($slate);
+	return $renderer->render([$slate->getButton(), $slate]);
 }

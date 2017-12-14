@@ -31,6 +31,10 @@ class Renderer extends AbstractComponentRenderer {
         $toggle_signals = array();
 
         foreach ($component->getSlates() as $slate) {
+            $tpl->setCurrentBlock("trigger_item");
+            $tpl->setVariable("BUTTON", $default_renderer->render($slate->getButton()));
+            $tpl->parseCurrentBlock();
+
             $tpl->setCurrentBlock("slate_item");
             $tpl->setVariable("SLATE", $default_renderer->render($slate));
             $tpl->parseCurrentBlock();
@@ -39,12 +43,11 @@ class Renderer extends AbstractComponentRenderer {
         }
 
 
-
         $component = $component->withOnLoadCode(function($id) use ($toggle_signals) {
             $registry = '';
             foreach ($toggle_signals as $signal) {
                 $registry .= "$(document).on('{$signal}', function() {
-                    $('#{$id} .slate.engaged').each( function() {
+                    $('#{$id} .il-maincontrol-menu-slate.engaged').each( function() {
                             il.UI.maincontrols.menu.slate.toggle($(this));
                         });
                 });";

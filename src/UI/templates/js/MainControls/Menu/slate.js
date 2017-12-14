@@ -9,7 +9,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		var _cls_disengaged = 'disengaged';
 
 		var onClickTigger = function(event, signalData, id) {
-			slate = $('#' + id + ' .slate');
+			slate = $('#' + id);
 			toggle(slate);
 		};
 
