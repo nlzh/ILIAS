@@ -2,7 +2,7 @@
 
 /* Copyright (c) 2017 Nils Haagen <nils.haagen@concepts.and-training.de> Extended GPL, see docs/LICENSE */
 
-namespace ILIAS\UI\Implementation\Component\Layout\Page;
+namespace ILIAS\UI\Implementation\Component\Layout;
 
 use ILIAS\UI\Implementation\Render\AbstractComponentRenderer;
 use ILIAS\UI\Renderer as RendererInterface;
@@ -15,18 +15,21 @@ class Renderer extends AbstractComponentRenderer {
     public function render(Component\Component $component, RendererInterface $default_renderer) {
         $this->checkComponent($component);
 
-        if ($component instanceof Component\Layout\Page\SideBar) {
+        if ($component instanceof Component\Layout\Page) {
+            return $this->renderPage($component, $default_renderer);
+        }
+        if ($component instanceof Component\Layout\SideBar) {
             return $this->renderSidebar($component, $default_renderer);
         }
-        if ($component instanceof Component\Layout\Page\TopBar) {
-            $tpl = $this->getTemplate("Page/tpl.topbar.html", true, true);
+        if ($component instanceof Component\Layout\TopBar) {
+            $tpl = $this->getTemplate("tpl.topbar.html", true, true);
             $tpl->setVariable("NAME",'dummy-name');
             return $tpl->get();
         }
     }
 
-    protected function renderSidebar(Component\Layout\Page\SideBar $component, RendererInterface $default_renderer) {
-        $tpl = $this->getTemplate("Page/tpl.sidebar.html", true, true);
+    protected function renderSidebar(Component\Layout\SideBar $component, RendererInterface $default_renderer) {
+        $tpl = $this->getTemplate("tpl.sidebar.html", true, true);
 
         $entry_signal = $component->getEntryClickSignal();
 
@@ -80,13 +83,32 @@ class Renderer extends AbstractComponentRenderer {
         return $tpl->get();
     }
 
+
+
+    protected function renderPage(Component\Layout\Page $component, RendererInterface $default_renderer) {
+        $tpl = $this->getTemplate("tpl.page.html", true, true);
+        $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
+
+        if($topbar = $component->getTopbar()) {
+            $tpl->setVariable('TOPBAR', $default_renderer->render($topbar));
+        }
+        if($sidebar = $component->getSidebar()) {
+            $tpl->setVariable('SIDEBAR', $default_renderer->render($sidebar));
+        }
+
+        return $tpl->get();
+    }
+
+
+
     /**
      * @inheritdoc
      */
     protected function getComponentInterfaceName() {
         return array(
-            Component\Layout\Page\SideBar::class,
-            Component\Layout\Page\TopBar::class
+            Component\Layout\SideBar::class,
+            Component\Layout\TopBar::class,
+            Component\Layout\Page::class
         );
 
     }

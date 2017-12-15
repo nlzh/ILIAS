@@ -1,14 +1,14 @@
 <?php
 /* Copyright (c) 2017 Nils Haagen <nils.haagen@concepts-and-training.de> Extended GPL, see docs/LICENSE */
 
-namespace ILIAS\UI\Implementation\Component\Layout\Page;
+namespace ILIAS\UI\Implementation\Component\Layout;
 
 use ILIAS\UI\Component as C;
 use ILIAS\UI\Implementation\Component\ComponentHelper;
 use ILIAS\UI\Implementation\Component\JavaScriptBindable;
 use ILIAS\UI\Implementation\Component\SignalGeneratorInterface;
 
-class SideBar implements C\Layout\Page\SideBar {
+class SideBar implements C\Layout\SideBar {
 	use ComponentHelper;
 	use JavaScriptBindable;
 
@@ -25,12 +25,25 @@ class SideBar implements C\Layout\Page\SideBar {
 	private $signal_generator;
 	private $entry_click_signal;
 
-	public function __construct($buttons, $slates, SignalGeneratorInterface $signal_generator) {
-		$this->buttons = $buttons;
-		$this->slates = $slates;
+	public function __construct(SignalGeneratorInterface $signal_generator) {
 		$this->signal_generator = $signal_generator;
 		$this->initSignals();
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withEntry($button, $slate=null) {
+		$clone = clone $this;
+		if($slate) {
+			$clone->slates[] = $slate;
+			$button = $button->withOnClick($slate->getToggleSignal());
+		}
+		$clone->buttons[] = $button;
+		return $clone;
+	}
+
+
 
 	public function getButtons() {
 		return $this->buttons;
@@ -49,7 +62,6 @@ class SideBar implements C\Layout\Page\SideBar {
 	 */
 	protected function initSignals() {
 		$this->entry_click_signal = $this->signal_generator->create();
-		//$this->button = $this->button->withOnClick($this->toggle_signal);
 	}
 
 	/**

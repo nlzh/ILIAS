@@ -19,10 +19,24 @@ class Factory implements Layout\Factory {
 		$this->signal_generator = $signal_generator;
 	}
 
+
 	/**
 	 * @inheritdoc
 	 */
-	public function page(){
-		return new Page\Factory($this->signal_generator);
+	public function topbar(){
+		return new TopBar();
+	}
+	/**
+	 * @inheritdoc
+	 */
+	public function sidebar(){
+		return new SideBar($this->signal_generator);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function page($content){
+		return new Page($content);
 	}
 }

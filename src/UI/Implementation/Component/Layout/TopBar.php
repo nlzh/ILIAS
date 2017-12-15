@@ -1,12 +1,12 @@
 <?php
 /* Copyright (c) 2017 Nils Haagen <nils.haagen@concepts-and-training.de> Extended GPL, see docs/LICENSE */
 
-namespace ILIAS\UI\Implementation\Component\Layout\Page;
+namespace ILIAS\UI\Implementation\Component\Layout;
 
 use ILIAS\UI\Component as C;
 use ILIAS\UI\Implementation\Component\ComponentHelper;
 
-class TopBar implements C\Layout\Page\TopBar {
+class TopBar implements C\Layout\TopBar {
 	use ComponentHelper;
 
 	/**
