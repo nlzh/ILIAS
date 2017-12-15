@@ -22,9 +22,10 @@ class Factory implements Menu\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function slate(\ILIAS\UI\Component\Button\Iconographic $button, array $planks){
-		return new Slate($button, $planks, $this->signal_generator);
+	public function slate(array $planks){
+		return new Slate($planks, $this->signal_generator);
 	}
+
 	/**
 	 * @inheritdoc
 	 */

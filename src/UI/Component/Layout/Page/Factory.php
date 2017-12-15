@@ -82,7 +82,7 @@ interface Factory {
      *
      * @return  \ILIAS\UI\Component\Layout\Page\SideBar
      */
-    public function sidebar(array $slates);
+    public function sidebar(array $buttons, array $slates);
 
 
 }

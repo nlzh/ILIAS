@@ -28,19 +28,13 @@ class Slate implements C\MainControls\Menu\Slate {
 	protected $toggle_signal;
 
 	public function __construct(
-		\ILIAS\UI\Component\Button\Iconographic $button,
 		array $planks,
 		SignalGeneratorInterface $signal_generator) {
 
-		$this->button = $button;
 		$this->planks = $planks;
 		$this->signal_generator = $signal_generator;
 
 		$this->initSignals();
-	}
-
-	public function getButton() {
-		return $this->button;
 	}
 
 	public function getPlanks() {
@@ -52,7 +46,7 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	protected function initSignals() {
 		$this->toggle_signal = $this->signal_generator->create();
-		$this->button = $this->button->withOnClick($this->toggle_signal);
+		//$this->button = $this->button->withOnClick($this->toggle_signal);
 	}
 
 	/**

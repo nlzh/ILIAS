@@ -7110,6 +7110,15 @@ fieldset[disabled] .btn.active {
   color: #ffffff;
   cursor: default;
 }
+.btn.engaged,
+.btn.engaged:hover,
+.btn.engaged:focus,
+.btn.engaged:active,
+.btn.engaged.active {
+  background-color: #b0b0b0;
+  border-color: #e0e0e0;
+  color: #ffffff;
+}
 button > .glyphicon {
   pointer-events: none;
 }

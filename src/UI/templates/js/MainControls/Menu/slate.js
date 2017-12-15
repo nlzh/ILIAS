@@ -24,15 +24,16 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 				});
 			}
 		};
+
 		var _isEngaged = function(slate) {
 			return slate.hasClass(_cls_engaged);
-		}
+		};
 
 		var _engage = function(slate) {
 			slate.removeClass(_cls_disengaged);
 			slate.addClass(_cls_engaged);
-
 		};
+
 		var _disengage = function(slate) {
 			slate.removeClass(_cls_engaged);
 			slate.addClass(_cls_disengaged);

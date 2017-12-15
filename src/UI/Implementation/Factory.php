@@ -183,7 +183,7 @@ class Factory implements \ILIAS\UI\Factory
 	 */
 	public function layout()
 	{
-		return new Component\Layout\Factory();
+		return new Component\Layout\Factory(new SignalGenerator());
 	}
 
 	/**
