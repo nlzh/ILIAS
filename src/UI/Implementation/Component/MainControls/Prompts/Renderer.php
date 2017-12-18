@@ -26,21 +26,33 @@ class Renderer extends AbstractComponentRenderer {
     protected function renderNotificationCenter(Component\MainControls\Prompts\NotificationCenter $component, RendererInterface $default_renderer) {
         $f = $this->getUIFactory();
         $tpl = $this->getTemplate("Prompts/tpl.notificationcenter.html", true, true);
+
+        $content = $f->legacy('NotificationCenter-<br><br>x1<br>x1<br>x1<br>x1<br>');
+        $popover = $f->popover()->standard($content)
+            ->withVerticalPosition();
+
         $glyph = $f->glyph()->mail("#")
             ->withCounter($f->counter()->novelty(2))
-            ->withCounter($f->counter()->status(5));
+            ->withCounter($f->counter()->status(5))
+            ->withOnClick($popover->getShowSignal());
 
-        $tpl->setVariable("GLYPH", $default_renderer->render($glyph));
+        $tpl->setVariable("GLYPH", $default_renderer->render([$glyph, $popover]));
         return $tpl->get();
     }
 
     protected function renderAwarenessTool(Component\MainControls\Prompts\AwarenessTool $component, RendererInterface $default_renderer) {
         $f = $this->getUIFactory();
         $tpl = $this->getTemplate("Prompts/tpl.awarenesstool.html", true, true);
-        $glyph = $f->glyph()->notification("#")
-            ->withCounter($f->counter()->novelty(1));
 
-        $tpl->setVariable("GLYPH", $default_renderer->render($glyph));
+        $content = $f->legacy('AwarenessTool-<br><br>x2<br>x2<br>x2<br>');
+        $popover = $f->popover()->standard($content)
+            ->withVerticalPosition();
+
+        $glyph = $f->glyph()->notification("#")
+            ->withCounter($f->counter()->novelty(1))
+            ->withOnClick($popover->getShowSignal());
+
+        $tpl->setVariable("GLYPH", $default_renderer->render([$glyph, $popover]));
         return $tpl->get();
     }
 
