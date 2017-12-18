@@ -24,14 +24,14 @@ class Page implements C\Layout\Page {
 
 	}
 
-	public function withTopbar(TopBar $topbar) {
+	public function withMetabar(MetaBar $metabar) {
 		$clone = clone $this;
-		$clone->topbar = $topbar;
+		$clone->metabar = $metabar;
 		return $clone;
 	}
 
-	public function getTopbar() {
-		return $this->topbar;
+	public function getMetabar() {
+		return $this->metabar;
 	}
 
 	public function withSidebar(SideBar $sidebar) {

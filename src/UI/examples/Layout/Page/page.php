@@ -8,7 +8,7 @@ function page() {
 	$content = $f->legacy("some content");
 
 	$page = $f->layout()->page($content)
-		->withTopbar(page_getTopbar($f))
+		->withMetabar(page_getMetabar($f))
 		->withSidebar(page_getSidebar($f))
 		;
 
@@ -16,9 +16,9 @@ function page() {
 }
 
 
-function page_getTopbar($f) {
-	$topbar = $f->layout()->topbar();
-	return $topbar;
+function page_getMetabar($f) {
+	$metabar = $f->layout()->metabar();
+	return $metabar;
 }
 
 function page_getSidebar($f) {

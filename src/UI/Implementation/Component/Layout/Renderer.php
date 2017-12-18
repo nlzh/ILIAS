@@ -90,10 +90,23 @@ class Renderer extends AbstractComponentRenderer {
         $f = $this->getUIFactory();
 
         $logo = $f->icon()->standard('','')->withSize('medium')->withAbbreviation('LOGO');
-        $nc = $f->maincontrols()->prompts()->notificationcenter();
         $awt = $f->maincontrols()->prompts()->awarenesstool();
         $logout = $f->icon()->standard('','')->withAbbreviation('O');
 
+        $items = array(
+            $f->maincontrols()->prompts()->glyphentry(
+                $f->glyph()->user('#')
+                ->withCounter($f->counter()->novelty(2))
+                ->withCounter($f->counter()->status(7))
+                , 'entry1'
+            ),
+            $f->maincontrols()->prompts()->glyphentry(
+                $f->glyph()->user('#')
+                ->withCounter($f->counter()->status(27))
+                , 'entry2'
+            )
+        );
+        $nc = $f->maincontrols()->prompts()->notificationcenter($items);
 
         $tpl->setVariable("LOGO", $default_renderer->render($logo));
         $tpl->setVariable("NOTIFICATIONCENTER", $default_renderer->render($nc));
@@ -110,8 +123,8 @@ class Renderer extends AbstractComponentRenderer {
         $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
 
-        if($topbar = $component->getTopbar()) {
-            $tpl->setVariable('TOPBAR', $default_renderer->render($topbar));
+        if($metabar = $component->getMetabar()) {
+            $tpl->setVariable('METABAR', $default_renderer->render($metabar));
         }
         if($sidebar = $component->getSidebar()) {
             $tpl->setVariable('SIDEBAR', $default_renderer->render($sidebar));
