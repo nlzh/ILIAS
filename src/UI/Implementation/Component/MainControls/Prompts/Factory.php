@@ -22,8 +22,8 @@ class Factory implements Prompts\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function notificationcenter($items){
-		return new NotificationCenter($items, $this->signal_generator);
+	public function notificationcenter(){
+		return new NotificationCenter($this->signal_generator);
 	}
 
 	/**

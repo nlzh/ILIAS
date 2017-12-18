@@ -93,20 +93,24 @@ class Renderer extends AbstractComponentRenderer {
         $awt = $f->maincontrols()->prompts()->awarenesstool();
         $logout = $f->icon()->standard('','')->withAbbreviation('O');
 
-        $items = array(
-            $f->maincontrols()->prompts()->glyphentry(
-                $f->glyph()->user('#')
-                ->withCounter($f->counter()->novelty(2))
-                ->withCounter($f->counter()->status(7))
-                , 'entry1'
-            ),
-            $f->maincontrols()->prompts()->glyphentry(
-                $f->glyph()->user('#')
-                ->withCounter($f->counter()->status(27))
-                , 'entry2'
-            )
+        $nc = $f->maincontrols()->prompts()->notificationcenter()
+        ->withEntry(
+            $f->glyph()->user('#')
+            ->withCounter($f->counter()->novelty(2))
+            ->withCounter($f->counter()->status(7))
+            , 'entry1'
+        )
+        ->withEntry(
+            $f->glyph()->settings('#')
+            ->withCounter($f->counter()->novelty(1))
+            ->withCounter($f->counter()->status(2))
+            , 'entry2'
+        )
+        ->withEntry(
+            $f->glyph()->comment('#')
+            ->withCounter($f->counter()->status(3))
+            , 'entry3'
         );
-        $nc = $f->maincontrols()->prompts()->notificationcenter($items);
 
         $tpl->setVariable("LOGO", $default_renderer->render($logo));
         $tpl->setVariable("NOTIFICATIONCENTER", $default_renderer->render($nc));

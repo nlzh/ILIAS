@@ -22,9 +22,6 @@ class Renderer extends AbstractComponentRenderer {
         if ($component instanceof Component\MainControls\Prompts\AwarenessTool) {
             return $this->renderAwarenessTool($component, $default_renderer);
         }
-        if ($component instanceof Component\MainControls\Prompts\GlyphEntry) {
-            return $this->renderGlyphEntry($component, $default_renderer);
-        }
     }
 
     protected function renderNotificationCenter(Component\MainControls\Prompts\NotificationCenter $component, RendererInterface $default_renderer) {
@@ -33,10 +30,11 @@ class Renderer extends AbstractComponentRenderer {
 
         $overall_novelty = 0;
         $overall_status = 0;
-        foreach ($component->getItems() as $entry) {
+        foreach ($component->getEntries() as $entry) {
 
+            list($glyph, $label) = $entry;
 
-            $counters = $entry->getGlyph()->getCounters();
+            $counters = $glyph->getCounters();
             foreach ($counters as $counter) {
                 if($counter->getType() === Spec::NOVELTY) {
                     $overall_novelty += $counter->getNumber();
@@ -47,7 +45,8 @@ class Renderer extends AbstractComponentRenderer {
             }
 
             $tpl->setCurrentBlock('item');
-            $tpl->setVariable('ITEM', $default_renderer->render($entry));
+            $tpl->setVariable('GLYPH', $default_renderer->render($glyph));
+            $tpl->setVariable('LABEL', $label);
             $tpl->parseCurrentBlock('item');
         }
 
@@ -63,12 +62,6 @@ class Renderer extends AbstractComponentRenderer {
         return $tpl->get();
     }
 
-    protected function renderGlyphEntry(Component\MainControls\Prompts\GlyphEntry $component, RendererInterface $default_renderer) {
-        $tpl = $this->getTemplate("Prompts/tpl.glyphentry.html", true, true);
-        $tpl->setVariable("GLYPH", $default_renderer->render($component->getGlyph()));
-        $tpl->setVariable("LABEL", $component->getLabel());
-        return $tpl->get();
-    }
 
     protected function renderAwarenessTool(Component\MainControls\Prompts\AwarenessTool $component, RendererInterface $default_renderer) {
         $f = $this->getUIFactory();
@@ -100,8 +93,7 @@ class Renderer extends AbstractComponentRenderer {
     protected function getComponentInterfaceName() {
         return array(
             Component\MainControls\Prompts\NotificationCenter::class,
-            Component\MainControls\Prompts\AwarenessTool::class,
-            Component\MainControls\Prompts\GlyphEntry::class
+            Component\MainControls\Prompts\AwarenessTool::class
         );
 
     }

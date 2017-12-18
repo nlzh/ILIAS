@@ -15,16 +15,20 @@ class NotificationCenter implements C\MainControls\Prompts\NotificationCenter {
 	protected $items;
 
 	public function __construct(
-		$items,
 		SignalGeneratorInterface $signal_generator) {
-
-		$this->items = $items;
 	}
 
 
 
-	public function getItems(){
-		return $this->items;
+	public function getEntries(){
+		return $this->entries;
+	}
+
+
+	public function withEntry($glyph, $label) {
+		$clone = clone $this;
+		$clone->entries[] = array($glyph, $label);
+		return $clone;
 	}
 
 
