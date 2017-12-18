@@ -44,7 +44,7 @@ interface Factory {
 	 *
 	 * @return  \ILIAS\UI\Component\MainControls\Prompts\NotificationCenter
 	 */
-	public function notificationCenter();
+	public function notificationcenter();
 
 	/**
 	 * ---
@@ -53,8 +53,8 @@ interface Factory {
 	 *
 	 * ----
 	 *
-	 * @return  \ILIAS\UI\Component\MainControls\Prompts\NotificationCenter
+	 * @return  \ILIAS\UI\Component\MainControls\Prompts\AwarenessTool
 	 */
-	public function awarenessTools();
+	public function awarenesstool();
 
 }

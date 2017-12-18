@@ -22,9 +22,7 @@ class Renderer extends AbstractComponentRenderer {
             return $this->renderSidebar($component, $default_renderer);
         }
         if ($component instanceof Component\Layout\TopBar) {
-            $tpl = $this->getTemplate("tpl.topbar.html", true, true);
-            $tpl->setVariable("NAME",'dummy-name');
-            return $tpl->get();
+            return $this->renderTopbar($component, $default_renderer);
         }
     }
 
@@ -85,9 +83,32 @@ class Renderer extends AbstractComponentRenderer {
 
 
 
+
+    protected function renderTopbar(Component\Layout\TopBar $component, RendererInterface $default_renderer) {
+        $tpl = $this->getTemplate("tpl.topbar.html", true, true);
+
+        $f = $this->getUIFactory();
+
+        $logo = $f->icon()->standard('','')->withSize('medium')->withAbbreviation('LOGO');
+        $nc = $f->maincontrols()->prompts()->notificationcenter();
+        $awt = $f->maincontrols()->prompts()->awarenesstool();
+        $logout = $f->icon()->standard('','')->withAbbreviation('O');
+
+
+        $tpl->setVariable("LOGO", $default_renderer->render($logo));
+        $tpl->setVariable("NOTIFICATIONCENTER", $default_renderer->render($nc));
+        $tpl->setVariable("AWARENESSTOOL", $default_renderer->render($awt));
+        $tpl->setVariable("LOGOUT", $default_renderer->render($logout));
+
+        return $tpl->get();
+    }
+
+
+
     protected function renderPage(Component\Layout\Page $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("tpl.page.html", true, true);
         $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
+
 
         if($topbar = $component->getTopbar()) {
             $tpl->setVariable('TOPBAR', $default_renderer->render($topbar));
@@ -96,9 +117,29 @@ class Renderer extends AbstractComponentRenderer {
             $tpl->setVariable('SIDEBAR', $default_renderer->render($sidebar));
         }
 
+/*
+        global $DIC;
+        $il_tpl = $DIC["tpl"];
+
+        $tpl->setVariable('JS', $this->getInlineJS($il_tpl));
+        foreach ($this->getJSFiles($il_tpl) as $js_file) {
+            $tpl->setCurrentBlock("js_file");
+            $tpl->setVariable("JS_FILE", $js_file);
+            $tpl->parseCurrentBlock();
+       }
+
+*/
+/*
+        $css_files = $il_tpl->css_files;
+        var_dump($css_files);
+
+        $css_inline = $il_tpl->inline_css;
+        var_dump($css_inline);
+*/
+
+
         return $tpl->get();
     }
-
 
 
     /**

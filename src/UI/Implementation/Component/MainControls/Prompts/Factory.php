@@ -1,12 +1,12 @@
 <?php
 /* Copyright (c) 2017 Nils Haagen <nils.haagen@concepts-and-training.de> Extended GPL, see docs/LICENSE */
 
-namespace ILIAS\UI\Implementation\Component\MainControls;
+namespace ILIAS\UI\Implementation\Component\MainControls\Prompts;
 
-use ILIAS\UI\Component\MainControls as MC;
+use ILIAS\UI\Component\MainControls\Prompts as Prompts;
 use ILIAS\UI\Implementation\Component\SignalGeneratorInterface;
 
-class Factory implements MC\Factory {
+class Factory implements Prompts\Factory {
 	/**
 	 * @var SignalGeneratorInterface
 	 */
@@ -22,13 +22,14 @@ class Factory implements MC\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function menu(){
-		return new Menu\Factory($this->signal_generator);
+	public function notificationcenter(){
+		return new NotificationCenter($this->signal_generator);
 	}
+
 	/**
 	 * @inheritdoc
 	 */
-	public function prompts(){
-		return new Prompts\Factory($this->signal_generator);
+	public function awarenesstool(){
+		return new AwarenessTool($this->signal_generator);
 	}
 }
