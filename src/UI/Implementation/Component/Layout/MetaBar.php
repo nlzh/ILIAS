@@ -6,7 +6,7 @@ namespace ILIAS\UI\Implementation\Component\Layout;
 use ILIAS\UI\Component as C;
 use ILIAS\UI\Implementation\Component\ComponentHelper;
 
-class TopBar implements C\Layout\TopBar {
+class MetaBar implements C\Layout\MetaBar {
 	use ComponentHelper;
 
 	/**

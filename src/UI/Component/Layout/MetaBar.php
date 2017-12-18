@@ -6,7 +6,7 @@ namespace ILIAS\UI\Component\Layout;
 /**
  * This describes the TopBar
  */
-interface TopBar extends \ILIAS\UI\Component\Component {
+interface MetaBar extends \ILIAS\UI\Component\Component {
 
 	/**
 	 *
