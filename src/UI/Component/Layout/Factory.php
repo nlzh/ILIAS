@@ -27,9 +27,9 @@ interface Factory {
      *
      * ----
      *
-     * @return  \ILIAS\UI\Component\Layout\TopBar
+     * @return  \ILIAS\UI\Component\Layout\MetaBar
      */
-    public function topbar();
+    public function metabar();
 
     /**
      * ---

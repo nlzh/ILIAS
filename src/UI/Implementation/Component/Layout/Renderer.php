@@ -21,8 +21,8 @@ class Renderer extends AbstractComponentRenderer {
         if ($component instanceof Component\Layout\SideBar) {
             return $this->renderSidebar($component, $default_renderer);
         }
-        if ($component instanceof Component\Layout\TopBar) {
-            return $this->renderTopbar($component, $default_renderer);
+        if ($component instanceof Component\Layout\MetaBar) {
+            return $this->renderMetabar($component, $default_renderer);
         }
     }
 
@@ -84,8 +84,8 @@ class Renderer extends AbstractComponentRenderer {
 
 
 
-    protected function renderTopbar(Component\Layout\TopBar $component, RendererInterface $default_renderer) {
-        $tpl = $this->getTemplate("tpl.topbar.html", true, true);
+    protected function renderMetabar(Component\Layout\MetaBar $component, RendererInterface $default_renderer) {
+        $tpl = $this->getTemplate("tpl.metabar.html", true, true);
 
         $f = $this->getUIFactory();
 
@@ -148,7 +148,7 @@ class Renderer extends AbstractComponentRenderer {
     protected function getComponentInterfaceName() {
         return array(
             Component\Layout\SideBar::class,
-            Component\Layout\TopBar::class,
+            Component\Layout\MetaBar::class,
             Component\Layout\Page::class
         );
 

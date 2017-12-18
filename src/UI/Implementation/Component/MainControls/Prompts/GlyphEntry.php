@@ -8,23 +8,25 @@ use ILIAS\UI\Implementation\Component\ComponentHelper;
 use ILIAS\UI\Implementation\Component\SignalGeneratorInterface;
 use ILIAS\UI\Implementation\Component\JavaScriptBindable;
 
-class NotificationCenter implements C\MainControls\Prompts\NotificationCenter {
+class GlyphEntry implements C\MainControls\Prompts\GlyphEntry {
 	use ComponentHelper;
 	use JavaScriptBindable;
 
-	protected $items;
 
 	public function __construct(
-		$items,
+		$glyph, $label,
 		SignalGeneratorInterface $signal_generator) {
-
-		$this->items = $items;
+		$this->glyph = $glyph;
+		$this->label = $label;
 	}
 
 
+	public function getGlyph(){
+		return $this->glyph;
+	}
 
-	public function getItems(){
-		return $this->items;
+	public function getLabel(){
+		return $this->label;
 	}
 
 

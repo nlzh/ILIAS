@@ -44,17 +44,30 @@ interface Factory {
 	 *
 	 * @return  \ILIAS\UI\Component\MainControls\Prompts\NotificationCenter
 	 */
-	public function notificationcenter();
+	public function notificationcenter($items);
 
-	/**
-	 * ---
-	 * description:
-	 *   purpose: >
-	 *
-	 * ----
-	 *
-	 * @return  \ILIAS\UI\Component\MainControls\Prompts\AwarenessTool
-	 */
-	public function awarenesstool();
+     /**
+      * ---
+      * description:
+      *   purpose: >
+      *
+      * ----
+      *
+      * @return  \ILIAS\UI\Component\MainControls\Prompts\AwarenessTool
+      */
+     public function awarenesstool();
+
+     /**
+      * ---
+      * description:
+      *   purpose: >
+      *
+      * ----
+      *
+      * @return  \ILIAS\UI\Component\MainControls\Prompts\GlyphEntry
+      */
+     public function glyphentry($glyph, $label);
+
+
 
 }

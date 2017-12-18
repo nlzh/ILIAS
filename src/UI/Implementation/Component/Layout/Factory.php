@@ -23,8 +23,8 @@ class Factory implements Layout\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function topbar(){
-		return new TopBar();
+	public function metabar(){
+		return new MetaBar();
 	}
 	/**
 	 * @inheritdoc
