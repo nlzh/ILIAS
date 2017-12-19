@@ -12,12 +12,33 @@ class MetaBar implements C\Layout\MetaBar {
 	/**
 	 * @var
 	 */
-	private $x;
+	private $logo;
+	private $elements = array();
 
 
 	public function __construct() {
 		//$this->checkStringArg("string", $icon_path);
 	}
 
+	public function withLogo($logo) {
+		$clone = clone $this;
+		$clone->logo = $logo;
+		return $clone;
+	}
+
+	public function getLogo() {
+		return $this->logo;
+	}
+
+
+	public function withElement($element) {
+		$clone = clone $this;
+		$clone->elements[] = $element;
+		return $clone;
+	}
+
+	public function getElements() {
+		return $this->elements;
+	}
 
 }

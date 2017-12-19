@@ -35,7 +35,7 @@ class Renderer extends AbstractComponentRenderer {
 
         $component = $component->withOnLoadCode(function($id) use ($internal_signal) {
             return "$(document).on('{$internal_signal}', function(event, signalData) {
-                        il.UI.maincontrols.menu.slate.onClickTigger(event, signalData, '{$id}');
+                        il.UI.maincontrols.menu.slate.onClickTrigger(event, signalData, '{$id}');
                         return false;
                     })";
         });

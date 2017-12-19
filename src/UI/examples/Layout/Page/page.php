@@ -17,7 +17,34 @@ function page() {
 
 
 function page_getMetabar($f) {
-	$metabar = $f->layout()->metabar();
+	$logo = $f->image()->responsive(
+		"src/UI/examples/Image/HeaderIconLarge.svg",
+		"Thumbnail Example"
+	);
+
+	$nc = $f->maincontrols()->prompts()->notificationcenter()
+        ->withEntry(
+            $f->glyph()->user('#')
+            ->withCounter($f->counter()->novelty(2))
+            ->withCounter($f->counter()->status(7))
+            , 'entry1'
+        )
+        ->withEntry(
+            $f->glyph()->settings('#')
+            ->withCounter($f->counter()->novelty(1))
+            ->withCounter($f->counter()->status(2))
+            , 'entry2'
+        );
+
+    $awt = $f->maincontrols()->prompts()->awarenesstool();
+	$logout = $f->icon()->standard('','')->withAbbreviation('O');
+
+	$metabar = $f->layout()->metabar()
+		->withLogo($logo)
+		->withElement($nc)
+		->withElement($awt)
+		->withElement($logout);
+
 	return $metabar;
 }
 
@@ -32,8 +59,8 @@ function page_getSidebar($f) {
 	foreach(range(1,4) as $c){
 		$i = (string)$c;
 		$planks = array(
-			$mf->plank($f->legacy("Plank 1 - $i")),
-			$mf->plank($f->legacy("Plank 2 - $i"))
+			$mf->plank($f->legacy("Plank a - $i")),
+			$mf->plank($f->legacy("Plank b - $i"))
 		);
 		$slate =$mf->slate($planks);
 		$button = $f->button()->iconographic($icon->withAbbreviation($i), "Button $i", '#');

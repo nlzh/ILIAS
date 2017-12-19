@@ -48,8 +48,10 @@ class Renderer extends AbstractComponentRenderer {
             $registry = '';
                 $registry .= "$(document).on('{$entry_signal}', function(event, signalData) {
 
-                    var down_class = 'engaged';
-                    //toggle triggerer active/inactive
+                    var down_class = 'engaged',
+                        class_engaged_slates = 'with-engaged-slates';
+
+                    //set all non-triggerer to inactive
                     result = $('#{$id} .sidebar-triggers .btn');
                     result.each( function(index, obj) {
                         if($(obj).attr('id') != signalData.triggerer.attr('id')) {
@@ -57,23 +59,25 @@ class Renderer extends AbstractComponentRenderer {
                         }
                     });
 
+                    //toggle triggerer active/inactive
                     if(signalData.triggerer.hasClass(down_class)) {
                         signalData.triggerer.removeClass(down_class);
                     } else {
                         signalData.triggerer.addClass(down_class);
                     }
 
-                    //disengage all active slates
-                    $('#{$id} .il-maincontrol-menu-slate.engaged').each( function() {
-                        il.UI.maincontrols.menu.slate.toggle($(this));
-                    });
+                    if($('#{$id} .il-maincontrol-menu-slate.engaged').length > 0) {
+                        $('#{$id}').addClass(class_engaged_slates);
+                    } else {
+                        $('#{$id}').removeClass(class_engaged_slates);
+                    }
+
+
 
                 });";
 
             return $registry;
         });
-
-
 
         $id = $this->bindJavaScript($component);
         $tpl->setVariable('ID', $id);
@@ -82,49 +86,24 @@ class Renderer extends AbstractComponentRenderer {
     }
 
 
-
-
     protected function renderMetabar(Component\Layout\MetaBar $component, RendererInterface $default_renderer) {
+        $f = $this->getUIFactory();
         $tpl = $this->getTemplate("tpl.metabar.html", true, true);
 
-        $f = $this->getUIFactory();
+        $tpl->setVariable("LOGO", $default_renderer->render($component->getLogo()));
 
-        $logo = $f->icon()->standard('','')->withSize('medium')->withAbbreviation('LOGO');
-        $awt = $f->maincontrols()->prompts()->awarenesstool();
-        $logout = $f->icon()->standard('','')->withAbbreviation('O');
-
-        $nc = $f->maincontrols()->prompts()->notificationcenter()
-        ->withEntry(
-            $f->glyph()->user('#')
-            ->withCounter($f->counter()->novelty(2))
-            ->withCounter($f->counter()->status(7))
-            , 'entry1'
-        )
-        ->withEntry(
-            $f->glyph()->settings('#')
-            ->withCounter($f->counter()->novelty(1))
-            ->withCounter($f->counter()->status(2))
-            , 'entry2'
-        )
-        ->withEntry(
-            $f->glyph()->comment('#')
-            ->withCounter($f->counter()->status(3))
-            , 'entry3'
-        );
-
-        $tpl->setVariable("LOGO", $default_renderer->render($logo));
-        $tpl->setVariable("NOTIFICATIONCENTER", $default_renderer->render($nc));
-        $tpl->setVariable("AWARENESSTOOL", $default_renderer->render($awt));
-        $tpl->setVariable("LOGOUT", $default_renderer->render($logout));
+        foreach ($component->getElements() as $element) {
+            $tpl->setCurrentBlock('meta_element');
+            $tpl->setVariable("ELEMENT", $default_renderer->render($element));
+            $tpl->parseCurrentBlock();
+        }
 
         return $tpl->get();
     }
 
 
-
     protected function renderPage(Component\Layout\Page $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("tpl.page.html", true, true);
-        $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
 
         if($metabar = $component->getMetabar()) {
@@ -133,6 +112,8 @@ class Renderer extends AbstractComponentRenderer {
         if($sidebar = $component->getSidebar()) {
             $tpl->setVariable('SIDEBAR', $default_renderer->render($sidebar));
         }
+
+        $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
 /*
         global $DIC;

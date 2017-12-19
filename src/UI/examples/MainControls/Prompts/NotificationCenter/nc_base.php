@@ -1,6 +1,6 @@
 <?php
 
-function base() {
+function nc_base() {
 
 	global $DIC;
 	$f = $DIC->ui()->factory();

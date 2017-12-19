@@ -1,5 +1,6 @@
 (function($) {
 	$(document).on('shown.bs.dropdown', function(event) {
+		console.log(event)
 		var dropdown = $(event.target);
 
 		dropdown.find('.dropdown-toggle').attr('aria-expanded', true);

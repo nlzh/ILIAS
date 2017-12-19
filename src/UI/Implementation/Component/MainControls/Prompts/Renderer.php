@@ -44,9 +44,10 @@ class Renderer extends AbstractComponentRenderer {
                 }
             }
 
+            $shy = $f->button()->shy($label, $glyph->getAction());
             $tpl->setCurrentBlock('item');
             $tpl->setVariable('GLYPH', $default_renderer->render($glyph));
-            $tpl->setVariable('LABEL', $label);
+            $tpl->setVariable('LABEL', $default_renderer->render($shy));
             $tpl->parseCurrentBlock('item');
         }
 
@@ -59,6 +60,9 @@ class Renderer extends AbstractComponentRenderer {
         }
 
         $tpl->setVariable("GLYPH", $default_renderer->render($glyph));
+
+        //$id = $this->bindJavaScript($component);
+        //$tpl->setVariable("ID", $id);
         return $tpl->get();
     }
 
@@ -83,8 +87,8 @@ class Renderer extends AbstractComponentRenderer {
      * @inheritdoc
      */
     public function registerResources(\ILIAS\UI\Implementation\Render\ResourceRegistry $registry) {
-        //parent::registerResources($registry);
-        //$registry->register('./src/UI/templates/js/MainControls/Menu/slate.js');
+        parent::registerResources($registry);
+        $registry->register('./src/UI/templates/js/Dropdown/dropdown.js');
     }
 
     /**

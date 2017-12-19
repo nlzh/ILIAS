@@ -1,0 +1,35 @@
+.il-layout-page {
+
+	display:grid;
+	grid-template-columns: 200px auto;
+	grid-template-rows: 50px auto;
+
+	.il-layout-page-metabar {
+		grid-column-start: 1;
+		grid-column-end: span 2;
+		grid-row-start: 1;
+	}
+
+	.il-layout-page-sidebar {
+		grid-column-start: 1;
+		grid-row-start: 2;
+
+		width: 200px;
+
+		.sidebar-triggers {
+			width: 70px;
+			float: left;
+		}
+		.sidebar-slates {
+			width: 130px;
+			height: 100%;
+			float: left;
+		}
+	}
+
+
+	.il-layout-page-content {
+		grid-column-start: 2;
+		grid-row-start: 2;
+	}
+}

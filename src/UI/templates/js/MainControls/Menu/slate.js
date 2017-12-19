@@ -8,20 +8,19 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		var _cls_engaged = 'engaged';
 		var _cls_disengaged = 'disengaged';
 
-		var onClickTigger = function(event, signalData, id) {
+		var onClickTrigger = function(event, signalData, id) {
 			slate = $('#' + id);
+			slate.siblings().each(function(c,s){
+				_disengage($(s));
+			});
 			toggle(slate);
 		};
 
 		var toggle = function(slate) {
 			if(_isEngaged(slate)) {
-				slate.toggle();
 				_disengage(slate);
 			} else {
-				//slate.slideToggle(400, function(){
-				slate.toggle('slide', function() {
-					_engage(slate);
-				});
+				_engage(slate);
 			}
 		};
 
@@ -32,6 +31,10 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		var _engage = function(slate) {
 			slate.removeClass(_cls_disengaged);
 			slate.addClass(_cls_engaged);
+/*			var w = slate.width();
+			slate.width(1);
+			slate.animate({width: w}, 800);
+*/
 		};
 
 		var _disengage = function(slate) {
@@ -40,7 +43,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		};
 
 		return {
-			onClickTigger: onClickTigger,
+			onClickTrigger: onClickTrigger,
 			toggle : toggle
 		}
 
