@@ -6863,7 +6863,7 @@ button.close {
 .il-panel-report .il-card {
   background-color: #f9f9f9;
 }
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .row-eq-height .il-card {
     display: flex;
     flex-direction: column;
@@ -6881,12 +6881,13 @@ button.close {
   padding-right: 5px;
   margin-bottom: 6px;
 }
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .row-eq-height {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    flex-wrap: wrap;
   }
   .row-eq-height > div {
     display: flex;
@@ -7248,10 +7249,12 @@ hr.il-divider-with-label {
 }
 .il-item .il-item-property-name {
   font-size: 12px;
+  overflow: auto;
 }
 .il-item .il-item-property-value {
   font-size: 12px;
   color: #909090;
+  overflow: auto;
 }
 .il-item .col-sm-9 > .row {
   clear: both;
@@ -7901,6 +7904,59 @@ ul.breadcrumb li:hover {
   color: #ffffff;
   background-color: #4c6586;
 }
+.il-standard-form {
+  background-color: #fdfdfd;
+  margin-top: 6px;
+}
+.il-standard-form .il-standard-form-cmd {
+  float: right;
+}
+.il-standard-form .il-standard-form-cmd .btn {
+  display: inline-block;
+  min-width: 60px;
+  vertical-align: top;
+}
+@media (max-width: 767px) {
+  .il-standard-form .il-standard-form-cmd .btn {
+    min-width: 0;
+  }
+}
+.il-standard-form .il-standard-form-header,
+.il-standard-form .il-standard-form-footer,
+.il-standard-form .il-section-input-header {
+  background-color: #f0f0f0;
+  color: #9a9a9a;
+}
+.il-standard-form .il-standard-form-header h3,
+.il-standard-form .il-section-input-header h3 {
+  font-size: 19px;
+  text-transform: uppercase;
+  padding-top: 6px;
+  margin-bottom: 3px;
+}
+.il-standard-form .il-standar-form-header-byline,
+.il-standard-form .il-section-input-header-byline {
+  font-size: 12px;
+}
+.il-standard-form .il-standard-form-header + .il-section-input {
+  margin-top: -25.14285715px;
+  padding: 0;
+}
+.il-standard-form .il-standard-form-header + .il-section-input .il-section-input-header h3 {
+  margin-top: 0;
+  padding-top: 0;
+}
+.il-standard-form .il-dependant-group {
+  background-color: #f8f8f8;
+  padding: 3px 0;
+}
+.il-standard-form .il-dependant-group .form-group {
+  margin: 0;
+}
+.il-standard-form input[type="radio"],
+.il-standard-form input[type="checkbox"] {
+  margin: 0;
+}
 .il-maincontrol-menu-slate.engaged {
   display: block;
 }
@@ -8317,7 +8373,7 @@ ul.breadcrumb li:hover {
 }
 .il-popover .il-popover-inner {
   max-height: 500px;
-  overflow: scroll;
+  overflow: auto;
 }
 .il-popover .il-popover-inner .close {
   margin: 0;
@@ -9961,7 +10017,7 @@ select {
 }
 .form-horizontal {
   margin-bottom: 20px;
-  background-color: #fdfdfd;
+  background: #fdfdfd;
 }
 form.form-inline {
   margin-bottom: 20px;
@@ -9988,38 +10044,35 @@ select.form-control {
   font-size: 100%;
 }
 .form-horizontal .control-label {
-  padding-top: 0;
-  line-height: 24px;
+  padding-bottom: 4px;
 }
 .form-horizontal .control-label.col-sm-3.il_textarea {
   text-align: left;
   width: 100%;
-}
-.form-horizontal .form-group .col-sm-9 {
-  line-height: 24px;
 }
 .form-horizontal .radio,
 .form-horizontal .checkbox,
 .form-horizontal .radio-inline,
 .form-horizontal .checkbox-inline {
   padding-top: 0;
-  line-height: 24px;
-  vertical-align: middle;
+  line-height: normal;
 }
 .form-horizontal .help-block {
   line-height: normal;
+}
+.form-horizontal div.radio label.radio-inline {
+  line-height: 25px;
 }
 .radio input[type="radio"],
 .radio-inline input[type="radio"],
 .checkbox input[type="checkbox"],
 .checkbox-inline input[type="checkbox"] {
   position: static;
+  display: inline-block;
   margin-left: -20px;
-  margin-top: 0;
-  min-height: 24px;
+  margin-top: 7px;
   min-width: 13px;
   vertical-align: top;
-  line-height: 24px;
 }
 @media only screen and (max-width: 767px) {
   .radio input[type="radio"],
@@ -10065,8 +10118,7 @@ input[type="file"].form-control {
 }
 .ilFormHeader,
 .ilFormFooter {
-  color: #4d4d4d;
-  /* background-color: lighten(@ilFormColor, 45%); */
+  color: #9a9a9a;
   background-color: #f0f0f0;
 }
 .ilSubForm {
@@ -10115,7 +10167,7 @@ div[id^="ilFormField"] {
 /* Hierarchy Form */
 div.ilHFormHeader,
 div.ilHFormFooter {
-  color: #4d4d4d;
+  color: #9a9a9a;
   background-color: #f0f0f0;
   padding: 4px 0 4px 22px;
 }
@@ -10542,6 +10594,12 @@ div.ilFrmPostHeader span.small {
 @media only screen and (max-width: 767px) {
   .ilFrmPostContentContainer {
     width: 100%;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .ilFrmPostContentContainer img {
+    width: 100%;
+    height: auto !important;
   }
 }
 .ilFrmPostContent {
@@ -11346,7 +11404,6 @@ p.il_calevent .btn-link {
   text-align: center;
 }
 td.calevent {
-  color: white;
   vertical-align: top;
   padding: 3px;
   border-spacing: 0px;
@@ -11355,6 +11412,7 @@ td.calevent {
   border-style: solid;
   border-color: #dddddd;
   font-size: 90%;
+  background-color: white;
 }
 div.calevent {
   font-size: 90%;
@@ -11847,6 +11905,7 @@ input.ilOpenIDBox {
   .ilMainHeader > header > .row > a.navbar-brand {
     height: 0;
     padding: 0;
+    margin: 0;
   }
 }
 .ilMainHeader > header > .row > a.navbar-brand > img {
@@ -12750,6 +12809,9 @@ span.bibl_text_inline_Emph {
 td.legendColorBox,
 td.legendLabel {
   padding: 3px;
+}
+div.ilChartWrapper {
+  max-width: 100%;
 }
 /* Services/Captcha */
 div.iosCaptchaInfoContainer {
@@ -14669,9 +14731,10 @@ div.ilPCMyCoursesPath {
   color: #a0a0a0;
 }
 .ilOnScreenChatMenuItem .media-body p.lastMessage {
+  width: 200px;
   padding: 3px 3px 3px 0;
   text-overflow: ellipsis;
-  overflow: hidden;
+  overflow-x: hidden;
   color: #606060;
 }
 .ilOnScreenChatMenuItem .media-body p a {
