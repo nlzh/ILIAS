@@ -54,8 +54,8 @@ interface Factory {
 	 *     A Plank is used to further cluster elements of a slate.
 	 *
 	 *   composition: >
-	 *     A plank is rendered as a expand/collpase glyph with a title.
-	 *     Planks MAY contain other components as well as further planks.
+	 *     A plank is rendered as an expand/collpase glyph with a title.
+	 *     Planks MAY contain further planks as well as other components.
 	 *
 	 *   effect: >
 	 *     A plank can be expanded/collapsed by operating the glyph before the title.

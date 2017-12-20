@@ -9,7 +9,7 @@ interface Factory {
 	 * ---
 	 * description:
 	 *   purpose: >
-	 *
+	 *     Prompts are notifications from the system to the user.
 	 *
 	 * ----
 	 *
@@ -21,7 +21,10 @@ interface Factory {
 	 * ---
 	 * description:
 	 *   purpose: >
-	 *
+	 *     Menu elements are wrappers for other components. They are used to
+	 *     (sub-)structure navigational elements.
+	 *     Their functionality is of a mere visual nature, i.e. displaying or
+	 *     hiding underlying elements.
 	 *
 	 * ----
 	 *

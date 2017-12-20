@@ -7,10 +7,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 	menu.plank = (function($) {
 
 		var toggle = function(id) {
-			console.log('toggle:'  + id);
 			var p = $('#' + id + ' >.plank-header');
-			console.log(p);
-			window.top.aaa=p;
 			if(p.hasClass('expanded')) {
 				p.switchClass('expanded', 'collapsed', 200);
 			} else {

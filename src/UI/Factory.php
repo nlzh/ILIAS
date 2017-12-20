@@ -711,24 +711,15 @@ interface Factory {
 	 *       on overall configuration or roles of the user, not depending on
 	 *       context.
 	 *       MainControls provide global navigation and information.
-	 *   composition: >
-	 *
-	 *   effect: >
 	 *
 	 *   rivals:
 	 *     1: >
 	 *        ViewControls are used to change the visualisation of, or rather within,
 	 *        components.
-	 *     2: >
 	 *
 	 * rules:
 	 *   usage:
 	 *     1: MainControls MUST NOT change persistent data in any way.
-	 *     2:
-	 *     3:
-	 *   style:
-	 *     1:
-	 *     2:
 	 *   accessibility:
 	 *     1:
 	 * ---

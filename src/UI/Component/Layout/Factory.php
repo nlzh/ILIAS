@@ -9,24 +9,32 @@ interface Factory {
      * ---
      * description:
      *   purpose: >
-     *
+     *     The metabar is a unique page section to accomodate elements that
+     *     should permamently be in sight of the user.
+     *     Contents of the bar are never modified except by administrative configuration.
+     *     The metabar is not for navigation; user-reactions to system notifications
+     *     are OK, though.
      *
      *   composition: >
-     *
+     *     The metabar always features the logo on the left hand side, while
+     *     further elements are placed on the right hand side.
      *
      *   effect: >
+     *     The bar is rendered horizontally on top of the page.
      *
-     *
-     *   rivals:
-     *     SideBar: >
      *
      * rules:
      *   usage:
-     *     1: The sidebar is unique for the page - there MUST be but one.
+     *     1: The metabar is unique for the page - there MUST be but one.
+     *     2: Elements in the metabar MUST NOT vary according to context.
+     *     3: Metabar MUST NOT have exclusively navigational elements.
      *
      *   composition:
-     *     1:
+     *     1: The bar MUST contain the logo
+     *     2: The bar SHOULD contain prompts.
      *
+     *   style:
+     *     1: The bar MUST have a fixed height.
      * ----
      *
      * @return  \ILIAS\UI\Component\Layout\MetaBar
@@ -138,8 +146,6 @@ interface Factory {
 	 *   purpose: >
 	 *     A layout-component (or page-element) describes a section of the ILIAS UI;
       *     the page thus is the user's view upon ILIAS in total.
-	 *
-	 *
 	 *
 	 * ----
 	 *
