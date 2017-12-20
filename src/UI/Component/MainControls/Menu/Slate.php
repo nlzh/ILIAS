@@ -10,9 +10,17 @@ use ILIAS\UI\Component\JavaScriptBindable;
 interface Slate extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 
 	/**
-	 *
-	 *
-	 * @return
+	 * @return Plank[]
 	 */
+	public function getPlanks();
 
+	/**
+	 * @return Slate
+	 */
+	public function withResetSignals();
+
+	/**
+	 * @return Signal
+	 */
+	public function getToggleSignal();
 }

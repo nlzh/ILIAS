@@ -8,4 +8,8 @@ namespace ILIAS\UI\Component\Button;
  */
 interface Iconographic extends Button {
 
+	/**
+	 * @return ILIAS\UI\Component\Icon
+	 */
+	public function getIcon();
 }

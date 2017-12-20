@@ -7965,8 +7965,9 @@ ul.breadcrumb li:hover {
 }
 .il-maincontrol-menu-plank {
   display: block;
-  border: 1px dotted black;
   margin-bottom: 2px;
+  list-style: none;
+  padding-left: 15px;
 }
 .il-maincontrol-menu-plank li.collapsed > .plank-glyph-expand {
   display: inline;
