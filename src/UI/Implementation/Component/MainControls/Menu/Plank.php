@@ -17,16 +17,13 @@ class Plank implements C\MainControls\Menu\Plank {
 	 */
 	private $title;
 	private $elements = array();
-	private $static_expand = true;
-	private $show_signal;
-	private $close_signal;
+	private $static_expand = false;
+	private $toggle_signal;
 
 	public function __construct(SignalGeneratorInterface $signal_generator) {
 		$this->signal_generator = $signal_generator;
 		$this->initSignals();
 	}
-
-
 
 	public function withTitle($title) {
 		$clone = clone $this;
@@ -58,9 +55,6 @@ class Plank implements C\MainControls\Menu\Plank {
 		return $this->static_expand;
 	}
 
-
-
-
 	public function withResetSignals() {
 		$clone = clone $this;
 		$clone->initSignals();
@@ -70,21 +64,14 @@ class Plank implements C\MainControls\Menu\Plank {
 	 * Set the show and close signals for this component
 	 */
 	protected function initSignals() {
-		$this->show_signal = $this->signal_generator->create();
-		$this->close_signal = $this->signal_generator->create();
+		$this->toggle_signal = $this->signal_generator->create();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function getShowSignal() {
-		return $this->show_signal;
+	public function getToggleSignal() {
+		return $this->toggle_signal;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getCloseSignal() {
-		return $this->close_signal;
-	}
 }
