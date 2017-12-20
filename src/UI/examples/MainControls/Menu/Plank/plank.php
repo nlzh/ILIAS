@@ -6,8 +6,19 @@ function plank() {
 	$f = $DIC->ui()->factory();
 	$renderer = $DIC->ui()->renderer();
 
-	$c = $f->legacy('some content');
-	$plank = $f->maincontrols()->menu()->plank($c);
+	$plank = $f->maincontrols()->menu()->plank()
+		->withTitle('a title');
 
-	return $renderer->render($plank);
+	$plank2 = $plank
+		->withElement($f->legacy('some element'))
+		->withElement($plank)
+		->withElement(
+			$plank->withElement($plank)
+		);
+
+	return $renderer->render([
+		$plank,
+		$f->divider()->horizontal(),
+		$plank2
+	]);
 }

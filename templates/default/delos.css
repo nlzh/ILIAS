@@ -7907,33 +7907,63 @@ ul.breadcrumb li:hover {
 .il-maincontrol-menu-slate.disengaged {
   display: none;
 }
+.il-maincontrol-menu-plank {
+  display: block;
+  border: 1px dotted black;
+  margin-bottom: 2px;
+}
+.il-maincontrol-menu-plank li.collapsed > .plank-glyph-expand {
+  display: inline;
+}
+.il-maincontrol-menu-plank li.collapsed > .plank-glyph-collapse {
+  display: none;
+}
+.il-maincontrol-menu-plank li.collapsed > .plank-elements {
+  display: none;
+}
+.il-maincontrol-menu-plank li.expanded > .plank-glyph-expand {
+  display: none;
+}
+.il-maincontrol-menu-plank li.expanded > .plank-glyph-collapse {
+  display: inline;
+}
+.il-maincontrol-menu-plank li.expanded > .plank-elements {
+  display: block;
+}
 .il-layout-page {
-  display: grid;
-  grid-template-columns: 200px auto;
-  grid-template-rows: 50px auto;
+  width: 800px;
+  height: 600px;
+  display: block;
 }
-.il-layout-page .il-layout-page-metabar {
-  grid-column-start: 1;
-  grid-column-end: span 2;
-  grid-row-start: 1;
+.il-layout-page-metabar {
+  height: 120px;
+  clear: both;
 }
-.il-layout-page .il-layout-page-sidebar {
-  grid-column-start: 1;
-  grid-row-start: 2;
-  width: 200px;
+.il-layout-page-sidebar {
+  width: 70px;
 }
-.il-layout-page .il-layout-page-sidebar .sidebar-triggers {
+.il-layout-page-sidebar .sidebar-triggers {
   width: 70px;
   float: left;
 }
-.il-layout-page .il-layout-page-sidebar .sidebar-slates {
-  width: 130px;
+.il-layout-page-sidebar .sidebar-slates {
+  background-color: #fefefe;
   height: 100%;
   float: left;
+  display: none;
 }
-.il-layout-page .il-layout-page-content {
-  grid-column-start: 2;
-  grid-row-start: 2;
+.il-layout-page-sidebar.with-engaged-slates {
+  width: 270px;
+}
+.il-layout-page-sidebar.with-engaged-slates .sidebar-slates {
+  width: 200px;
+  display: block;
+}
+.il-layout-page-content {
+  display: flex;
+  border: 1px solid black;
+  padding: 5px;
+  margin-left: 5px;
 }
 /*		Color scheme
 		Dark BLue: #0f2152;

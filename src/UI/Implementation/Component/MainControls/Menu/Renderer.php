@@ -19,11 +19,7 @@ class Renderer extends AbstractComponentRenderer {
             return $this->renderSlate($component, $default_renderer);
         }
         if ($component instanceof Component\MainControls\Menu\Plank) {
-            $tpl = $this->getTemplate("Menu/tpl.plank.html", true, true);
-            $tpl->setVariable("CONTENT",
-                $default_renderer->render($component->getContent())
-            );
-            return $tpl->get();
+            return $this->renderPlank($component, $default_renderer);
         }
 
     }
@@ -56,12 +52,57 @@ class Renderer extends AbstractComponentRenderer {
     }
 
 
+    protected function renderPlank(Component\MainControls\Menu\Plank $component, RendererInterface $default_renderer) {
+        $tpl = $this->getTemplate("Menu/tpl.plank.html", true, true);
+        $f = $this->getUIFactory();
+
+        $component = $component->withResetSignals();
+        $show = $component->getShowSignal();
+        $hide = $component->getCloseSignal();
+        $expander = $f->glyph()->expand('')->withOnClick($show);
+        $collapser = $f->glyph()->collapse('')->withOnClick($hide);
+
+         $component = $component->withOnLoadCode(function($id) use ($show, $hide) {
+            return
+                "$(document).on('{$show}', function() { il.UI.maincontrols.menu.plank.show('{$id}'); return false; });".
+                "$(document).on('{$hide}', function() { il.UI.maincontrols.menu.plank.hide('{$id}'); return false; });"
+                ;
+        });
+
+
+        $tpl->setVariable("EXPANDER", $default_renderer->render($expander));
+        $tpl->setVariable("COLLAPSER", $default_renderer->render($collapser));
+
+        if($component->getStaticExpanded()) {
+            $tpl->touchBlock('expanded');
+        } else {
+            $tpl->touchBlock('collapsed');
+        }
+
+        $tpl->setVariable("TITLE", $component->getTitle());
+
+        foreach ($component->getElements() as $element) {
+            $tpl->setCurrentBlock("element");
+            $tpl->setVariable("ELEMENT", $default_renderer->render($element));
+            $tpl->parseCurrentBlock();
+        }
+
+        $id = $this->bindJavaScript($component);
+        $tpl->setVariable('ID', $id);
+
+        return $tpl->get();
+    }
+
+
+
+
     /**
      * @inheritdoc
      */
     public function registerResources(\ILIAS\UI\Implementation\Render\ResourceRegistry $registry) {
         parent::registerResources($registry);
         $registry->register('./src/UI/templates/js/MainControls/Menu/slate.js');
+        $registry->register('./src/UI/templates/js/MainControls/Menu/plank.js');
     }
 
     /**

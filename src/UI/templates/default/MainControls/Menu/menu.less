@@ -5,5 +5,39 @@
  	&.disengaged {
  		display:none;
  	}
+}
+
+.il-maincontrol-menu-plank {
+	display: block;
+	border: 1px dotted black;
+	margin-bottom: 2px;
+
+	li {
+
+		&.collapsed {
+			> .plank-glyph-expand {
+				display: inline;
+			}
+			> .plank-glyph-collapse {
+				display: none;
+			}
+			> .plank-elements {
+				display: none;
+			}
+
+		}
+
+		&.expanded {
+			> .plank-glyph-expand {
+				display: none;
+			}
+			> .plank-glyph-collapse {
+				display: inline;
+			}
+			> .plank-elements {
+				display: block;
+			}
+		}
+	}
 
 }

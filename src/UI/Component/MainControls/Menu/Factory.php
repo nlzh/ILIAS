@@ -24,6 +24,6 @@ interface Factory {
 	 *
 	 * @return  \ILIAS\UI\Component\MainControls\Menu\Plank
 	 */
-	public function plank($content);
+	public function plank();
 
 }

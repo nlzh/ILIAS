@@ -58,9 +58,18 @@ function page_getSidebar($f) {
 
 	foreach(range(1,4) as $c){
 		$i = (string)$c;
+		$plank = $f->maincontrols()->menu()->plank()
+			->withTitle('a title - ' .$c);
+
+		$plank2 = $plank
+			->withElement($f->legacy('some element'))
+			->withElement($plank)
+			->withElement(
+				$plank->withElement($plank)
+			);
+
 		$planks = array(
-			$mf->plank($f->legacy("Plank a - $i")),
-			$mf->plank($f->legacy("Plank b - $i"))
+			$plank, $plank2
 		);
 		$slate =$mf->slate($planks);
 		$button = $f->button()->iconographic($icon->withAbbreviation($i), "Button $i", '#');
@@ -72,3 +81,5 @@ function page_getSidebar($f) {
 
 	return $sidebar;
 }
+
+
