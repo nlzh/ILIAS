@@ -1,8 +1,8 @@
 <?php
 
 function buildMetabar($f) {
-    include('src/UI/examples/MainControls/Prompts/NotificationCenter/nc_base.php');
-    include('src/UI/examples/MainControls/Prompts/AwarenessTool/awt_base.php');
+    include_once('src/UI/examples/MainControls/Prompts/NotificationCenter/nc_base.php');
+    include_once('src/UI/examples/MainControls/Prompts/AwarenessTool/awt_base.php');
 
 
     $awt = buildAwarenessTool($f);

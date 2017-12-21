@@ -51,7 +51,7 @@ class Renderer extends AbstractComponentRenderer {
             $tpl->parseCurrentBlock('item');
         }
 
-        $glyph = $f->glyph()->mail("#");
+        $glyph = $f->glyph()->notification("#");
         if($overall_novelty > 0 ) {
             $glyph = $glyph ->withCounter($f->counter()->novelty($overall_novelty));
         }
@@ -71,11 +71,11 @@ class Renderer extends AbstractComponentRenderer {
 
         $contents = $component->getContents();
 
-        $glyph = $f->glyph()->notification("#");
+        $glyph = $f->glyph()->user("#");
             //->withOnClick($popover->getShowSignal());
 
         if($counter = $component->getCounter()) {
-            $glyph = $glyph ->withCounter($f->counter()->novelty($counter));
+            $glyph = $glyph ->withCounter($f->counter()->status($counter));
         }
 
         $tpl->setVariable("GLYPH", $default_renderer->render($glyph));

@@ -1,7 +1,7 @@
 <?php
 
 function buildSidebar($f) {
-    include('src/UI/examples/MainControls/Menu/Plank/plank.php');
+    include_once('src/UI/examples/MainControls/Menu/Plank/plank.php');
     $mf = $f->maincontrols()->menu();
 
     //init sidebar

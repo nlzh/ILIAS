@@ -71,9 +71,6 @@ class Renderer extends AbstractComponentRenderer {
                     } else {
                         $('#{$id}').removeClass(class_engaged_slates);
                     }
-
-
-
                 });";
 
             return $registry;
@@ -115,28 +112,64 @@ class Renderer extends AbstractComponentRenderer {
 
         $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
-/*
+
+        $tpl = $this->setHeaderVars($tpl);
+        return $tpl->get();
+    }
+
+    protected function setHeaderVars($tpl) {
+
         global $DIC;
         $il_tpl = $DIC["tpl"];
+        // always load jQuery
+        include_once("./Services/jQuery/classes/class.iljQueryUtil.php");
+        \iljQueryUtil::initjQuery($il_tpl);
 
-        $tpl->setVariable('JS', $this->getInlineJS($il_tpl));
-        foreach ($this->getJSFiles($il_tpl) as $js_file) {
+        // always load ui framework
+        include_once("./Services/UICore/classes/class.ilUIFramework.php");
+        \ilUIFramework::init($il_tpl);
+
+        /*
+        var_dump($il_tpl->js_files);
+        var_dump($il_tpl->js_files_vp);
+        var_dump($il_tpl->js_files_batch);
+        */
+
+        $js_files = array();
+        foreach($il_tpl->js_files as $c=>$il_js_file) {
+            $js_files[] = $il_js_file;
+        }
+
+
+        $css_files = array();
+        foreach($il_tpl->css_files as $il_css_file) {
+            $css_files[] = $il_css_file['file'];
+        }
+        $css_files[] = \ilUtil::getStyleSheetLocation("filesystem", "delos.css");
+        $css_files[] = \ilUtil::getNewContentStyleSheetLocation();
+
+
+        $css_inline = $il_tpl->inline_css;
+
+
+        foreach ($js_files as $js_file) {
             $tpl->setCurrentBlock("js_file");
             $tpl->setVariable("JS_FILE", $js_file);
             $tpl->parseCurrentBlock();
-       }
+        }
 
-*/
-/*
-        $css_files = $il_tpl->css_files;
-        var_dump($css_files);
+        foreach ($css_files as $css_file) {
+            $tpl->setCurrentBlock("css_file");
+            $tpl->setVariable("CSS_FILE", $css_file);
+            $tpl->parseCurrentBlock();
+        }
 
-        $css_inline = $il_tpl->inline_css;
-        var_dump($css_inline);
-*/
+        $tpl->setVariable("CSS_INLINE", implode(PHP_EOL, $css_inline));
+        $tpl->setVariable("BASE", '../../../../../');
 
 
-        return $tpl->get();
+
+        return $tpl;
     }
 
 

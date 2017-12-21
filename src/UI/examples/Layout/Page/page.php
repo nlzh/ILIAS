@@ -1,8 +1,8 @@
 <?php
 
 function page() {
-    include('src/UI/examples/Layout/MetaBar/metabar.php');
-    include('src/UI/examples/Layout/SideBar/sidebar.php');
+    include_once('src/UI/examples/Layout/MetaBar/metabar.php');
+    include_once('src/UI/examples/Layout/SideBar/sidebar.php');
 
     global $DIC;
     $f = $DIC->ui()->factory();
