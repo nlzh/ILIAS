@@ -7,8 +7,6 @@ function ui() {
 if ($_GET['new_ui'] == '1') {
 
 chdir('../../../../../');
-//var_dump(getcwd());
-//die();
 
 require_once("Services/Init/classes/class.ilInitialisation.php");
 

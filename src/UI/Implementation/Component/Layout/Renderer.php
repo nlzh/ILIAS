@@ -112,34 +112,31 @@ class Renderer extends AbstractComponentRenderer {
 
         $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
-
+if ($_GET['new_ui'] == '1') {
         $tpl = $this->setHeaderVars($tpl);
+}
         return $tpl->get();
     }
+
 
     protected function setHeaderVars($tpl) {
 
         global $DIC;
         $il_tpl = $DIC["tpl"];
+
         // always load jQuery
         include_once("./Services/jQuery/classes/class.iljQueryUtil.php");
         \iljQueryUtil::initjQuery($il_tpl);
-
-        // always load ui framework
         include_once("./Services/UICore/classes/class.ilUIFramework.php");
         \ilUIFramework::init($il_tpl);
 
-        /*
-        var_dump($il_tpl->js_files);
-        var_dump($il_tpl->js_files_vp);
-        var_dump($il_tpl->js_files_batch);
-        */
+        $il_js_files = $il_tpl->js_files_batch;
+        asort($il_js_files);
 
         $js_files = array();
-        foreach($il_tpl->js_files as $c=>$il_js_file) {
+        foreach($il_js_files as $il_js_file=>$batch) {
             $js_files[] = $il_js_file;
         }
-
 
         $css_files = array();
         foreach($il_tpl->css_files as $il_css_file) {
@@ -148,27 +145,28 @@ class Renderer extends AbstractComponentRenderer {
         $css_files[] = \ilUtil::getStyleSheetLocation("filesystem", "delos.css");
         $css_files[] = \ilUtil::getNewContentStyleSheetLocation();
 
-
         $css_inline = $il_tpl->inline_css;
 
+        $olc = '';
+        foreach ($il_tpl->on_load_code as $key => $value) {
+            $olc .= implode(PHP_EOL, $value);
+         }
 
+         //fill
         foreach ($js_files as $js_file) {
             $tpl->setCurrentBlock("js_file");
             $tpl->setVariable("JS_FILE", $js_file);
             $tpl->parseCurrentBlock();
         }
-
         foreach ($css_files as $css_file) {
             $tpl->setCurrentBlock("css_file");
             $tpl->setVariable("CSS_FILE", $css_file);
             $tpl->parseCurrentBlock();
         }
-
         $tpl->setVariable("CSS_INLINE", implode(PHP_EOL, $css_inline));
+        $tpl->setVariable("OLCODE", $olc);
+
         $tpl->setVariable("BASE", '../../../../../');
-
-
-
         return $tpl;
     }
 
