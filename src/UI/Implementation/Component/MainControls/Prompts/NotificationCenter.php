@@ -5,52 +5,33 @@ namespace ILIAS\UI\Implementation\Component\MainControls\Prompts;
 
 use ILIAS\UI\Component as C;
 use ILIAS\UI\Implementation\Component\ComponentHelper;
-use ILIAS\UI\Implementation\Component\SignalGeneratorInterface;
-use ILIAS\UI\Implementation\Component\JavaScriptBindable;
 
+/**
+ * Notification Center
+ */
 class NotificationCenter implements C\MainControls\Prompts\NotificationCenter {
 	use ComponentHelper;
-	use JavaScriptBindable;
-
-	protected $items;
-
-	public function __construct(
-		SignalGeneratorInterface $signal_generator) {
-	}
-
-
-
-	public function getEntries(){
-		return $this->entries;
-	}
-
-
-	public function withEntry($glyph, $label) {
-		$clone = clone $this;
-		$clone->entries[] = array($glyph, $label);
-		return $clone;
-	}
-
 
 	/**
-	 * Set the signals for this component
+	 * @var array<ILIAS\UI\Component\Glyph\Glyph, string>
 	 */
-	protected function initSignals() {
-//		$this->toggle_signal = $this->signal_generator->create();
+	protected $entries;
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getEntries(){
+		return $this->entries;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function withResetSignals() {
+	public function withEntry(\ILIAS\UI\Component\Glyph\Glyph $glyph, $label) {
+		$this->checkStringArg('label', $label);
 		$clone = clone $this;
-		$clone->initSignals();
+		$clone->entries[] = array($glyph, $label);
 		return $clone;
 	}
-
-	public function getSomeSignal() {
-		//return $this->toggle_signal;
-	}
-
 
 }

@@ -39,9 +39,6 @@ class Renderer extends AbstractComponentRenderer {
         $id = $this->bindJavaScript($component);
         $tpl->setVariable('ID', $id);
 
-        //$button = $component->getButton();
-        //$tpl->setVariable("BUTTON", $default_renderer->render($button));
-
         foreach ($component->getPlanks() as $plank) {
             $tpl->setCurrentBlock("plank_item");
             $tpl->setVariable("PLANK", $default_renderer->render($plank));
@@ -57,18 +54,13 @@ class Renderer extends AbstractComponentRenderer {
         $f = $this->getUIFactory();
 
         $component = $component->withResetSignals();
-        $show = $component->getShowSignal();
-        $hide = $component->getCloseSignal();
-        $expander = $f->glyph()->expand('')->withOnClick($show);
-        $collapser = $f->glyph()->collapse('')->withOnClick($hide);
+        $toggle = $component->getToggleSignal();
+        $expander = $f->glyph()->expand('')->withOnClick($toggle);
+        $collapser = $f->glyph()->collapse('')->withOnClick($toggle);
 
-         $component = $component->withOnLoadCode(function($id) use ($show, $hide) {
-            return
-                "$(document).on('{$show}', function() { il.UI.maincontrols.menu.plank.show('{$id}'); return false; });".
-                "$(document).on('{$hide}', function() { il.UI.maincontrols.menu.plank.hide('{$id}'); return false; });"
-                ;
+         $component = $component->withOnLoadCode(function($id) use ($toggle) {
+            return "$(document).on('{$toggle}', function() { il.UI.maincontrols.menu.plank.toggle('{$id}'); return false; });";
         });
-
 
         $tpl->setVariable("EXPANDER", $default_renderer->render($expander));
         $tpl->setVariable("COLLAPSER", $default_renderer->render($collapser));

@@ -2,17 +2,21 @@
 /* Copyright (c) 2017 Nils Haagen <nils.haagen@concepts-and-training.de> Extended GPL, see docs/LICENSE */
 
 namespace ILIAS\UI\Component\MainControls\Prompts;
-use ILIAS\UI\Component\JavaScriptBindable;
 
 /**
  * This describes the NotificationCenter
  */
-interface NotificationCenter extends \ILIAS\UI\Component\Component, JavaScriptBindable {
+interface NotificationCenter extends \ILIAS\UI\Component\Component{
 
 	/**
-	 *
-	 *
-	 * @return
+	 * @return array<ILIAS\UI\Component\Glyph\Glyph, string>
 	 */
+	public function getEntries();
 
+	/**
+	 * @param \ILIAS\UI\Component\Glyph\Glyph 	$glyph
+	 * @param string 	$label
+	 * @return NotificationCenter
+	 */
+	public function withEntry(\ILIAS\UI\Component\Glyph\Glyph $glyph, $label);
 }

@@ -23,20 +23,14 @@ class Factory implements Prompts\Factory {
 	 * @inheritdoc
 	 */
 	public function notificationcenter(){
-		return new NotificationCenter($this->signal_generator);
+		return new NotificationCenter();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function awarenesstool(){
-		return new AwarenessTool($this->signal_generator);
-	}
-	/**
-	 * @inheritdoc
-	 */
-	public function glyphentry($glyph, $label){
-		return new GlyphEntry($glyph, $label, $this->signal_generator);
+		return new AwarenessTool();
 	}
 
 }

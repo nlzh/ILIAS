@@ -693,7 +693,10 @@ interface Factory {
 	/**
 	 * ---
 	 * description:
-	 *   purpose: Layout elements
+	 *   purpose: >
+	 *       Layout components are page-elements used for the basic construction of
+	 *       the user interface. In ultimo, also the page itself is included here.
+	 *       Layout components define a place (or slot) for other components.
 	 * ---
 	 *
 	 * @return \ILIAS\UI\Component\Layout\Factory
@@ -703,7 +706,22 @@ interface Factory {
 	/**
 	 * ---
 	 * description:
-	 *   purpose: main controls
+	 *   purpose: >
+	 *       MainControls are components that are "always there", depending only
+	 *       on overall configuration or roles of the user, not depending on
+	 *       context.
+	 *       MainControls provide global navigation and information.
+	 *
+	 *   rivals:
+	 *     1: >
+	 *        ViewControls are used to change the visualisation of, or rather within,
+	 *        components.
+	 *
+	 * rules:
+	 *   usage:
+	 *     1: MainControls MUST NOT change persistent data in any way.
+	 *   accessibility:
+	 *     1:
 	 * ---
 	 *
 	 * @return \ILIAS\UI\Component\MainControls\Factory

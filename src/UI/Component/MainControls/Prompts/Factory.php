@@ -9,8 +9,8 @@ interface Factory {
 	 * ---
      * description:
      *   purpose: >
-     *     The Notification Center concentrates the visualization of any
-     *     event-notification into one expandable glyph.
+     *     The Notification Center concentrates the visualization of system notifications
+     *     into one expandable glyph.
      *     This unification removes the multitude of dedicated notification-icons
      *     in favor of visual cleanliness as well as providing a designated
      *     location for further extensions.
@@ -48,10 +48,32 @@ interface Factory {
 
      /**
       * ---
-      * description:
-      *   purpose: >
-      *
-      * ----
+     * description:
+     *   purpose: >
+     *     The Awareness Tool brings system-events to the user's attention.
+     *     It opens a popover when clicked, giving further information for the
+     *     notification(s).
+     *     The contained components of the pop-over are hardly limited - they
+     *     may list notifications as well as giving navigational options
+     *     or direct functionality like e.g. answering a chat-request.
+     *
+     *   composition: >
+     *      The Notification Center is visualized as a glyph with a novelty counter.
+     *
+     *   effect: >
+     *      When the glyph is clicked, a popover expands and gives access to
+     *      the notifying service(s).
+     *
+     *   rivals:
+     *     Notification Center: >
+     *        The Notification Center is for permament notes, such as mails in
+     *        the inbox. Also, the contents are limited to more counter-glyphs
+     *        which will change the context when operated.
+     *
+     * rules:
+     *   usage:
+     *     1: There MUST be but one awareness-tool on the page.
+     *---
       *
       * @return  \ILIAS\UI\Component\MainControls\Prompts\AwarenessTool
       */

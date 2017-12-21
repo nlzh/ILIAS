@@ -8,6 +8,9 @@ use ILIAS\UI\Implementation\Component\ComponentHelper;
 use ILIAS\UI\Implementation\Component\SignalGeneratorInterface;
 use ILIAS\UI\Implementation\Component\JavaScriptBindable;
 
+/**
+ * Slate
+ */
 class Slate implements C\MainControls\Menu\Slate {
 	use ComponentHelper;
 	use JavaScriptBindable;
@@ -27,6 +30,7 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	protected $toggle_signal;
 
+
 	public function __construct(
 		array $planks,
 		SignalGeneratorInterface $signal_generator) {
@@ -37,6 +41,9 @@ class Slate implements C\MainControls\Menu\Slate {
 		$this->initSignals();
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getPlanks() {
 		return $this->planks;
 	}
@@ -46,7 +53,6 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	protected function initSignals() {
 		$this->toggle_signal = $this->signal_generator->create();
-		//$this->button = $this->button->withOnClick($this->toggle_signal);
 	}
 
 	/**
@@ -58,9 +64,11 @@ class Slate implements C\MainControls\Menu\Slate {
 		return $clone;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getToggleSignal() {
 		return $this->toggle_signal;
 	}
-
 
 }
