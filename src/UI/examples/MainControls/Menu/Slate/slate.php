@@ -1,6 +1,9 @@
 <?php
 
-function buildSlate($f) {
+function slate() {
+	global $DIC;
+	$f = $DIC->ui()->factory();
+	$renderer = $DIC->ui()->renderer();
 
 	$planks = array(
 		$f->maincontrols()->menu()->plank()
@@ -17,16 +20,8 @@ function buildSlate($f) {
 			)
 	);
 
-	return $f->maincontrols()->menu()->slate($planks);
-}
+	$slate = $f->maincontrols()->menu()->slate($planks);
 
-function slate() {
-	//Init Factory and Renderer
-	global $DIC;
-	$f = $DIC->ui()->factory();
-	$renderer = $DIC->ui()->renderer();
-
-	$slate = buildSlate($f);
 
 	$icon = $f->icon()->standard('someExample', 'Example');
 	$icon = $icon->withAbbreviation('I')->withSize('medium');

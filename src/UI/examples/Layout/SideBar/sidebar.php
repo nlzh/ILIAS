@@ -1,29 +1,44 @@
 <?php
 
+function buildSidebar($f) {
+    include('src/UI/examples/MainControls/Menu/Plank/plank.php');
+    $mf = $f->maincontrols()->menu();
+
+    //init sidebar
+    $sidebar = $f->layout()->sidebar();
+
+    foreach(range(1,4) as $c){
+        //build planks and slate
+        $i = (string)$c;
+        $planks = array(
+            buildSubPlanks($f)->withTitle("Plank $i - 1"),
+            buildSimplePlank($f)->withTitle("Plank $i - 2"),
+            buildSubPlanks($f)->withTitle("Plank $i - 3"),
+        );
+        $slate =$mf->slate($planks);
+
+        //triggerer
+        $icon = $f->icon()->standard('sidebar_trigger', '')->withSize('medium');
+        $button = $f->button()->iconographic($icon->withAbbreviation($i), "Button $i", '#');
+
+        //add to bar
+        $sidebar = $sidebar->withEntry($button, $slate);
+    }
+
+    return $sidebar;
+}
+
+
 function sidebar() {
-	global $DIC;
-	$f = $DIC->ui()->factory();
-	$mf = $f->maincontrols()->menu();
-	$renderer = $DIC->ui()->renderer();
+    global $DIC;
+    $f = $DIC->ui()->factory();
+    $renderer = $DIC->ui()->renderer();
 
-	$icon = $f->icon()->standard('sidebar_trigger', 'Example')
-		->withSize('medium');
+    $sidebar = buildSidebar($f);
 
-	$sidebar = $f->layout()->sidebar();
+    $icon = $f->icon()->standard('sidebar_trigger', '')->withSize('medium')->withAbbreviation('E');
+    $extra_button = $f->button()->iconographic($icon,'Extra', '#');
+    $sidebar = $sidebar->withEntry($extra_button);
 
-	foreach(range(1,4) as $c){
-		$i = (string)$c;
-		$planks = array(
-			$mf->plank($f->legacy("Plank 1 - $i")),
-			$mf->plank($f->legacy("Plank 2 - $i"))
-		);
-		$slate =$mf->slate($planks);
-		$button = $f->button()->iconographic($icon->withAbbreviation($i), "Button $i", '#');
-		$sidebar = $sidebar->withEntry($button, $slate);
-	}
-
-	$extra_button = $f->button()->iconographic($icon->withAbbreviation('E'), 'Extra', '#');
-	$sidebar = $sidebar->withEntry($extra_button);
-
-	return $renderer->render($sidebar);
+    return $renderer->render($sidebar);
 }
