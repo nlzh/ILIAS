@@ -9,9 +9,9 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		var toggle = function(id) {
 			var p = $('#' + id + ' >.plank-header');
 			if(p.hasClass('expanded')) {
-				p.switchClass('expanded', 'collapsed', 200);
+				p.switchClass('expanded', 'collapsed', 0);
 			} else {
-				p.switchClass('collapsed', 'expanded', 200);
+				p.switchClass('collapsed', 'expanded', 0);
 			}
 		};
 

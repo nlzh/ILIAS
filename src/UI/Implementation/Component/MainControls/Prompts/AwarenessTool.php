@@ -13,32 +13,28 @@ class AwarenessTool implements C\MainControls\Prompts\AwarenessTool {
 	use ComponentHelper;
 
 	/**
-	 * @var ILIAS\UI\Component\Popover[]
+	 * @var ILIAS\UI\Component[]
 	 */
-	private $popover;
+	private $contents = array();
 	/**
 	 * @var int
 	 */
 	private $count;
 
 
-	public function __construct(\ILIAS\UI\Component\Popover\Standard $popover) {
-		$this->popover = $popover->withVerticalPosition();
+	/**
+	 * @inheritdoc
+	 */
+	public function getContents() {
+		return $this->contents;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function getPopover() {
-		return $this->popover;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function withPopover(\ILIAS\UI\Component\Popover\Standard $popover) {
+	public function withContents($contents) {
 		$clone = clone $this;
-		$clone->popover = $popover->withVerticalPosition();
+		$clone->contents = $contents;
 		return $clone;
 	}
 

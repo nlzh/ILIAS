@@ -9,15 +9,15 @@ namespace ILIAS\UI\Component\MainControls\Prompts;
 interface AwarenessTool extends \ILIAS\UI\Component\Component {
 
 	/**
-	 * @return \ILIAS\UI\Component\Popover\Standard
+	 * @return \ILIAS\UI\Component[]
 	 */
-	public function getPopover();
+	public function getContents();
 
 	/**
-	 * @param \ILIAS\UI\Component\Popover\Standard 	$popover
+	 * @param \ILIAS\UI\Component[]
 	 * @return AwarenessTool
 	 */
-	public function withPopover(\ILIAS\UI\Component\Popover\Standard $popover);
+	public function withContents($contents);
 
 	/**
 	 * @return int

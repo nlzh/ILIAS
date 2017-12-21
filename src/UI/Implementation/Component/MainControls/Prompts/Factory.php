@@ -29,8 +29,8 @@ class Factory implements Prompts\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function awarenesstool(\ILIAS\UI\Component\Popover\Standard $popover){
-		return new AwarenessTool($popover);
+	public function awarenesstool(){
+		return new AwarenessTool();
 	}
 
 }

@@ -36,10 +36,18 @@ function page_getMetabar($f) {
             , 'entry2'
         );
 
-    $content = $f->legacy('AwarenessTool-<br><br>virtually anything');
-    $popover = $f->popover()->standard($content);
-    $awt = $f->maincontrols()->prompts()->awarenesstool($popover)
-    	->withCounter(3);
+    $contents = array(
+    	$f->legacy('AwarenessTool'),
+    	$f->divider()->horizontal(),
+    	$f->legacy('something that wants your attention'),
+    	$f->legacy('something else that wants your attention')
+    );
+
+    $awt = $f->maincontrols()->prompts()->awarenesstool()
+    	->withCounter(2)
+    	->withContents($contents)
+    	;
+
 	//$logout = $f->icon()->standard('','')->withAbbreviation('O');
 
 	$metabar = $f->layout()->metabar()
