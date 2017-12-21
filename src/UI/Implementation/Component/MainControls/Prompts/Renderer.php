@@ -61,8 +61,6 @@ class Renderer extends AbstractComponentRenderer {
 
         $tpl->setVariable("GLYPH", $default_renderer->render($glyph));
 
-        //$id = $this->bindJavaScript($component);
-        //$tpl->setVariable("ID", $id);
         return $tpl->get();
     }
 
@@ -71,13 +69,13 @@ class Renderer extends AbstractComponentRenderer {
         $f = $this->getUIFactory();
         $tpl = $this->getTemplate("Prompts/tpl.awarenesstool.html", true, true);
 
-        $content = $f->legacy('AwarenessTool-<br><br>x2<br>x2<br>x2<br>');
-        $popover = $f->popover()->standard($content)
-            ->withVerticalPosition();
+        $popover = $component->getPopover();
 
         $glyph = $f->glyph()->notification("#")
-            ->withCounter($f->counter()->novelty(1))
             ->withOnClick($popover->getShowSignal());
+        if($counter = $component->getCounter()) {
+            $glyph = $glyph ->withCounter($f->counter()->novelty($counter));
+        }
 
         $tpl->setVariable("GLYPH", $default_renderer->render([$glyph, $popover]));
         return $tpl->get();

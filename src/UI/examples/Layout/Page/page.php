@@ -36,14 +36,18 @@ function page_getMetabar($f) {
             , 'entry2'
         );
 
-    $awt = $f->maincontrols()->prompts()->awarenesstool();
-	$logout = $f->icon()->standard('','')->withAbbreviation('O');
+    $content = $f->legacy('AwarenessTool-<br><br>virtually anything');
+    $popover = $f->popover()->standard($content);
+    $awt = $f->maincontrols()->prompts()->awarenesstool($popover)
+    	->withCounter(3);
+	//$logout = $f->icon()->standard('','')->withAbbreviation('O');
 
 	$metabar = $f->layout()->metabar()
 		->withLogo($logo)
 		->withElement($nc)
 		->withElement($awt)
-		->withElement($logout);
+		//->withElement($logout)
+		;
 
 	return $metabar;
 }
