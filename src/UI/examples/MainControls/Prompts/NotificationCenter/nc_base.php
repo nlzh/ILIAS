@@ -1,10 +1,6 @@
 <?php
 
-function nc_base() {
-
-	global $DIC;
-	$f = $DIC->ui()->factory();
-	$renderer = $DIC->ui()->renderer();
+function buildNotificationCenter($f) {
 
 	$nc = $f->maincontrols()->prompts()->notificationcenter()
 		->withEntry(
@@ -25,5 +21,13 @@ function nc_base() {
 			, 'entry3'
 		);
 
-	return $renderer->render($nc);
+	return $nc;
+}
+
+function nc_base() {
+    global $DIC;
+    $f = $DIC->ui()->factory();
+    $renderer = $DIC->ui()->renderer();
+    $nc = buildNotificationCenter($f);
+    return $renderer->render($nc);
 }
