@@ -55,8 +55,8 @@ class Renderer extends AbstractComponentRenderer {
 
         $component = $component->withResetSignals();
         $toggle = $component->getToggleSignal();
-        $expander = $f->glyph()->expand('')->withOnClick($toggle);
-        $collapser = $f->glyph()->collapse('')->withOnClick($toggle);
+        $expander = $f->glyph()->expand()->withOnClick($toggle);
+        $collapser = $f->glyph()->collapse()->withOnClick($toggle);
 
          $component = $component->withOnLoadCode(function($id) use ($toggle) {
             return "$(document).on('{$toggle}', function() { il.UI.maincontrols.menu.plank.toggle('{$id}'); return false; });";
