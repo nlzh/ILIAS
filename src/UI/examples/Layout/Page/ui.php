@@ -22,6 +22,7 @@ $renderer = $DIC->ui()->renderer();
 $content = $f->legacy("some content<br>some content<br>some content<br>x.");
 
 $page = $f->layout()->page($content)
+
 	->withMetabar(buildMetabar($f))
 	->withSidebar(buildSidebar($f))
 ;

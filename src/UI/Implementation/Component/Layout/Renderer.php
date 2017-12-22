@@ -124,6 +124,8 @@ if ($_GET['new_ui'] == '1') {
         global $DIC;
         $il_tpl = $DIC["tpl"];
 
+        $base_url = '../../../../../';
+
         // always load jQuery
         include_once("./Services/jQuery/classes/class.iljQueryUtil.php");
         \iljQueryUtil::initjQuery($il_tpl);
@@ -148,9 +150,11 @@ if ($_GET['new_ui'] == '1') {
         $css_inline = $il_tpl->inline_css;
 
         $olc = '';
-        foreach ($il_tpl->on_load_code as $key => $value) {
-            $olc .= implode(PHP_EOL, $value);
-         }
+        if($il_tpl->on_load_code) {
+            foreach ($il_tpl->on_load_code as $key => $value) {
+                $olc .= implode(PHP_EOL, $value);
+             }
+        }
 
          //fill
         foreach ($js_files as $js_file) {
@@ -166,7 +170,7 @@ if ($_GET['new_ui'] == '1') {
         $tpl->setVariable("CSS_INLINE", implode(PHP_EOL, $css_inline));
         $tpl->setVariable("OLCODE", $olc);
 
-        $tpl->setVariable("BASE", '../../../../../');
+        $tpl->setVariable("BASE", $base_url);
         return $tpl;
     }
 
