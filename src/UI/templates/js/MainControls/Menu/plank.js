@@ -7,14 +7,17 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 	menu.plank = (function($) {
 
 		var toggle = function(id) {
-			var p = $('#' + id + ' >.plank-header');
-			if(p.hasClass('expanded')) {
-				p.switchClass('expanded', 'collapsed', 0);
+			var plank = $('#' + id + ' >.plank-header');
+			console.log(plank);
+			window.top.aaa  = plank;
+			if(plank.hasClass('expanded')) {
+				plank.removeClass('expanded');
+				plank.addClass('collapsed');
 			} else {
-				p.switchClass('collapsed', 'expanded', 0);
+				plank.removeClass('collapsed');
+				plank.addClass('expanded');
 			}
 		};
-
 
 		return {
 			toggle: toggle
