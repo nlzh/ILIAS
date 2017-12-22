@@ -113,6 +113,7 @@ class Renderer extends AbstractComponentRenderer {
 
         $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
+//2do: this is for demo purposes only!
 if ($_GET['new_ui'] == '1') {
         $tpl = $this->setHeaderVars($tpl);
 }
