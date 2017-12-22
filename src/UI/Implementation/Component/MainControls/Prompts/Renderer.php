@@ -44,10 +44,9 @@ class Renderer extends AbstractComponentRenderer {
                 }
             }
 
-            $shy = $f->button()->shy($label, $glyph->getAction());
+            $glyph_renderer = $default_renderer->withAdditionalContext($component);
             $tpl->setCurrentBlock('item');
-            $tpl->setVariable('GLYPH', $default_renderer->render($glyph));
-            $tpl->setVariable('LABEL', $default_renderer->render($shy));
+            $tpl->setVariable('GLYPH', $glyph_renderer->render($glyph));
             $tpl->parseCurrentBlock('item');
         }
 

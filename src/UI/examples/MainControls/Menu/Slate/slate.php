@@ -25,6 +25,8 @@ function slate() {
 
 	$icon = $f->icon()->standard('someExample', 'Example');
 	$icon = $icon->withAbbreviation('I')->withSize('medium');
+	$icon = $f->glyph()->user();
+
 	$button = $f->button()->iconographic($icon, 'trigger slate', '#')
 		->withOnClick($slate->getToggleSignal());
 

@@ -25,6 +25,10 @@ function buildSidebar($f) {
         $sidebar = $sidebar->withEntry($button, $slate);
     }
 
+    $glyph = $f->glyph()->user();
+    $extra_button = $f->button()->iconographic($glyph,'Extra', '#');
+    $sidebar = $sidebar->withEntry($extra_button);
+
     return $sidebar;
 }
 
@@ -35,10 +39,6 @@ function sidebar() {
     $renderer = $DIC->ui()->renderer();
 
     $sidebar = buildSidebar($f);
-
-    $icon = $f->icon()->standard('sidebar_trigger', '')->withSize('medium')->withAbbreviation('E');
-    $extra_button = $f->button()->iconographic($icon,'Extra', '#');
-    $sidebar = $sidebar->withEntry($extra_button);
 
     return $renderer->render($sidebar);
 }

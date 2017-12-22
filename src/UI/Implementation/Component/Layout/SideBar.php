@@ -16,7 +16,7 @@ class SideBar implements C\Layout\SideBar {
 	use JavaScriptBindable;
 
 	/**
-	 * @var ILIAS\UI\Component\Button\Iconographic[]
+	 * @var array<Button\Iconographic | Glyph\Glyph>
 	 */
 	private $buttons;
 
@@ -43,7 +43,7 @@ class SideBar implements C\Layout\SideBar {
 	/**
 	 * @inheritdoc
 	 */
-	public function withEntry(C\Button\Iconographic $button, C\MainControls\Menu\Slate $slate=null) {
+	public function withEntry($button, C\MainControls\Menu\Slate $slate=null) {
 		$clone = clone $this;
 		if($slate) {
 			$clone->slates[] = $slate;

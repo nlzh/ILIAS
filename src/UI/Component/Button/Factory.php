@@ -239,7 +239,7 @@ interface Factory {
 	 *       1: >
 	 *           111
 	 * ---
-	 * @param	\ILIAS\UI\Component\Icon		$icon
+	 * @param	\ILIAS\UI\Component\Icon | \ILIAS\UI\Component\Glyph\Glyph		$icon
 	 * @param	string		$label
 	 * @param	string		$action
 	 * @return  \ILIAS\UI\Component\Button\Iconograhic

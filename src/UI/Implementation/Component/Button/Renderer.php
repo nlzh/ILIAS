@@ -190,7 +190,8 @@ class Renderer extends AbstractComponentRenderer {
 
 
 	protected function additionalRenderIconographic(Component\Button\Button $component, RendererInterface $default_renderer, $tpl) {
-		$tpl->setVariable("ICON", $default_renderer->render($component->getIcon()));
+		$renderer = $default_renderer->withAdditionalContext($component);
+		$tpl->setVariable("ICON", $renderer->render($component->getIcon()));
 		$label = $component->getLabel();
 		if ($label !== null) {
 			$tpl->setVariable("LABEL", $label);

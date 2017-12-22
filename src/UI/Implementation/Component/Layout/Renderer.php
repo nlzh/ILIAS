@@ -33,6 +33,7 @@ class Renderer extends AbstractComponentRenderer {
 
         foreach ($component->getButtons() as $button) {
             $button = $button->appendOnClick($entry_signal);
+            //->appendTriggeredSignal($entry_signal, 'click');
             $tpl->setCurrentBlock("trigger_item");
             $tpl->setVariable("BUTTON", $default_renderer->render($button));
             $tpl->parseCurrentBlock();
