@@ -1,7 +1,7 @@
 @trigger-height: 80px;
 @trigger-width: 80px;
 @sidebar-height: 600px;
-@slate-width: 200px;
+@slate-width: 400px;
 @bg-sidebar: #4a4a4a;
 @bg-sidebar-engaged: #fff;
 @test: #fff;
@@ -47,10 +47,11 @@
 		position: relative; 
 		width: @trigger-width;
 		float: left;
-		.btn-default {
+		.btn-iconographic {
 			background: @bg-sidebar;
 			border: 0;
 			border-bottom: 1px solid #fff;
+			color: @bg-sidebar-engaged;
 			font-size: 70%;
 			height: @trigger-height;
 			padding: 10px 0;
@@ -59,6 +60,9 @@
 				background-color: @bg-sidebar-engaged;
 				color: @bg-sidebar;
 			}
+			&:focus {
+				outline: none;
+			}
 		}
 
 /* 
@@ -66,48 +70,48 @@
 * add an additional class for each item in sidebar e.g btn-default.navigation
 */
 
-		.btn-default:nth-child(1),
-		.btn-default.engaged:nth-child(1) {
+		.btn-iconographic:nth-child(1),
+		.btn-iconographic.engaged:nth-child(1) {
 			.inner-top-shadow;	
 		}
 
-		.btn-default:nth-child(1) .icon {
+		.btn-iconographic:nth-child(1) .icon {
 			background-image: url('images/icon-sb-cockpit.svg');
 		}
 
-		.btn-default:nth-child(2) .icon {
+		.btn-iconographic:nth-child(2) .icon {
 			background-image: url('images/icon-sb-navigation.svg');
 		}
 
-		.btn-default:nth-child(3) .icon {
+		.btn-iconographic:nth-child(3) .icon {
 			background-image: url('images/icon-sb-search.svg');
 		}
 
-		.btn-default:nth-child(4) .icon {
+		.btn-iconographic:nth-child(4) .icon {
 			background-image: url('images/icon-sb-help.svg');
 		}
 
-		.btn-default:nth-child(5) .icon {
+		.btn-iconographic:nth-child(5) .icon {
 			background-image: url('images/icon-sb-more.svg');
 		}
 
-		.btn-default.engaged:nth-child(1) .icon {
+		.btn-iconographic.engaged:nth-child(1) .icon {
 			background-image: url('images/icon-sb-cockpit-engaged.svg');	
 		}
 
-		.btn-default.engaged:nth-child(2) .icon {
+		.btn-iconographic.engaged:nth-child(2) .icon {
 			background-image: url('images/icon-sb-navigation-engaged.svg');
 		}
 
-		.btn-default.engaged:nth-child(3) .icon {
+		.btn-iconographic.engaged:nth-child(3) .icon {
 			background-image: url('images/icon-sb-search-engaged.svg');
 		}
 
-		.btn-default.engaged:nth-child(4) .icon {
+		.btn-iconographic.engaged:nth-child(4) .icon {
 			background-image: url('images/icon-sb-help-engaged.svg');
 		}
 
-		.btn-default.engaged:nth-child(5) .icon {
+		.btn-iconographic.engaged:nth-child(5) .icon {
 			background-image: url('images/icon-sb-more-engaged.svg');
 		}
 
