@@ -5,5 +5,7 @@ function base() {
 	$renderer = $DIC->ui()->renderer();
 
 	$button = $f->button()->iconographic();
+
+
 	return $renderer->render($button);
 }

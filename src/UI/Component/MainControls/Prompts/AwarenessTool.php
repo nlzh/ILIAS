@@ -8,4 +8,25 @@ namespace ILIAS\UI\Component\MainControls\Prompts;
  */
 interface AwarenessTool extends \ILIAS\UI\Component\Component {
 
+	/**
+	 * @return \ILIAS\UI\Component[]
+	 */
+	public function getContents();
+
+	/**
+	 * @param \ILIAS\UI\Component[]
+	 * @return AwarenessTool
+	 */
+	public function withContents($contents);
+
+	/**
+	 * @return int
+	 */
+	public function getCounter();
+
+	/**
+	 * @param int 	$count
+	 * @return AwarenessTool
+	 */
+	public function withCounter($count);
 }

@@ -40,10 +40,10 @@ interface Factory {
      *   usage:
      *     1: There MUST be but one notification center on the page.
      *
-	 * ----
-	 *
-	 * @return  \ILIAS\UI\Component\MainControls\Prompts\NotificationCenter
-	 */
+	* ----
+	*
+	* @return  \ILIAS\UI\Component\MainControls\Prompts\NotificationCenter
+	*/
 	public function notificationcenter();
 
      /**
@@ -74,9 +74,9 @@ interface Factory {
      *   usage:
      *     1: There MUST be but one awareness-tool on the page.
      *---
-      *
-      * @return  \ILIAS\UI\Component\MainControls\Prompts\AwarenessTool
-      */
+     *
+     * @return  \ILIAS\UI\Component\MainControls\Prompts\AwarenessTool
+     */
      public function awarenesstool();
 
 

@@ -264,6 +264,21 @@ class ilObjSearchSettingsGUI extends ilObjectGUI
 		$cb->setChecked($settings->getHideAdvancedSearch());
 		$this->form->addItem($cb);
 		
+
+		
+		$direct = new ilRadioOption($this->lng->txt('search_direct'),ilSearchSettings::LIKE_SEARCH,$this->lng->txt('search_like_info'));
+		$type->addOption($direct);
+		
+		if($ilDB->supportsFulltext())
+		{
+			$index = new ilRadioOption($this->lng->txt('search_index'),ilSearchSettings::INDEX_SEARCH,$this->lng->txt('search_full_info'));
+			$type->addOption($index);
+		}
+		
+		$lucene = new ilRadioOption($this->lng->txt('search_lucene'),ilSearchSettings::LUCENE_SEARCH,$this->lng->txt('java_server_info'));
+		$type->addOption($lucene);
+
+		
 		// number of auto complete entries
 		$options = array(
 			5 => 5,
@@ -278,19 +293,6 @@ class ilObjSearchSettingsGUI extends ilObjectGUI
 			: 10;
 		$si->setValue($val);
 		$this->form->addItem($si);
-
-		
-		$direct = new ilRadioOption($this->lng->txt('search_direct'),ilSearchSettings::LIKE_SEARCH,$this->lng->txt('search_like_info'));
-		$type->addOption($direct);
-		
-		if($ilDB->supportsFulltext())
-		{
-			$index = new ilRadioOption($this->lng->txt('search_index'),ilSearchSettings::INDEX_SEARCH,$this->lng->txt('search_full_info'));
-			$type->addOption($index);
-		}
-		
-		$lucene = new ilRadioOption($this->lng->txt('search_lucene'),ilSearchSettings::LUCENE_SEARCH,$this->lng->txt('java_server_info'));
-		$type->addOption($lucene);
 
 		$inactive_user = new ilCheckboxInputGUI($this->lng->txt('search_show_inactive_user'), 'inactive_user');
 		$inactive_user->setInfo($this->lng->txt('search_show_inactive_user_info'));

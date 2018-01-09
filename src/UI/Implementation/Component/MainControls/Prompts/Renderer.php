@@ -44,14 +44,13 @@ class Renderer extends AbstractComponentRenderer {
                 }
             }
 
-            $shy = $f->button()->shy($label, $glyph->getAction());
+            $glyph_renderer = $default_renderer->withAdditionalContext($component);
             $tpl->setCurrentBlock('item');
-            $tpl->setVariable('GLYPH', $default_renderer->render($glyph));
-            $tpl->setVariable('LABEL', $default_renderer->render($shy));
+            $tpl->setVariable('GLYPH', $glyph_renderer->render($glyph));
             $tpl->parseCurrentBlock('item');
         }
 
-        $glyph = $f->glyph()->mail("#");
+        $glyph = $f->glyph()->notification("#");
         if($overall_novelty > 0 ) {
             $glyph = $glyph ->withCounter($f->counter()->novelty($overall_novelty));
         }
@@ -61,8 +60,6 @@ class Renderer extends AbstractComponentRenderer {
 
         $tpl->setVariable("GLYPH", $default_renderer->render($glyph));
 
-        //$id = $this->bindJavaScript($component);
-        //$tpl->setVariable("ID", $id);
         return $tpl->get();
     }
 
@@ -71,15 +68,17 @@ class Renderer extends AbstractComponentRenderer {
         $f = $this->getUIFactory();
         $tpl = $this->getTemplate("Prompts/tpl.awarenesstool.html", true, true);
 
-        $content = $f->legacy('AwarenessTool-<br><br>x2<br>x2<br>x2<br>');
-        $popover = $f->popover()->standard($content)
-            ->withVerticalPosition();
+        $contents = $component->getContents();
 
-        $glyph = $f->glyph()->notification("#")
-            ->withCounter($f->counter()->novelty(1))
-            ->withOnClick($popover->getShowSignal());
+        $glyph = $f->glyph()->user("#");
+            //->withOnClick($popover->getShowSignal());
 
-        $tpl->setVariable("GLYPH", $default_renderer->render([$glyph, $popover]));
+        if($counter = $component->getCounter()) {
+            $glyph = $glyph ->withCounter($f->counter()->status($counter));
+        }
+
+        $tpl->setVariable("GLYPH", $default_renderer->render($glyph));
+        $tpl->setVariable("CONTENTS", $default_renderer->render($contents));
         return $tpl->get();
     }
 

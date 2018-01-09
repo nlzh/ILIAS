@@ -12,4 +12,47 @@ use ILIAS\UI\Implementation\Component\ComponentHelper;
 class AwarenessTool implements C\MainControls\Prompts\AwarenessTool {
 	use ComponentHelper;
 
+	/**
+	 * @var ILIAS\UI\Component[]
+	 */
+	private $contents = array();
+	/**
+	 * @var int
+	 */
+	private $count;
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getContents() {
+		return $this->contents;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withContents($contents) {
+		$clone = clone $this;
+		$clone->contents = $contents;
+		return $clone;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getCounter() {
+		return $this->count;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withCounter($count) {
+		$clone = clone $this;
+		$clone->count = $count;
+		return $clone;
+	}
+
+
 }

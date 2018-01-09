@@ -1,24 +1,58 @@
 <?php
 
 function plank() {
-	//Init Factory and Renderer
-	global $DIC;
-	$f = $DIC->ui()->factory();
-	$renderer = $DIC->ui()->renderer();
+    global $DIC;
+    $f = $DIC->ui()->factory();
+    $renderer = $DIC->ui()->renderer();
 
-	$plank = $f->maincontrols()->menu()->plank()
-		->withTitle('a title');
+    return $renderer->render([
+        $f->legacy('simple plank'),
+        buildSimplePlank($f),
+        $f->divider()->horizontal(),
 
-	$plank2 = $plank
-		->withElement($f->legacy('some element'))
-		->withElement($plank)
-		->withElement(
-			$plank->withElement($plank)
-		);
+        $f->legacy('simple plank expanded'),
+        buildSimplePlank($f)->withStaticExpansion(true),
+        $f->divider()->horizontal(),
 
-	return $renderer->render([
-		$plank,
-		$f->divider()->horizontal(),
-		$plank2
-	]);
+        $f->legacy('sub planks'),
+        buildSubPlanks($f),
+        $f->divider()->horizontal(),
+    ]);
+
 }
+
+function buildSimplePlank($f) {
+    return $f->maincontrols()->menu()->plank()
+        ->withTitle('a title')
+        ->withElement(
+            $f->legacy('some content')
+        );
+}
+
+function buildSubPlanks($f) {
+
+    return
+    $f->maincontrols()->menu()->plank()
+        ->withTitle('plank 1 (sub)')
+        ->withElement($f->legacy('some content'))
+        ->withElement(
+            $f->maincontrols()->menu()->plank()
+                ->withTitle('plank 1.1')
+                ->withElement($f->legacy('some more content'))
+        )
+        ->withElement(
+            $f->maincontrols()->menu()->plank()
+                ->withTitle('plank 1.2')
+                ->withElement(
+                    $f->maincontrols()->menu()->plank()
+                    ->withTitle('plank 1.2.1')
+                    ->withElement($f->legacy('too nested...'))
+                )
+        )
+
+        ->withElement(
+            $f->maincontrols()->menu()->plank()
+                ->withTitle('plank 1.3')
+        );
+}
+

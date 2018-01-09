@@ -1,29 +1,32 @@
 <?php
 
-function nc_base() {
-
-	global $DIC;
-	$f = $DIC->ui()->factory();
-	$renderer = $DIC->ui()->renderer();
+function buildNotificationCenter($f) {
 
 	$nc = $f->maincontrols()->prompts()->notificationcenter()
 		->withEntry(
-			$f->glyph()->user('#')
+			$f->glyph()->mail('#')
 			->withCounter($f->counter()->novelty(2))
 			->withCounter($f->counter()->status(7))
 			, 'entry1'
 		)
 		->withEntry(
-			$f->glyph()->settings('#')
-			->withCounter($f->counter()->novelty(1))
-			->withCounter($f->counter()->status(2))
+			$f->glyph()->briefcase('#')
+			->withCounter($f->counter()->status(1))
 			, 'entry2'
 		)
 		->withEntry(
 			$f->glyph()->comment('#')
-			->withCounter($f->counter()->status(3))
+			->withCounter($f->counter()->novelty(2))
 			, 'entry3'
 		);
 
-	return $renderer->render($nc);
+	return $nc;
+}
+
+function nc_base() {
+    global $DIC;
+    $f = $DIC->ui()->factory();
+    $renderer = $DIC->ui()->renderer();
+    $nc = buildNotificationCenter($f);
+    return $renderer->render($nc);
 }

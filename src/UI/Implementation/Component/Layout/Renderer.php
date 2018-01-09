@@ -33,6 +33,7 @@ class Renderer extends AbstractComponentRenderer {
 
         foreach ($component->getButtons() as $button) {
             $button = $button->appendOnClick($entry_signal);
+            //->appendTriggeredSignal($entry_signal, 'click');
             $tpl->setCurrentBlock("trigger_item");
             $tpl->setVariable("BUTTON", $default_renderer->render($button));
             $tpl->parseCurrentBlock();
@@ -71,9 +72,6 @@ class Renderer extends AbstractComponentRenderer {
                     } else {
                         $('#{$id}').removeClass(class_engaged_slates);
                     }
-
-
-
                 });";
 
             return $registry;
@@ -115,28 +113,67 @@ class Renderer extends AbstractComponentRenderer {
 
         $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
-/*
+//2do: this is for demo purposes only!
+if ($_GET['new_ui'] == '1') {
+        $tpl = $this->setHeaderVars($tpl);
+}
+        return $tpl->get();
+    }
+
+
+    protected function setHeaderVars($tpl) {
+
         global $DIC;
         $il_tpl = $DIC["tpl"];
 
-        $tpl->setVariable('JS', $this->getInlineJS($il_tpl));
-        foreach ($this->getJSFiles($il_tpl) as $js_file) {
+        $base_url = '../../../../../';
+
+        // always load jQuery
+        include_once("./Services/jQuery/classes/class.iljQueryUtil.php");
+        \iljQueryUtil::initjQuery($il_tpl);
+        include_once("./Services/UICore/classes/class.ilUIFramework.php");
+        \ilUIFramework::init($il_tpl);
+
+        $il_js_files = $il_tpl->js_files_batch;
+        asort($il_js_files);
+
+        $js_files = array();
+        foreach($il_js_files as $il_js_file=>$batch) {
+            $js_files[] = $il_js_file;
+        }
+
+        $css_files = array();
+        foreach($il_tpl->css_files as $il_css_file) {
+            $css_files[] = $il_css_file['file'];
+        }
+        $css_files[] = \ilUtil::getStyleSheetLocation("filesystem", "delos.css");
+        $css_files[] = \ilUtil::getNewContentStyleSheetLocation();
+
+        $css_inline = $il_tpl->inline_css;
+
+        $olc = '';
+        if($il_tpl->on_load_code) {
+            foreach ($il_tpl->on_load_code as $key => $value) {
+                $olc .= implode(PHP_EOL, $value);
+             }
+        }
+
+         //fill
+        foreach ($js_files as $js_file) {
             $tpl->setCurrentBlock("js_file");
             $tpl->setVariable("JS_FILE", $js_file);
             $tpl->parseCurrentBlock();
-       }
+        }
+        foreach ($css_files as $css_file) {
+            $tpl->setCurrentBlock("css_file");
+            $tpl->setVariable("CSS_FILE", $css_file);
+            $tpl->parseCurrentBlock();
+        }
+        $tpl->setVariable("CSS_INLINE", implode(PHP_EOL, $css_inline));
+        $tpl->setVariable("OLCODE", $olc);
 
-*/
-/*
-        $css_files = $il_tpl->css_files;
-        var_dump($css_files);
-
-        $css_inline = $il_tpl->inline_css;
-        var_dump($css_inline);
-*/
-
-
-        return $tpl->get();
+        $tpl->setVariable("BASE", $base_url);
+        return $tpl;
     }
 
 
