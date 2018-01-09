@@ -8000,7 +8000,7 @@ ul.breadcrumb li:hover {
 }
 .il-layout-page {
   width: 100%;
-  height: 100%;
+  height: 600px;
   display: block;
 }
 .il-layout-page-metabar {
@@ -14915,8 +14915,6 @@ span.ilProfileBadge {
   padding: 5px;
 }
 /*!
-
-
  * Datetimepicker for Bootstrap 3
  * version : 4.17.37
  * https://github.com/Eonasdan/bootstrap-datetimepicker/
