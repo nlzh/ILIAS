@@ -1,42 +1,198 @@
+@trigger-height: 80px;
+@trigger-width: 80px;
+@sidebar-height: 600px;
+@slate-width: 200px;
+@bg-sidebar: #4a4a4a;
+@bg-sidebar-engaged: #fff;
 
-@triggerer_width: 70px;
-@slate_width: 200px;
+// shadows
+@shadow-color: #ccc;
+@inner-top-shadow: inset 0 5px 9px -5px @shadow-color;
+@shadow-right: 2px 2px 2px @shadow-color;
+
+
+// mixins
+.inner-top-shadow {
+	box-shadow: @inner-top-shadow;
+}
+
+.shadow-right {
+	box-shadow: @shadow-right;
+}
 
 .il-layout-page {
-	width: 800px;
 	height: 600px;
-	display: block;
 }
 
 .il-layout-page-metabar {
-	height: 120px;
 	clear: both;
+    background: #fff;
+	height: 75px;
+    padding: 15px;
 
 }
 
 .il-layout-page-sidebar {
-	width: @triggerer_width;
-
+	.shadow-right;
+	background:  @bg-sidebar-engaged;
+	float: left;
+	width: @trigger-width;
 	.sidebar-triggers {
-		width: @triggerer_width;
+		.shadow-right;
+		background: @bg-sidebar;
+		height: @sidebar-height;
+		position: relative; 
+		width: @trigger-width;
 		float: left;
+		.btn-default {
+			background: @bg-sidebar;
+			border: 0;
+			border-bottom: 1px solid #fff;
+			font-size: 70%;
+			height: @trigger-height;
+			padding: 10px 0;
+			width: 100%;
+			&.engaged {
+				background-color: @bg-sidebar-engaged;
+				color: @bg-sidebar;
+			}
+		}
+
+/* 
+* nth-child selector ist not usefull when something changes in the sidebar.
+* add an additional class for each item in sidebar e.g btn-default.navigation
+*/
+
+		.btn-default:nth-child(1),
+		.btn-default.engaged:nth-child(1) {
+			.inner-top-shadow;	
+		}
+
+		.btn-default:nth-child(1) .icon {
+			background-image: url('images/icon-sb-cockpit.svg');
+		}
+
+		.btn-default:nth-child(2) .icon {
+			background-image: url('images/icon-sb-navigation.svg');
+		}
+
+		.btn-default:nth-child(3) .icon {
+			background-image: url('images/icon-sb-search.svg');
+		}
+
+		.btn-default:nth-child(4) .icon {
+			background-image: url('images/icon-sb-help.svg');
+		}
+
+		.btn-default:nth-child(5) .icon {
+			background-image: url('images/icon-sb-more.svg');
+		}
+
+		.btn-default.engaged:nth-child(1) .icon {
+			background-image: url('images/icon-sb-cockpit-engaged.svg');	
+		}
+
+		.btn-default.engaged:nth-child(2) .icon {
+			background-image: url('images/icon-sb-navigation-engaged.svg');
+		}
+
+		.btn-default.engaged:nth-child(3) .icon {
+			background-image: url('images/icon-sb-search-engaged.svg');
+		}
+
+		.btn-default.engaged:nth-child(4) .icon {
+			background-image: url('images/icon-sb-help-engaged.svg');
+		}
+
+		.btn-default.engaged:nth-child(5) .icon {
+			background-image: url('images/icon-sb-more-engaged.svg');
+		}
+
+		.icon .abbreviation {
+			display: none;
+		}
+		&.engaged {
+			background: #fff;
+		}
 	}
 	.sidebar-slates {
+		.shadow-right;
 		background-color: #fefefe;
-		height: 100%;
+		height: @sidebar-height;
 		float: left;
-		display:none;
+		display: none;
+		.inner-top-shadow;
 	}
 
 	&.with-engaged-slates {
-		width: @slate_width + @triggerer_width;
+		width: @slate-width + @trigger-width;
 		.sidebar-slates {
-			width: @slate_width;
+			width: @slate-width;
 			display: block;
 		}
 	}
 }
 
+.il-layout-page-content {
+	display: grid;
+	padding: 5px;
+	margin-left: 5px;
+	.inner-top-shadow;
+}
+
+/*
+ * ===================
+ * grid-based layout
+ * ===================
+
+
+.il-layout-page {
+	height: 600px;
+	display: grid;
+	grid-gap: 0px;
+    grid-template-columns: 80px 1fr;
+    grid-template-areas:
+    "header header"
+    "sidebar content";
+}
+
+.il-layout-page-metabar {
+    grid-area: header;
+    background: #fff;
+	height: 75px;
+    padding: 15px;
+
+}
+
+.il-layout-page-sidebar {
+	background: @bg-sidebar;
+	grid-area: sidebar;
+	height: 100%;
+	width: @trigger-width;
+	.sidebar-triggers {
+		height: @trigger-height;
+		width: @trigger-width;
+		.btn-default {
+			background: @bg-sidebar;
+			border: 0;
+			border-bottom: 1px solid #fff;
+			width: 100%;
+		}
+	}
+	.sidebar-slates {
+		background-color: #fefefe;
+		height: 100%;
+		display: none;
+	}
+
+	&.with-engaged-slates {
+		width: @slate-width + @trigger-width;
+		.sidebar-slates {
+			width: @slate-width;
+			display: block;
+		}
+	}
+}
 
 .il-layout-page-content {
 	display: flex;
@@ -44,3 +200,4 @@
 	padding: 5px;
 	margin-left: 5px;
 }
+ */
