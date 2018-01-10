@@ -1,4 +1,5 @@
-@bg-slate-item: #eee;
+@bg-slate-collapsed: #eee;
+@bg-slate-expanded: #ebe8c0;
 
 .il-maincontrol-menu-slate {
  	&.engaged {
@@ -16,8 +17,8 @@
 	margin: 0 0 2px 0;
 	padding: 0;
 	li {
-		background: @bg-slate-item;
-		padding: 10px 5px 10px 20px;
+		background: @bg-slate-collapsed;
+		padding: 10px 0 10px 20px;
 		&.collapsed {
 			> .plank-glyph-expand {
 				display: inline;
@@ -32,6 +33,7 @@
 		}
 
 		&.expanded {
+			background: @bg-slate-expanded;
 			> .plank-glyph-expand {
 				display: none;
 			}
@@ -41,6 +43,10 @@
 			> .plank-elements {
 				display: block;
 			}
+		}
+
+		ul {
+		    margin-left: -20px;
 		}
 	}
 
