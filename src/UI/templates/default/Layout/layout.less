@@ -38,10 +38,12 @@ grid-based layout
 	grid-gap: 0px;
     grid-template-columns: 80px 1fr;
     grid-template-rows: 75px 1fr 75px;
+    -ms-grid-columns: 80px 1fr;
+    -ms-grid-rows: 75px 1fr 75px;
     grid-template-areas:
     "header header"
     "sidebar content"
-    "footer footer";
+    "footer footer"; // not supported IE
     height: 100%; 
 	width: 100%;
 	&.with-engaged-slates {
