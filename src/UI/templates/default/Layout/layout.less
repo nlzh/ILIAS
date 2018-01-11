@@ -75,20 +75,18 @@ header {
 }
 
 .il-layout-page-sidebar {
-	.shadow-right;
 	background: #fff;
 	float: left;
 	grid-area: sidebar;
 	height: 100%;
 	width: @trigger-width;
-
+	.shadow-right;
 	.sidebar-slates {
-		.shadow-right;
-		background-color: #fefefe;
-		height: 100%;
-		float: left;
 		display: none;
+		float: left;
+		height: 100%;
 		.inner-top-shadow;
+		.shadow-right;
 	}
 	
 	&.with-engaged-slates {
@@ -187,26 +185,6 @@ header {
 			background: #fff;
 		}
 	}
-
-	.sidebar-slates {
-		.shadow-right;
-		background-color: #fefefe;
-		height: 100%;
-		float: left;
-		display: none;
-		.inner-top-shadow;
-	}
-
-	/*
-	&.with-engaged-slates {
-		height: 100%;
-		width: @slate-width + @trigger-width;
-		.sidebar-slates {
-			width: @slate-width;
-			display: block;
-		}
-	}
-	*/
 }
 
 //.il-layout-page-content,
