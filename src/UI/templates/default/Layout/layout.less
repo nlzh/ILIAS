@@ -22,6 +22,11 @@
 	box-shadow: @shadow-right;
 }
 
+.display-grid {
+	display: grid;
+	display: -ms-grid;
+}
+
 /*
 *********************
 grid-based layout
@@ -29,7 +34,7 @@ grid-based layout
 */
 
 .il-layout-page {
-	display: grid;
+	.display-grid;
 	grid-gap: 0px;
     grid-template-columns: 80px 1fr;
     grid-template-rows: 75px 1fr 75px;
@@ -81,7 +86,7 @@ header {
 	height: 100%;
 	width: @trigger-width;
 	.shadow-right;
-	.sidebar-slates {
+	.il-sidebar-slates {
 		display: none;
 		float: left;
 		height: 100%;
@@ -91,13 +96,13 @@ header {
 	&.with-engaged-slates {
 		height: 100%;
 		width: @slate-width + @trigger-width;
-		.sidebar-slates {
+		.il-sidebar-slates {
 			width: @slate-width;
 			display: block;
 		}
 	}
 
-	.sidebar-triggers {
+	.il-sidebar-triggers {
 		.shadow-right;
 		background: @bg-sidebar;
 		height: 100%;
