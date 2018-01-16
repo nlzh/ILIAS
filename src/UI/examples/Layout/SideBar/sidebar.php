@@ -4,9 +4,7 @@ function buildSidebar($f) {
     include_once('src/UI/examples/MainControls/Menu/Plank/plank.php');
     $mf = $f->maincontrols()->menu();
 
-    //init sidebar
-    $sidebar = $f->layout()->sidebar();
-
+    $entries = array();
     foreach(range(1,4) as $c){
         //build planks and slate
         $i = (string)$c;
@@ -21,17 +19,16 @@ function buildSidebar($f) {
         $icon = $f->icon()->standard('sidebar_trigger', '')->withSize('medium');
         $button = $f->button()->iconographic($icon->withAbbreviation($i), "Button $i", '#');
 
-        //add to bar
-        $sidebar = $sidebar->withEntry($button, $slate);
+        $entries[] = $f->layout()->sidebarentry($button, $slate);
     }
 
     $glyph = $f->glyph()->user();
     $extra_button = $f->button()->iconographic($glyph,'Extra', '#');
-    $sidebar = $sidebar->withEntry($extra_button);
+    $entries[] = $f->layout()->sidebarentry($extra_button);
 
-    return $sidebar;
+    return $f->layout()->sidebar($entries);
+
 }
-
 
 function sidebar() {
     global $DIC;
@@ -39,6 +36,5 @@ function sidebar() {
     $renderer = $DIC->ui()->renderer();
 
     $sidebar = buildSidebar($f);
-
     return $renderer->render($sidebar);
 }

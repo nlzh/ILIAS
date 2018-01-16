@@ -196,6 +196,9 @@ class Renderer extends AbstractComponentRenderer {
 		if ($label !== null) {
 			$tpl->setVariable("LABEL", $label);
 		}
+		if ($component->isEngaged()) {
+			$tpl->touchBlock("engaged");
+		}
 	}
 
 	/**

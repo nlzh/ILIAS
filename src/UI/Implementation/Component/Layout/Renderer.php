@@ -28,51 +28,59 @@ class Renderer extends AbstractComponentRenderer {
 
     protected function renderSidebar(Component\Layout\SideBar $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("tpl.sidebar.html", true, true);
-
         $entry_signal = $component->getEntryClickSignal();
+        $counter = 0;
+        foreach ($component->getEntries() as $entry) {
+            $button = $entry->getButton()
+                ->appendOnClick($entry_signal);
 
-        foreach ($component->getButtons() as $button) {
-            $button = $button->appendOnClick($entry_signal);
-            //->appendTriggeredSignal($entry_signal, 'click');
+            if($counter === $component->getActive()) {
+                $button = $button->withEngagedState(true);
+            } else {
+                $button = $button->withEngagedState(false);
+            }
+
             $tpl->setCurrentBlock("trigger_item");
             $tpl->setVariable("BUTTON", $default_renderer->render($button));
             $tpl->parseCurrentBlock();
-       }
 
-        foreach ($component->getSlates() as $slate) {
-            $tpl->setCurrentBlock("slate_item");
-            $tpl->setVariable("SLATE", $default_renderer->render($slate));
-            $tpl->parseCurrentBlock();
-       }
+            $slate = $entry->getSlate();
+            if($slate) {
+                $tpl->setCurrentBlock("slate_item");
+                $tpl->setVariable("SLATE", $default_renderer->render($slate));
+                $tpl->parseCurrentBlock();
+            }
+            $counter++;
+        }
 
         $component = $component->withOnLoadCode(function($id) use ($entry_signal) {
             $registry = '';
-                $registry .= "$(document).on('{$entry_signal}', function(event, signalData) {
+            $registry .= "$(document).on('{$entry_signal}', function(event, signalData) {
 
-                    var down_class = 'engaged',
-                        class_engaged_slates = 'with-engaged-slates';
+                var down_class = 'engaged',
+                    class_engaged_slates = 'with-engaged-slates';
 
-                    //set all non-triggerer to inactive
-                    result = $('#{$id} .sidebar-triggers .btn');
-                    result.each( function(index, obj) {
-                        if($(obj).attr('id') != signalData.triggerer.attr('id')) {
-                            $(obj).removeClass(down_class);
-                        }
-                    });
-
-                    //toggle triggerer active/inactive
-                    if(signalData.triggerer.hasClass(down_class)) {
-                        signalData.triggerer.removeClass(down_class);
-                    } else {
-                        signalData.triggerer.addClass(down_class);
+                //set all non-triggerer to inactive
+                result = $('#{$id} .il-sidebar-triggers .btn');
+                result.each( function(index, obj) {
+                    if($(obj).attr('id') != signalData.triggerer.attr('id')) {
+                        $(obj).removeClass(down_class);
                     }
+                });
 
-                    if($('#{$id} .il-maincontrol-menu-slate.engaged').length > 0) {
-                        $('#{$id}').addClass(class_engaged_slates);
-                    } else {
-                        $('#{$id}').removeClass(class_engaged_slates);
-                    }
-                });";
+                //toggle triggerer active/inactive
+                if(signalData.triggerer.hasClass(down_class)) {
+                    signalData.triggerer.removeClass(down_class);
+                } else {
+                    signalData.triggerer.addClass(down_class);
+                }
+
+                if($('#{$id} .il-maincontrol-menu-slate.engaged').length > 0) {
+                    $('#{$id}').addClass(class_engaged_slates);
+                } else {
+                    $('#{$id}').removeClass(class_engaged_slates);
+                }
+            });";
 
             return $registry;
         });

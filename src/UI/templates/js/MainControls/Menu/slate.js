@@ -33,11 +33,6 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 			slate.removeClass(_cls_disengaged);
 			slate.addClass(_cls_engaged);
 			pagediv.addClass('with-engaged-slates');
-/*			
-var w = slate.width();
-			slate.width(1);
-			slate.animate({width: w}, 800);
-*/
 		};
 
 		var _disengage = function(slate) {

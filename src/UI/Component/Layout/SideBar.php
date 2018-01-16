@@ -11,21 +11,9 @@ use \ILIAS\UI\Component as C;
 interface SideBar extends C\Component, JavaScriptBindable {
 
 	/**
-	 * @param C\Button\Iconographic | C\Glyph\Glyph 	$button
-	 * @param C\MainControls\Menu\Slate | null 	$slate
-	 * @return SideBar
+	 * @return \ILIAS\UI\Component\Layout\SidebarEntry[]
 	 */
-	public function withEntry($button, C\MainControls\Menu\Slate $slate=null);
-
-	/**
-	 * @return ILIAS\UI\Component\Button\Iconographic[]
-	 */
-	public function getButtons();
-
-	/**
-	 * @return ILIAS\UI\Component\MainControls\Menu\Slate[]
-	 */
-	public function getSlates();
+	public function getEntries();
 
 	/**
 	 * @return Signal
@@ -36,5 +24,18 @@ interface SideBar extends C\Component, JavaScriptBindable {
 	 * @return SideBar
 	 */
 	public function withResetSignals();
+
+	/**
+	 * This entry is set to active.
+	 * @param string 	$identifier
+	 * @return SideBar
+	 */
+	public function withActive($identifier);
+
+	/**
+	 * This is the identifer of the active entry.
+	 * @return string
+	 */
+	public function getActive();
 
 }

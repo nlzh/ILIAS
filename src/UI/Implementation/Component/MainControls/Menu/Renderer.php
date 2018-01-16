@@ -45,47 +45,35 @@ class Renderer extends AbstractComponentRenderer {
             $tpl->parseCurrentBlock();
         }
 
+        $f = $this->getUIFactory();
+        $closebtn = $f->button()->iconographic(
+            $f->glyph()->back("#"),
+            "close",
+            "#"
+        )->withOnClick($component->getToggleSignal());
+
+        $tpl->setVariable("CLOSE", $default_renderer->render($closebtn));
+
+        $backlinkbtn = $f->button()->iconographic(
+            $f->glyph()->back("#"),
+            "back",
+            "#"
+        )->withOnClick($component->getToggleSignal());
+        $tpl->setVariable("BACKLINK", $default_renderer->render($backlinkbtn));
+
         return $tpl->get();
     }
 
 
     protected function renderPlank(Component\MainControls\Menu\Plank $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("Menu/tpl.plank.html", true, true);
+
         $f = $this->getUIFactory();
-
-        $component = $component->withResetSignals();
-        $toggle = $component->getToggleSignal();
-        $expander = $f->glyph()->expand()->withOnClick($toggle);
-        $collapser = $f->glyph()->collapse()->withOnClick($toggle);
-
-         $component = $component->withOnLoadCode(function($id) use ($toggle) {
-            return "$(document).on('{$toggle}', function() { il.UI.maincontrols.menu.plank.toggle('{$id}'); return false; });";
-        });
-
-        $tpl->setVariable("EXPANDER", $default_renderer->render($expander));
-        $tpl->setVariable("COLLAPSER", $default_renderer->render($collapser));
-
-        if($component->getStaticExpanded()) {
-            $tpl->touchBlock('expanded');
-        } else {
-            $tpl->touchBlock('collapsed');
-        }
-
-        $tpl->setVariable("TITLE", $component->getTitle());
-
-        foreach ($component->getElements() as $element) {
-            $tpl->setCurrentBlock("element");
-            $tpl->setVariable("ELEMENT", $default_renderer->render($element));
-            $tpl->parseCurrentBlock();
-        }
-
-        $id = $this->bindJavaScript($component);
-        $tpl->setVariable('ID', $id);
+        $content = $f->legacy('something');
+        $tpl->setVariable("PLANKCONTENT", $component->getTitle());
 
         return $tpl->get();
     }
-
-
 
 
     /**
