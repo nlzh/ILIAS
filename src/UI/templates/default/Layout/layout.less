@@ -56,29 +56,29 @@ header {
 	grid-area: header;
 	height: @height-metabar;
 	padding: 0 15px;
+}
 
-    .il-layout-page-metabar {
-    	display: grid;
-	    grid-template-columns: 1fr 1fr;
-	    grid-template-rows: 75px;
-	    justify-items: end;
-	    align-items: center;
+.il-layout-page-metabar {
+	.display-grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 75px;
+    justify-items: end;
+    align-items: center;
 
-	    .il-logo {
-	    	justify-self: start;
-	    	img {
-	    		height: @logo-height;
-	    		width: @logo-width;
-	    	}
-	    }
+    .il-notification-center {
+    	display: flex;
+    	.il-notification-item {
+    		padding-left: 10px;
+    	}
+    }
+}
 
-	    .il-notification-center {
-	    	display: flex;
-	    	.il-notification-item {
-	    		padding-left: 10px;
-	    	}
-	    }
-	 }
+.il-logo {
+	justify-self: start;
+	img {
+		height: @logo-height;
+		width: @logo-width;
+	}
 }
 
 .il-layout-page-sidebar {
