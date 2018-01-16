@@ -193,7 +193,15 @@ header {
 	}
 }
 
-// can't use main-tag here due to IE support
+/*
+main-tag is important for screenreader 
+fix due to main-tag is not supported in IE 
+*/
+
+main {
+	display: block;
+}
+
 .il-layout-page-content {
 	display: inline-grid;
 	grid-area: content;
