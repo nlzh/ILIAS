@@ -1,16 +1,35 @@
 @height-metabar: 75px;
 @trigger-height: 80px;
 @trigger-width: 80px;
+@trigger-border: 1px solid rgba(255, 255, 255, .2);
 @height-metabar: 75px;
 @slate-width: 400px;
 @bg-sidebar: #4a4a4a;
 @bg-sidebar-engaged: #fff;
 @logo-height: 45px;
 @logo-width: 45px;
+
 // shadows
 @shadow-color: #ccc;
 @inner-top-shadow: inset 0 5px 9px -5px @shadow-color;
 @shadow-right: 2px 2px 2px @shadow-color;
+
+/* IE10+ not supported */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	.il-layout-page {
+		&:before {
+			content: "Microsoft Internet Explorer is not supported in this ILIAS Version :("
+		}
+		header,
+		footer,
+		nav,
+		main,
+		.layout-page-content {
+			display:none;
+		}
+
+	}
+}
 
 
 // mixins
@@ -24,7 +43,7 @@
 
 .display-grid {
 	display: grid;
-	display: -ms-grid;
+	// display: -ms-grid;
 }
 
 /*
@@ -51,26 +70,21 @@ grid-based layout
 	}
 }
 
+/* Metabar */
 header {
+    align-items: center;
     background: #fff;
+    display: flex;
 	grid-area: header;
 	height: @height-metabar;
 	padding: 0 15px;
 }
 
 .il-layout-page-metabar {
-	.display-grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 75px;
-    justify-items: end;
+	display: flex;
+    justify-content: space-between;
     align-items: center;
-
-    .il-notification-center {
-    	display: flex;
-    	.il-notification-item {
-    		padding-left: 10px;
-    	}
-    }
+    width: 100%;
 }
 
 .il-logo {
@@ -81,22 +95,28 @@ header {
 	}
 }
 
+.il-notification-center {
+	display: flex;
+	.il-notification-item {
+		padding-left: 10px;
+	}
+}
+
+/* Sidebar */
 .il-layout-page-sidebar {
 	background: #fff;
-	float: left;
+	display: flex;
 	grid-area: sidebar;
 	height: 100%;
 	width: @trigger-width;
 	.shadow-right;
 	.il-sidebar-slates {
 		display: none;
-		float: left;
 		height: 100%;
 		.inner-top-shadow;
 	}
 	
 	&.with-engaged-slates {
-		height: 100%;
 		width: @slate-width + @trigger-width;
 		.il-sidebar-slates {
 			width: @slate-width;
@@ -105,16 +125,14 @@ header {
 	}
 
 	.il-sidebar-triggers {
-		.shadow-right;
 		background: @bg-sidebar;
 		height: 100%;
 		position: relative; 
 		width: @trigger-width;
-		float: left;
 		.btn-iconographic {
 			background: @bg-sidebar;
 			border: 0;
-			border-bottom: 1px solid #fff;
+			border-bottom: @trigger-border;
 			color: @bg-sidebar-engaged;
 			font-size: 70%;
 			height: @trigger-height;
@@ -198,6 +216,7 @@ main-tag is important for screenreader
 fix due to main-tag is not supported in IE 
 */
 
+/* Content */
 main {
 	display: block;
 }
@@ -209,6 +228,7 @@ main {
 	.inner-top-shadow;
 }
 
+/* Footer */
 footer {
 	background-color: @brand-primary;
 	grid-area: footer;
