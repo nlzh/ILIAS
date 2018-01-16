@@ -4,6 +4,7 @@
 namespace ILIAS\UI\Implementation\Component\Layout;
 
 use ILIAS\UI\Component\Layout as Layout;
+use \ILIAS\UI\Component\MainControls as MainControls;
 use ILIAS\UI\Implementation\Component\SignalGeneratorInterface;
 
 class Factory implements Layout\Factory {
@@ -19,18 +20,25 @@ class Factory implements Layout\Factory {
 		$this->signal_generator = $signal_generator;
 	}
 
-
 	/**
 	 * @inheritdoc
 	 */
 	public function metabar(){
 		return new MetaBar();
 	}
+
 	/**
 	 * @inheritdoc
 	 */
-	public function sidebar(){
-		return new SideBar($this->signal_generator);
+	public function sidebar($entries, $active=null){
+		return new SideBar($this->signal_generator, $entries, $active);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function sidebarentry($button, MainControls\Menu\Slate $slate=null) {
+		return new SidebarEntry($button, $slate);
 	}
 
 	/**

@@ -29,22 +29,28 @@ class Renderer extends AbstractComponentRenderer {
     protected function renderSidebar(Component\Layout\SideBar $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("tpl.sidebar.html", true, true);
         $entry_signal = $component->getEntryClickSignal();
+        $counter = 0;
+        foreach ($component->getEntries() as $entry) {
+            $button = $entry->getButton()
+                ->appendOnClick($entry_signal);
 
-        foreach ($component->getButtons() as $id => $button) {
-            $button = $button->appendOnClick($entry_signal);
-            if($id === $component->getActive()) {
+            if($counter === $component->getActive()) {
                 $button = $button->withEngagedState(true);
+            } else {
+                $button = $button->withEngagedState(false);
             }
 
             $tpl->setCurrentBlock("trigger_item");
             $tpl->setVariable("BUTTON", $default_renderer->render($button));
             $tpl->parseCurrentBlock();
-        }
 
-        foreach ($component->getSlates() as $slate) {
-            $tpl->setCurrentBlock("slate_item");
-            $tpl->setVariable("SLATE", $default_renderer->render($slate));
-            $tpl->parseCurrentBlock();
+            $slate = $entry->getSlate();
+            if($slate) {
+                $tpl->setCurrentBlock("slate_item");
+                $tpl->setVariable("SLATE", $default_renderer->render($slate));
+                $tpl->parseCurrentBlock();
+            }
+            $counter++;
         }
 
         $component = $component->withOnLoadCode(function($id) use ($entry_signal) {

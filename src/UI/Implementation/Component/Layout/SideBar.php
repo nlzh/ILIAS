@@ -16,16 +16,6 @@ class SideBar implements C\Layout\SideBar {
 	use JavaScriptBindable;
 
 	/**
-	 * @var array<Button\Iconographic | Glyph\Glyph>
-	 */
-	private $buttons;
-
-	/**
-	 * @var ILIAS\UI\Component\MainControls\Menu\Slate[]
-	 */
-	private $slates = [];
-
-	/**
 	 * @var SignalGeneratorInterface
 	 */
 	private $signal_generator;
@@ -36,16 +26,24 @@ class SideBar implements C\Layout\SideBar {
 	private $entry_click_signal;
 
 	/**
+	 * @var \ILIAS\UI\Component\Layout\SidebarEntry[]
+	 */
+	private $entries;
+
+	/**
 	 * @var string
 	 */
 	private $active_entry;
 
 
-
-
-	public function __construct(SignalGeneratorInterface $signal_generator) {
+	public function __construct(
+			SignalGeneratorInterface $signal_generator,
+			array $entries,	$active = null) {
 		$this->signal_generator = $signal_generator;
 		$this->initSignals();
+
+		$this->entries = $entries;
+		$this->active_entry = $active;
 	}
 
 	/**
@@ -64,15 +62,8 @@ class SideBar implements C\Layout\SideBar {
 	/**
 	 * @inheritdoc
 	 */
-	public function getButtons() {
-		return $this->buttons;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getSlates() {
-		return $this->slates;
+	public function getEntries() {
+		return $this->entries;
 	}
 
 	/**
@@ -101,10 +92,10 @@ class SideBar implements C\Layout\SideBar {
 	/**
 	 * @inheritdoc
 	 */
-	public function withActive($identifier) {
-		$this->checkStringArg("identifier", $identifier);
+	public function withActive($active) {
+		$this->checkStringArg("active", $active);
 		$clone = clone $this;
-		$clone->active_entry =$identifier;
+		$clone->active_entry =$active;
 		return $clone;
 	}
 

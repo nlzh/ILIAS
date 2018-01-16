@@ -1,5 +1,6 @@
 <?php
 namespace ILIAS\UI\Component\Layout;
+use \ILIAS\UI\Component\MainControls as MainControls;
 /**
  * This is what a factory for layout-elements looks like.
  */
@@ -135,9 +136,30 @@ interface Factory {
      *
      * ----
      *
+     * @param  \ILIAS\UI\Component\Layout\SidebarEntry[]    $entries
+     * @param  int|null  $active
      * @return  \ILIAS\UI\Component\Layout\SideBar
      */
-    public function sidebar();
+    public function sidebar($entries, $active=null);
+
+
+        /**
+     * ---
+     * description:
+     *   purpose: >
+     *     The sidebar entry bundles a button and a slate.
+     *   composition: >
+     *     There is no composition of this component.
+     * rules:
+     *   usage:
+     *
+     * ----
+     *
+     * @param \ILIAS\UI\Component\Button\Iconographic | \ILIAS\UI\Component\Glyph\Glyph   $button
+     * @param \ILIAS\UI\Component\MainControls\Menu\Slate | null   $slate
+     * @return  \ILIAS\UI\Component\Layout\SidebarEntry
+     */
+    public function sidebarentry($button, MainControls\Menu\Slate $slate=null);
 
 
 	/**
