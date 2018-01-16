@@ -86,19 +86,18 @@ header {
 /* Sidebar */
 .il-layout-page-sidebar {
 	background: #fff;
+	display: flex;
 	grid-area: sidebar;
 	height: 100%;
 	width: @trigger-width;
 	.shadow-right;
 	.il-sidebar-slates {
 		display: none;
-		float: left;
 		height: 100%;
 		.inner-top-shadow;
 	}
 	
 	&.with-engaged-slates {
-		height: 100%;
 		width: @slate-width + @trigger-width;
 		.il-sidebar-slates {
 			width: @slate-width;
@@ -111,7 +110,6 @@ header {
 		height: 100%;
 		position: relative; 
 		width: @trigger-width;
-		float: left;
 		.btn-iconographic {
 			background: @bg-sidebar;
 			border: 0;
