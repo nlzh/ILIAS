@@ -23,7 +23,7 @@ class SideBar implements C\Layout\SideBar {
 	/**
 	 * @var ILIAS\UI\Component\MainControls\Menu\Slate[]
 	 */
-	private $slates;
+	private $slates = [];
 
 	/**
 	 * @var SignalGeneratorInterface
@@ -35,6 +35,14 @@ class SideBar implements C\Layout\SideBar {
 	 */
 	private $entry_click_signal;
 
+	/**
+	 * @var string
+	 */
+	private $active_entry;
+
+
+
+
 	public function __construct(SignalGeneratorInterface $signal_generator) {
 		$this->signal_generator = $signal_generator;
 		$this->initSignals();
@@ -43,13 +51,13 @@ class SideBar implements C\Layout\SideBar {
 	/**
 	 * @inheritdoc
 	 */
-	public function withEntry($button, C\MainControls\Menu\Slate $slate=null) {
+	public function withEntry($identifier, $button, C\MainControls\Menu\Slate $slate=null) {
 		$clone = clone $this;
 		if($slate) {
-			$clone->slates[] = $slate;
+			$clone->slates[$identifier] = $slate;
 			$button = $button->withOnClick($slate->getToggleSignal());
 		}
-		$clone->buttons[] = $button;
+		$clone->buttons[$identifier] = $button;
 		return $clone;
 	}
 
@@ -89,5 +97,24 @@ class SideBar implements C\Layout\SideBar {
 		$clone->initSignals();
 		return $clone;
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withActive($identifier) {
+		$this->checkStringArg("identifier", $identifier);
+		$clone = clone $this;
+		$clone->active_entry =$identifier;
+		return $clone;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getActive() {
+		return $this->active_entry;
+	}
+
+
 
 }

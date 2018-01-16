@@ -15,6 +15,11 @@ class Iconographic extends Button implements C\Button\Iconographic {
 	 */
 	protected $icon;
 
+	/**
+	 * @var bool
+	 */
+	protected $engaged = false;
+
 
 	public function __construct($icon, $label, $action) {
 		$this->checkStringArg("label", $label);
@@ -30,5 +35,23 @@ class Iconographic extends Button implements C\Button\Iconographic {
 	public function getIcon() {
 		return $this->icon;
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withEngagedState($state) {
+		$this->checkBoolArg("state", $state);
+		$clone = clone $this;
+		$clone->engaged =$state;
+		return $clone;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function isEngaged() {
+		return $this->engaged;
+	}
+
 
 }

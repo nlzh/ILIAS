@@ -12,4 +12,18 @@ interface Iconographic extends Button {
 	 * @return ILIAS\UI\Component\Icon
 	 */
 	public function getIcon();
+
+	/**
+	 * @param 	bool 	$state
+	 * @return Iconographic
+	 */
+	public function withEngagedState($state);
+
+	/**
+	 * @return bool
+	 */
+	public function isEngaged();
+
+
+
 }
