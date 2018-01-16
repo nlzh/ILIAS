@@ -5,13 +5,16 @@
 @slate-width: 400px;
 @bg-sidebar: #4a4a4a;
 @bg-sidebar-engaged: #fff;
-@logo-height: 45px;
-@logo-width: 45px;
 // shadows
 @shadow-color: #ccc;
 @inner-top-shadow: inset 0 5px 9px -5px @shadow-color;
 @shadow-right: 2px 2px 2px @shadow-color;
 
+/*
+*********************
+float layout
+*********************
+*/
 
 // mixins
 .inner-top-shadow {
@@ -22,89 +25,27 @@
 	box-shadow: @shadow-right;
 }
 
-.display-grid {
-	display: grid;
-	display: -ms-grid;
-}
-
-/*
-*********************
-grid-based layout
-*********************
-*/
-
+// grid-layout
 .il-layout-page {
-	.display-grid;
-	grid-gap: 0px;
-    grid-template-columns: 80px 1fr;
-    grid-template-rows: 75px 1fr 75px;
-    -ms-grid-columns: 80px 1fr;
-    -ms-grid-rows: 75px 1fr 75px;
-    grid-template-areas:
-    "header header"
-    "sidebar content"
-    "footer footer"; // not supported IE
-    height: 100%; 
 	width: 100%;
-	&.with-engaged-slates {
-		grid-template-columns: @slate-width + @trigger-width 1fr;
-	}
-}
-
-header {
-    background: #fff;
-	grid-area: header;
-	height: @height-metabar;
-	padding: 0 15px;
+	height: 100%; 
 }
 
 .il-layout-page-metabar {
-	.display-grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 75px;
-    justify-items: end;
-    align-items: center;
+	clear: both;
+    background: #fff;
+	height: @height-metabar;
+    padding: 15px;
 
-    .il-notification-center {
-    	display: flex;
-    	.il-notification-item {
-    		padding-left: 10px;
-    	}
-    }
-}
-
-.il-logo {
-	justify-self: start;
-	img {
-		height: @logo-height;
-		width: @logo-width;
-	}
 }
 
 .il-layout-page-sidebar {
-	background: #fff;
+	.shadow-right;
+	background:  @bg-sidebar;
 	float: left;
-	grid-area: sidebar;
 	height: 100%;
 	width: @trigger-width;
-	.shadow-right;
-	.il-sidebar-slates {
-		display: none;
-		float: left;
-		height: 100%;
-		.inner-top-shadow;
-	}
-	
-	&.with-engaged-slates {
-		height: 100%;
-		width: @slate-width + @trigger-width;
-		.il-sidebar-slates {
-			width: @slate-width;
-			display: block;
-		}
-	}
-
-	.il-sidebar-triggers {
+	.sidebar-triggers {
 		.shadow-right;
 		background: @bg-sidebar;
 		height: 100%;
@@ -129,14 +70,14 @@ header {
 			}
 		}
 
-		/*
-		****************************************
-		nth-child selector ist not usefull when 
-		something changes in the sidebar.
-		add an additional class/id for each item in 
-		sidebar e.g btn-default.navigation
-		****************************************
-		*/
+/*
+****************************************
+nth-child selector ist not usefull when 
+something changes in the sidebar.
+add an additional class/id for each item in 
+sidebar e.g btn-default.navigation
+****************************************
+*/
 
 		.btn-iconographic:nth-child(1),
 		.btn-iconographic.engaged:nth-child(1) {
@@ -186,30 +127,33 @@ header {
 		.icon .abbreviation {
 			display: none;
 		}
-
 		&.engaged {
 			background: #fff;
 		}
 	}
-}
+	.sidebar-slates {
+		.shadow-right;
+		background-color: #fefefe;
+		height: 100%;
+		float: left;
+		display: none;
+		.inner-top-shadow;
+	}
 
-/*
-main-tag is important for screenreader 
-fix due to main-tag is not supported in IE 
-*/
-
-main {
-	display: block;
+	&.with-engaged-slates {
+		height: 100%;
+		width: @slate-width + @trigger-width;
+		.sidebar-slates {
+			width: @slate-width;
+			display: block;
+		}
+	}
 }
 
 .il-layout-page-content {
-	grid-area: content;
-	padding: 20px;
-	.display-grid;
+	display: grid;
+	padding: 5px;
+	margin-left: 5px;
 	.inner-top-shadow;
 }
 
-footer {
-	background-color: @brand-primary;
-	grid-area: footer;
-}

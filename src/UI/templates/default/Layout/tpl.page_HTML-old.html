@@ -23,23 +23,19 @@
 
 <body>
 
-	<section class="il-layout-page">
-		<header>
-			{METABAR}
-		</header>
+<div class="il-layout-page">
+	{METABAR}
+	{SIDEBAR}
 
-		<nav>
-			{SIDEBAR}
-		</nav>
-		<!-- html5 main-tag is not supported in IE / div is needed -->
-		<main class="il-layout-page-content"> 
-			{CONTENT}
-		</main>
+	<div class="il-layout-page-content">
+		{CONTENT}
+	</div>
 
-		<footer>
-			{FOOTER}
-		</footer>
-	</section>
+	<footer class="ilFooter">
+		{FOOTER}
+	</footer>
+
+</div>
 
 <!-- BEGIN on_load_code -->
 <script type="text/javascript">

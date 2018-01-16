@@ -29,15 +29,21 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		};
 
 		var _engage = function(slate) {
+			var pagediv = $('.il-layout-page');
 			slate.removeClass(_cls_disengaged);
 			slate.addClass(_cls_engaged);
-/*			var w = slate.width();
+			pagediv.addClass('with-engaged-slates');
+/*			
+var w = slate.width();
 			slate.width(1);
 			slate.animate({width: w}, 800);
 */
 		};
 
 		var _disengage = function(slate) {
+			var pagediv = $('.il-layout-page');
+			pagediv.removeClass('with-engaged-slates');
+
 			slate.removeClass(_cls_engaged);
 			slate.addClass(_cls_disengaged);
 		};
