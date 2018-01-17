@@ -60,7 +60,7 @@ if ($_GET['new_ui'] == '1') {
     $glyph = $f->glyph()->settings();
     $button = $f->button()->iconographic($glyph,'Tree', '#');
     $slate = $f->maincontrols()->menu()->slate(array(buildTreePlank($f)));
-    $sidebar = $sidebar->withEntry($button, $slate);
+    //$sidebar = $sidebar->withEntry($button, $slate);
 
 
 	$page = $f->layout()->page($content)
