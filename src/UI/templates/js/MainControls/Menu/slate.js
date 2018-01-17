@@ -42,9 +42,12 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 
 			var pagediv = $('.il-layout-page');
 			pagediv.removeClass('with-engaged-slates');
+			/*
+			//should be an additional signal the slate recieves...
 			$('.il-sidebar-triggers .btn').each( function(index, obj) {
 				$(obj).removeClass(_cls_engaged);
             });
+            */
 		};
 
 		var replaceContentFromSignal = function (event, signalData, id) {

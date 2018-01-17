@@ -42,7 +42,8 @@ class Renderer extends AbstractComponentRenderer {
 
             $slate = $entry->getSlate();
             if($slate) {
-                $slate = $slate->withActive($engaged);
+                $slate = $slate->withActive($engaged) //show?
+                    ->withCloseSignal($entry_signal); //disengage button on close
                 $tpl->setCurrentBlock("slate_item");
                 $tpl->setVariable("SLATE", $default_renderer->render($slate));
                 $tpl->parseCurrentBlock();
@@ -53,7 +54,6 @@ class Renderer extends AbstractComponentRenderer {
         $component = $component->withOnLoadCode(function($id) use ($entry_signal) {
             $registry = '';
             $registry .= "$(document).on('{$entry_signal}', function(event, signalData) {
-
                 var down_class = 'engaged';
 
                 //set all non-triggerer to inactive

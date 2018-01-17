@@ -55,12 +55,28 @@ class Slate implements C\MainControls\Menu\Slate {
 
 	/**
 	 * @param 	Plank 	$plank
+	 * *return Slate
 	 */
 	public function withAdditionalPlank($plank) {
 		$clone = clone $this;
 		$clone->planks[] = $plank;
 		return $clone;
 	}
+
+	/**
+	 * this is fired by the close-button.
+	 */
+	public function withCloseSignal($signal) {
+		$clone = clone $this;
+		$clone->close_signal = $signal;
+		return $clone;
+	}
+
+	public function getCloseSignal() {
+		return $this->close_signal;
+	}
+
+
 
 	/**
 	 * @inheritdoc

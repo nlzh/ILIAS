@@ -65,7 +65,12 @@ class Renderer extends AbstractComponentRenderer {
             $f->glyph()->back("#"),
             "close",
             "#"
-        )->withOnClick($component->getToggleSignal());
+        )
+        ->withOnClick($component->getToggleSignal())
+        ->appendOnClick($component->getCloseSignal());
+
+        //->withOnClick();
+
         $tpl->setVariable("CLOSE", $default_renderer->render($closebtn));
 
         $backlinkbtn = $f->button()->iconographic(
