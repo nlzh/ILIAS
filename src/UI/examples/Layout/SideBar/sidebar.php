@@ -9,10 +9,18 @@ function buildSidebar($f) {
         //build planks and slate
         $planks = array(
             buildPlank($f),
-            buildPlank($f),
             buildPlank($f)
         );
         $slate =$f->maincontrols()->menu()->slate($planks);
+
+        $replace_signal = $slate->getReplaceContentSignal();
+        $button = $f->button()->standard('replace content', '#')->withOnClick($replace_signal);
+        $plank = $f->maincontrols()->menu()->plank()->withContents([
+            $f->legacy('<h1>replace</h1>'),
+            $f->legacy('this will replace the contents of the entire slate'),
+            $button
+        ]);
+        $slate =$slate->withAdditionalPlank($plank);
 
         //triggerer
         $icon = $f->icon()->standard('sidebar_trigger', '')->withSize('medium');

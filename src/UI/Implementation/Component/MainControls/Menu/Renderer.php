@@ -28,12 +28,18 @@ class Renderer extends AbstractComponentRenderer {
         $tpl = $this->getTemplate("Menu/tpl.slate.html", true, true);
 
         $toggle_signal = $component->getToggleSignal();
+        $replace_signal = $component->getReplaceContentSignal();
 
-        $component = $component->withOnLoadCode(function($id) use ($toggle_signal) {
+        $component = $component->withOnLoadCode(function($id) use ($toggle_signal, $replace_signal) {
             return "$(document).on('{$toggle_signal}', function(event, signalData) {
                         il.UI.maincontrols.menu.slate.onClickTrigger(event, signalData, '{$id}');
                         return false;
-                    })";
+                    });
+                    $(document).on('{$replace_signal}', function(event, signalData) {
+                        il.UI.maincontrols.menu.slate.replaceContentFromSignal(event, signalData, '{$id}');
+                        return false;
+                    });
+                    ";
         });
 
         if($component->getActive()) {

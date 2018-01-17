@@ -30,6 +30,11 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	protected $toggle_signal;
 
+	/**
+	 * @var Signal
+	 */
+	protected $replace_signal;
+
 
 	public function __construct(
 		array $planks,
@@ -46,6 +51,15 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	public function getPlanks() {
 		return $this->planks;
+	}
+
+	/**
+	 * @param 	Plank 	$plank
+	 */
+	public function withAdditionalPlank($plank) {
+		$clone = clone $this;
+		$clone->planks[] = $plank;
+		return $clone;
 	}
 
 	/**
@@ -70,6 +84,7 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	protected function initSignals() {
 		$this->toggle_signal = $this->signal_generator->create();
+		$this->replace_signal = $this->signal_generator->create();
 	}
 
 	/**
@@ -86,6 +101,13 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	public function getToggleSignal() {
 		return $this->toggle_signal;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getReplaceContentSignal() {
+		return $this->replace_signal;
 	}
 
 }

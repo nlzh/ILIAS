@@ -38,14 +38,6 @@ interface Slate extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 
 
 	/**
-	 * @return 	Signal
-	 */
-	//public function getReplaceContentSignal();
-
-
-
-
-	/**
 	 * @return 	Slate
 	 */
 	public function withResetSignals();
@@ -54,4 +46,10 @@ interface Slate extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 	 * @return 	Signal
 	 */
 	public function getToggleSignal();
+
+	/**
+	 * @return 	Signal
+	 */
+	public function getReplaceContentSignal();
+
 }

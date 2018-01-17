@@ -43,9 +43,20 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 			slate.addClass(_cls_disengaged);
 		};
 
+		var replaceContentFromSignal = function (event, signalData, id) {
+            console.group('REPLACE CONTENT');
+            console.log(event);
+            console.log(signalData);
+            console.log(id);
+            console.groupEnd();
+			var slate_contents = $('#' + id + ' .il-maincontrol-menu-slate-content');
+			slate_contents.html('replaced!');
+
+        }
 		return {
 			onClickTrigger: onClickTrigger,
-			toggle : toggle
+			toggle : toggle,
+			replaceContentFromSignal: replaceContentFromSignal
 		}
 
 	})($);
