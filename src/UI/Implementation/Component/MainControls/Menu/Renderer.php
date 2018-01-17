@@ -67,11 +67,11 @@ class Renderer extends AbstractComponentRenderer {
 
     protected function renderPlank(Component\MainControls\Menu\Plank $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("Menu/tpl.plank.html", true, true);
-
-        $f = $this->getUIFactory();
-        $content = $f->legacy('something');
-        $tpl->setVariable("PLANKCONTENT", $default_renderer->render($component->getContents()));
-
+        foreach ($component->getContents() as $element) {
+            $tpl->setCurrentBlock("element");
+            $tpl->setVariable("PLANKCONTENT", $default_renderer->render($element));
+            $tpl->parseCurrentBlock();
+        }
         return $tpl->get();
     }
 

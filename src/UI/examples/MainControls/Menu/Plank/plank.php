@@ -29,7 +29,8 @@ function buildPlank($f) {
     return  $f->maincontrols()->menu()->plank()
         ->withContents([
             $f->legacy('some content'),
-            $f->divider()->horizontal(),
+            $f->button()->standard("a button", "#"),
+            $f->button()->standard("another button", "#"),
             $f->legacy('some more content'),
             $f->divider()->horizontal(),
             $f->legacy('third content')
