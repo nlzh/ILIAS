@@ -16,19 +16,9 @@ class Plank implements C\MainControls\Menu\Plank {
 	use JavaScriptBindable;
 
 	/**
-	 * @var string
-	 */
-	private $title;
-
-	/**
 	 * @var
 	 */
-	private $elements = array();
-
-	/**
-	 * @var bool
-	 */
-	private $static_expand = false;
+	private $contents = array();
 
 	/**
 	 * @var Signal
@@ -44,50 +34,20 @@ class Plank implements C\MainControls\Menu\Plank {
 	/**
 	 * @inheritdoc
 	 */
-	public function withTitle($title) {
+	public function withContents(array $contents) {
 		$clone = clone $this;
-		$clone->title = $title;
+		$clone->contents = $contents;
 		return $clone;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function getTitle() {
-		return $this->title;
+	public function getContents() {
+		return $this->contents;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function withElement($element) {
-		$clone = clone $this;
-		$clone->elements[] = $element;
-		return $clone;
-	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getElements() {
-		return $this->elements;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function withStaticExpansion($expand=false) {
-		$clone = clone $this;
-		$clone->static_expand = $expand;
-		return $clone;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getStaticExpanded() {
-		return $this->static_expand;
-	}
 
 	/**
 	 * @inheritdoc
@@ -107,9 +67,9 @@ class Plank implements C\MainControls\Menu\Plank {
 
 	/**
 	 * @inheritdoc
-	 */
 	public function getToggleSignal() {
 		return $this->toggle_signal;
 	}
+	 */
 
 }
