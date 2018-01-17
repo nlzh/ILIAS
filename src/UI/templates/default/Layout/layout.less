@@ -67,6 +67,15 @@ grid-based layout
 	width: 100%;
 	&.with-engaged-slates {
 		grid-template-columns: @slate-width + @trigger-width 1fr;
+
+		.il-layout-page-sidebar {
+		width: @slate-width + @trigger-width;
+
+			.il-sidebar-slates {
+				width: @slate-width;
+				display: block;
+			}
+		}
 	}
 }
 
@@ -115,14 +124,6 @@ header {
 		height: 100%;
 		.inner-top-shadow;
 	}
-	
-	&.with-engaged-slates {
-		width: @slate-width + @trigger-width;
-		.il-sidebar-slates {
-			width: @slate-width;
-			display: block;
-		}
-	}
 
 	.il-sidebar-triggers {
 		background: @bg-sidebar;
@@ -130,10 +131,13 @@ header {
 		position: relative; 
 		width: @trigger-width;
 		.btn-iconographic {
+			align-items: center;
 			background: @bg-sidebar;
 			border: 0;
 			border-bottom: @trigger-border;
 			color: @bg-sidebar-engaged;
+			display: flex;
+			flex-flow: column wrap;
 			font-size: 70%;
 			height: @trigger-height;
 			padding: 10px 0;
