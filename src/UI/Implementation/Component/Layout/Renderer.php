@@ -31,14 +31,10 @@ class Renderer extends AbstractComponentRenderer {
         $entry_signal = $component->getEntryClickSignal();
         $counter = 0;
         foreach ($component->getEntries() as $entry) {
+            $engaged = ($counter === $component->getActive());
             $button = $entry->getButton()
-                ->appendOnClick($entry_signal);
-
-            if($counter === $component->getActive()) {
-                $button = $button->withEngagedState(true);
-            } else {
-                $button = $button->withEngagedState(false);
-            }
+                ->appendOnClick($entry_signal)
+                ->withEngagedState($engaged);
 
             $tpl->setCurrentBlock("trigger_item");
             $tpl->setVariable("BUTTON", $default_renderer->render($button));
@@ -46,6 +42,7 @@ class Renderer extends AbstractComponentRenderer {
 
             $slate = $entry->getSlate();
             if($slate) {
+                $slate = $slate->withActive($engaged);
                 $tpl->setCurrentBlock("slate_item");
                 $tpl->setVariable("SLATE", $default_renderer->render($slate));
                 $tpl->parseCurrentBlock();

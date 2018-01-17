@@ -9,7 +9,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		var _cls_disengaged = 'disengaged';
 
 		var onClickTrigger = function(event, signalData, id) {
-			slate = $('#' + id);
+			var slate = $('#' + id);
 			slate.siblings().each(function(c,s){
 				_disengage($(s));
 			});

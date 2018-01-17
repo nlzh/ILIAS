@@ -36,6 +36,15 @@ class Renderer extends AbstractComponentRenderer {
                     })";
         });
 
+        if($component->getActive()) {
+            $component = $component->withAdditionalOnLoadCode(function($id) {
+                return "
+                    var slate = $('#{$id}');
+                    il.UI.maincontrols.menu.slate.toggle(slate);
+                ";
+            });
+        }
+
         $id = $this->bindJavaScript($component);
         $tpl->setVariable('ID', $id);
 
@@ -51,7 +60,6 @@ class Renderer extends AbstractComponentRenderer {
             "close",
             "#"
         )->withOnClick($component->getToggleSignal());
-
         $tpl->setVariable("CLOSE", $default_renderer->render($closebtn));
 
         $backlinkbtn = $f->button()->iconographic(

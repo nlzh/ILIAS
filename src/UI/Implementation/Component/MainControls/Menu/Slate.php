@@ -16,9 +16,9 @@ class Slate implements C\MainControls\Menu\Slate {
 	use JavaScriptBindable;
 
 	/**
-	 * @var \ILIAS\UI\Component\Button\Iconographic
+	 * @var bool
 	 */
-	private $button;
+	private $active;
 
 	/**
 	 * @var Plank[]
@@ -46,6 +46,23 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	public function getPlanks() {
 		return $this->planks;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withActive($state) {
+		$this->checkBoolArg('state', $state);
+		$clone = clone $this;
+		$clone->active = $state;
+		return $clone;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getActive() {
+		return $this->active;
 	}
 
 	/**

@@ -25,7 +25,7 @@ function buildSidebar($f) {
     $extra_button = $f->button()->iconographic($glyph,'Extra', '#');
 
     $entries[] = $f->layout()->sidebarentry($extra_button);
-    return $f->layout()->sidebar($entries);
+    return $f->layout()->sidebar($entries, 2);
 
 }
 
