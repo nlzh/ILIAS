@@ -10,37 +10,16 @@ use ILIAS\UI\Component\JavaScriptBindable;
 interface Plank extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 
 	/**
-	 * @param string 	$title
+	 * @param Component[] 	$contents
 	 * @return Plank
 	 */
-	public function withTitle($title);
+	public function withContents(array $contents);
 
 	/**
-	 * @return string
+	 * @return Component[]
 	 */
-	public function getTitle();
+	public function getContents();
 
-	/**
-	 * @param mixed 	$element
-	 * @return Plank
-	 */
-	public function withElement($element);
-
-	/**
-	 * @return
-	 */
-	public function getElements();
-
-	/**
-	 * @param bool 	$expand
-	 * @return Plank
-	 */
-	public function withStaticExpansion($expand=false);
-
-	/**
-	 * @return bool
-	 */
-	public function getStaticExpanded();
 
 	/**
 	 * @return Plank
@@ -50,6 +29,6 @@ interface Plank extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 	/**
 	 * @return Signal
 	 */
-	public function getToggleSignal();
+	//public function getToggleSignal();
 
 }
