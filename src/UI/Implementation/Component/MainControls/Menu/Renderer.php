@@ -27,10 +27,10 @@ class Renderer extends AbstractComponentRenderer {
     protected function renderSlate(Component\MainControls\Menu\Slate $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("Menu/tpl.slate.html", true, true);
 
-        $internal_signal = $component->getToggleSignal();
+        $toggle_signal = $component->getToggleSignal();
 
-        $component = $component->withOnLoadCode(function($id) use ($internal_signal) {
-            return "$(document).on('{$internal_signal}', function(event, signalData) {
+        $component = $component->withOnLoadCode(function($id) use ($toggle_signal) {
+            return "$(document).on('{$toggle_signal}', function(event, signalData) {
                         il.UI.maincontrols.menu.slate.onClickTrigger(event, signalData, '{$id}');
                         return false;
                     })";
@@ -67,11 +67,11 @@ class Renderer extends AbstractComponentRenderer {
 
     protected function renderPlank(Component\MainControls\Menu\Plank $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("Menu/tpl.plank.html", true, true);
-
-        $f = $this->getUIFactory();
-        $content = $f->legacy('something');
-        $tpl->setVariable("PLANKCONTENT", $component->getTitle());
-
+        foreach ($component->getContents() as $element) {
+            $tpl->setCurrentBlock("element");
+            $tpl->setVariable("PLANKCONTENT", $default_renderer->render($element));
+            $tpl->parseCurrentBlock();
+        }
         return $tpl->get();
     }
 

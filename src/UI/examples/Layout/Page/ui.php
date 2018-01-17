@@ -21,9 +21,7 @@ function buildTreePlank($f) {
     $out =  $exp->getOutput(false);
 
     return $f->maincontrols()->menu()->plank()
-        ->withTitle('Repository Tree')
-        ->withStaticExpansion(true)
-        ->withElement($f->legacy($out));
+        ->withContents([$f->legacy($out)]);
 }
 
 
