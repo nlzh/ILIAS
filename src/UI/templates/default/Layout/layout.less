@@ -41,11 +41,6 @@
 	box-shadow: @shadow-right;
 }
 
-.display-grid {
-	display: grid;
-	// display: -ms-grid;
-}
-
 /*
 *********************
 grid-based layout
@@ -53,12 +48,10 @@ grid-based layout
 */
 
 .il-layout-page {
-	.display-grid;
+	display: grid;
 	grid-gap: 0px;
     grid-template-columns: 80px 1fr;
     grid-template-rows: 75px 1fr 75px;
-    -ms-grid-columns: 80px 1fr;
-    -ms-grid-rows: 75px 1fr 75px;
     grid-template-areas:
     "header header"
     "sidebar content"
@@ -67,13 +60,17 @@ grid-based layout
 	width: 100%;
 	&.with-engaged-slates {
 		grid-template-columns: @slate-width + @trigger-width 1fr;
-
+		transition: all .5s ease-in-out;
 		.il-layout-page-sidebar {
-		width: @slate-width + @trigger-width;
-
+			width: @slate-width + @trigger-width;
+			// slate definitions
 			.il-sidebar-slates {
 				width: @slate-width;
 				display: block;
+				.il-maincontrol-menu-slate.engaged {
+					display: flex;
+					flex-flow: column;
+				}
 			}
 		}
 	}
@@ -228,7 +225,7 @@ main {
 .il-layout-page-content {
 	grid-area: content;
 	padding: 20px;
-	.display-grid;
+	display: grid;
 	.inner-top-shadow;
 }
 
