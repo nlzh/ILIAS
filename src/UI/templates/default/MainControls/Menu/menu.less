@@ -1,5 +1,6 @@
-@bg-slate-collapsed: #eee;
+@bg-slate-collapsed: #f2f2f2;
 @bg-slate-expanded: #ebe8c0;
+@menu-divider: 0px solid #eee;
 
 .il-maincontrol-menu-slate {
  	&.engaged {
@@ -11,43 +12,34 @@
 }
 
 .il-maincontrol-menu-plank {
-	display: block;
+	border-bottom: @menu-divider;
+	background: @bg-slate-collapsed;
+	display: flex;
+	flex-flow: column;
 	font-size: 90%;
 	list-style: none;
 	margin: 0 0 2px 0;
-	padding: 0;
-	li {
-		background: @bg-slate-collapsed;
-		padding: 10px 0 10px 20px;
-		&.collapsed {
-			> .plank-glyph-expand {
-				display: inline;
-			}
-			> .plank-glyph-collapse {
-				display: none;
-			}
-			> .plank-elements {
-				display: none;
-			}
-
-		}
-
-		&.expanded {
-			background: @bg-slate-expanded;
-			> .plank-glyph-expand {
-				display: none;
-			}
-			> .plank-glyph-collapse {
-				display: inline;
-			}
-			> .plank-elements {
-				display: block;
-			}
-		}
-
-		ul {
-		    margin-left: -20px;
-		}
+	padding: 10px 20px;
+	&:first-child {
+		border-top: @menu-divider;
 	}
+}
 
+.il-maincontrol-menu-slate-content {
+    display: grid;
+}
+
+.il-maincontrol-menu-slate-close,
+.il-maincontrol-menu-slate-back {
+	button {
+		background-color: transparent;
+	}
+}
+
+
+.il-maincontrol-menu-slate-close {
+	align-self: flex-end;
+	.iconographic-label {
+		display: none;
+	}
 }
