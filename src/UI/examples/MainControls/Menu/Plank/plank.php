@@ -32,7 +32,6 @@ function buildPlank($f) {
             $f->button()->standard("a button", "#"),
             $f->button()->standard("another button", "#"),
             $f->legacy('some more content'),
-            $f->divider()->horizontal(),
             $f->legacy('third content')
         ]);
 }
