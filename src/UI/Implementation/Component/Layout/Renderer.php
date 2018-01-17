@@ -57,8 +57,7 @@ class Renderer extends AbstractComponentRenderer {
             $registry = '';
             $registry .= "$(document).on('{$entry_signal}', function(event, signalData) {
 
-                var down_class = 'engaged',
-                    class_engaged_slates = 'with-engaged-slates';
+                var down_class = 'engaged';
 
                 //set all non-triggerer to inactive
                 result = $('#{$id} .il-sidebar-triggers .btn');
@@ -75,11 +74,6 @@ class Renderer extends AbstractComponentRenderer {
                     signalData.triggerer.addClass(down_class);
                 }
 
-                if($('#{$id} .il-maincontrol-menu-slate.engaged').length > 0) {
-                    $('#{$id}').addClass(class_engaged_slates);
-                } else {
-                    $('#{$id}').removeClass(class_engaged_slates);
-                }
             });";
 
             return $registry;

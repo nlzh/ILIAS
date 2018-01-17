@@ -49,19 +49,6 @@ class SideBar implements C\Layout\SideBar {
 	/**
 	 * @inheritdoc
 	 */
-	public function withEntry($identifier, $button, C\MainControls\Menu\Slate $slate=null) {
-		$clone = clone $this;
-		if($slate) {
-			$clone->slates[$identifier] = $slate;
-			$button = $button->withOnClick($slate->getToggleSignal());
-		}
-		$clone->buttons[$identifier] = $button;
-		return $clone;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
 	public function getEntries() {
 		return $this->entries;
 	}
