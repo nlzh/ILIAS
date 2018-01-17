@@ -56,13 +56,13 @@ grid-based layout
     "header header"
     "sidebar content"
     "footer footer"; // not supported IE
-    height: 100%; 
+    height: 100%;
 	width: 100%;
 	&.with-engaged-slates {
-		grid-template-columns: @slate-width + @trigger-width 1fr;
-		transition: all .5s ease-in-out;
+		grid-template-columns: @slate-width+@trigger-width 1fr;
 		.il-layout-page-sidebar {
 			width: @slate-width + @trigger-width;
+			//´transition: all 1s ease-in-out; 
 			// slate definitions
 			.il-sidebar-slates {
 				width: @slate-width;
