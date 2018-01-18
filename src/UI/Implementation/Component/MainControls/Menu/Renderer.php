@@ -29,14 +29,19 @@ class Renderer extends AbstractComponentRenderer {
 
         $toggle_signal = $component->getToggleSignal();
         $replace_signal = $component->getReplaceContentSignal();
+        $navback_signal = $component->getNavigateBackSignal();
 
-        $component = $component->withOnLoadCode(function($id) use ($toggle_signal, $replace_signal) {
+        $component = $component->withOnLoadCode(function($id) use ($toggle_signal, $replace_signal, $navback_signal) {
             return "$(document).on('{$toggle_signal}', function(event, signalData) {
                         il.UI.maincontrols.menu.slate.onClickTrigger(event, signalData, '{$id}');
                         return false;
                     });
                     $(document).on('{$replace_signal}', function(event, signalData) {
                         il.UI.maincontrols.menu.slate.replaceContentFromSignal(event, signalData, '{$id}');
+                        return false;
+                    });
+                    $(document).on('{$navback_signal}', function(event, signalData) {
+                        il.UI.maincontrols.menu.slate.navigateBack('{$id}');
                         return false;
                     });
                     ";
@@ -66,7 +71,7 @@ class Renderer extends AbstractComponentRenderer {
             "close",
             "#"
         )
-        ->withOnClick($component->getToggleSignal())
+        ->withOnClick($toggle_signal)
         ->appendOnClick($component->getCloseSignal());
 
         //->withOnClick();
@@ -77,7 +82,7 @@ class Renderer extends AbstractComponentRenderer {
             $f->glyph()->back("#"),
             "back",
             "#"
-        )->withOnClick($component->getToggleSignal());
+        )->withOnClick($navback_signal);
         $tpl->setVariable("BACKLINK", $default_renderer->render($backlinkbtn));
 
         return $tpl->get();

@@ -7,6 +7,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 	menu.slate = (function($) {
 		var _cls_engaged = 'engaged';
 		var _cls_disengaged = 'disengaged';
+		var _history = [];
 
 		var onClickTrigger = function(event, signalData, id) {
 			var slate = $('#' + id);
@@ -51,19 +52,49 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		};
 
 		var replaceContentFromSignal = function (event, signalData, id) {
-            console.group('REPLACE CONTENT');
+/*            console.group('REPLACE CONTENT');
             console.log(event);
             console.log(signalData);
             console.log(id);
             console.groupEnd();
-			var slate_contents = $('#' + id + ' .il-maincontrol-menu-slate-content');
+*/
+			var slate_contents = $('#' + id + ' .il-maincontrol-menu-slate-content'),
+				slate_backbtn = $('#' + id + ' .il-maincontrol-menu-slate-back');
+
 			slate_contents.html('replaced!');
 
-        }
+			_appendToHistory(id, slate_contents);
+			slate_backbtn.removeClass('inactive');
+			slate_backbtn.addClass('active');
+
+        };
+
+
+        var _appendToHistory = function (id, slate_contents) {
+        	if(! _history[id]) {
+        		_history[id] = [];
+        	}
+        	_history[id].push(slate_contents.clone(true, true)); //clone with events, in depth
+        };
+
+        var navigateBack = function (id) {
+        	var slate_contents = $('#' + id + ' .il-maincontrol-menu-slate-content'),
+        		slate_backbtn = $('#' + id + ' .il-maincontrol-menu-slate-back');
+        	content = _history[id].pop();
+        	slate_contents.replaceWith(content);
+        	if(_history[id].length === 0) {
+        		slate_backbtn.removeClass('active');
+				slate_backbtn.addClass('inactive');
+        	}
+        };
+
+
+
 		return {
 			onClickTrigger: onClickTrigger,
 			toggle : toggle,
-			replaceContentFromSignal: replaceContentFromSignal
+			replaceContentFromSignal: replaceContentFromSignal,
+			navigateBack: navigateBack
 		}
 
 	})($);
