@@ -67,14 +67,9 @@ grid-based layout
 		grid-template-columns: @slate-width+@trigger-width 1fr;
 		.il-layout-page-sidebar {
 			width: @slate-width + @trigger-width;
-			//´transition: all 1s ease-in-out; 
-			// slate definitions
+			// slate 
 			.il-sidebar-slates {
-				width: @slate-width;
-				display: block;
-				.il-maincontrol-menu-slate.engaged {
-					display: grid;
-				}
+				display: grid;
 			}
 		}
 	}
@@ -127,97 +122,103 @@ nav {
 	grid-area: sidebar;
 	height: 100%;
 	width: @trigger-width;
-	.il-sidebar-slates {
-		.shadow-right;
-		display: none;
-		height: 100%;
-	}
-	.il-sidebar-triggers {
-		.shadow-right;
+}
+
+// sidebar trigger
+.il-sidebar-triggers {
+	.shadow-right;
+	background: @bg-sidebar;
+	position: relative; 
+	width: @trigger-width;
+	z-index: 1;
+	.btn-iconographic {
+		align-items: center;
 		background: @bg-sidebar;
-		position: relative; 
-		width: @trigger-width;
-		z-index: 1;
-		.btn-iconographic {
-			align-items: center;
-			background: @bg-sidebar;
-			border: 0;
-			border-bottom: @trigger-border;
-			color: @bg-sidebar-engaged;
-			display: flex;
-			flex-flow: column wrap;
-			font-size: 70%;
-			height: @trigger-height;
-			justify-content: center;
-			padding: 0;
-			width: 100%;
-			&.engaged {
-				background-color: @bg-sidebar-engaged;
-				color: @bg-sidebar;
-			}
-			&:focus {
-				outline: none;
-			}
-		}
-
-		/*
-		****************************************
-		nth-child selector ist not usefull when 
-		something changes in the sidebar.
-		add an additional class/id for each item in 
-		sidebar e.g btn-default.navigation
-		****************************************
-		*/
-
-		.btn-iconographic:nth-child(1) .icon {
-			background-image: url('images/icon-sb-cockpit.svg');
-		}
-
-		.btn-iconographic:nth-child(2) .icon {
-			background-image: url('images/icon-sb-navigation.svg');
-		}
-
-		.btn-iconographic:nth-child(3) .icon {
-			background-image: url('images/icon-sb-search.svg');
-		}
-
-		.btn-iconographic:nth-child(4) .icon {
-			background-image: url('images/icon-sb-help.svg');
-		}
-
-		.btn-iconographic:nth-child(5) .icon {
-			background-image: url('images/icon-sb-more.svg');
-		}
-
-		.btn-iconographic.engaged:nth-child(1) .icon {
-			background-image: url('images/icon-sb-cockpit-engaged.svg');	
-		}
-
-		.btn-iconographic.engaged:nth-child(2) .icon {
-			background-image: url('images/icon-sb-navigation-engaged.svg');
-		}
-
-		.btn-iconographic.engaged:nth-child(3) .icon {
-			background-image: url('images/icon-sb-search-engaged.svg');
-		}
-
-		.btn-iconographic.engaged:nth-child(4) .icon {
-			background-image: url('images/icon-sb-help-engaged.svg');
-		}
-
-		.btn-iconographic.engaged:nth-child(5) .icon {
-			background-image: url('images/icon-sb-more-engaged.svg');
-		}
-
-		.icon .abbreviation {
-			display: none;
-		}
-
+		border: 0;
+		border-bottom: @trigger-border;
+		color: @bg-sidebar-engaged;
+		display: flex;
+		flex-flow: column wrap;
+		font-size: 70%;
+		height: @trigger-height;
+		justify-content: center;
+		padding: 0;
+		width: 100%;
 		&.engaged {
-			background: #fff;
+			background-color: @bg-sidebar-engaged;
+			color: @bg-sidebar;
 		}
+		&:focus {
+			outline: none;
+		}
+	}
+
+	/*
+	****************************************
+	nth-child selector ist not usefull when 
+	something changes in the sidebar.
+	add an additional class/id for each item in 
+	sidebar e.g btn-default.navigation
+	****************************************
+	
+
+	.btn-iconographic:nth-child(1) .icon {
+		background-image: url('images/icon-sb-cockpit.svg');
+	}
+
+	.btn-iconographic:nth-child(2) .icon {
+		background-image: url('images/icon-sb-navigation.svg');
+	}
+
+	.btn-iconographic:nth-child(3) .icon {
+		background-image: url('images/icon-sb-search.svg');
+	}
+
+	.btn-iconographic:nth-child(4) .icon {
+		background-image: url('images/icon-sb-help.svg');
+	}
+
+	.btn-iconographic:nth-child(5) .icon {
+		background-image: url('images/icon-sb-more.svg');
+	}
+
+	.btn-iconographic.engaged:nth-child(1) .icon {
+		background-image: url('images/icon-sb-cockpit-engaged.svg');	
+	}
+
+	.btn-iconographic.engaged:nth-child(2) .icon {
+		background-image: url('images/icon-sb-navigation-engaged.svg');
+	}
+
+	.btn-iconographic.engaged:nth-child(3) .icon {
+		background-image: url('images/icon-sb-search-engaged.svg');
+	}
+
+	.btn-iconographic.engaged:nth-child(4) .icon {
+		background-image: url('images/icon-sb-help-engaged.svg');
+	}
+
+	.btn-iconographic.engaged:nth-child(5) .icon {
+		background-image: url('images/icon-sb-more-engaged.svg');
+	}
+	*/
+
+	.icon .abbreviation {
+		display: none;
+	}
+
+	&.engaged {
+		background: #fff;
 	}
 }
+
+// sidebar slates
+.il-sidebar-slates {
+	.shadow-right;
+	display: none;
+	width: @slate-width;
+}
+
 
 /*
 main-tag is important for screenreader 
