@@ -27,12 +27,12 @@ function buildSidebar($f) {
         $button = $f->button()->iconographic($icon->withAbbreviation('X'), "Button", '#');
         $entries[] = $f->layout()->sidebarentry($button, $slate);
     }
-
+/*
     $icon = $f->icon()->standard('sidebar_trigger', '')->withSize('medium');
     $button = $f->button()->iconographic($icon->withAbbreviation('X'), "Tree", '#');
     $slate = $f->maincontrols()->menu()->slate([buildTreePlank($f)]);
     $entries[] = $f->layout()->sidebarentry($button, $slate);
-
+*/
 
 
     $glyph = $f->glyph()->user();

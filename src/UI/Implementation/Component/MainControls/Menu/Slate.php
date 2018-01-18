@@ -69,6 +69,16 @@ class Slate implements C\MainControls\Menu\Slate {
 	}
 
 	/**
+	 * @param 	Plank[] 	$planks
+	 * *return Slate
+	 */
+	public function withPlanks(array $planks) {
+		$clone = clone $this;
+		$clone->planks = $planks;
+		return $clone;
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function withActive($state) {

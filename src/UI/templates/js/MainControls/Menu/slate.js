@@ -9,7 +9,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		var _cls_disengaged = 'disengaged';
 		var _history = [];
 
-		var onClickTrigger = function(event, signalData, id) {
+		var onToggle = function(event, signalData, id) {
 			var slate = $('#' + id);
 			slate.siblings().each(function(c,s){
 				_disengage($(s));
@@ -30,6 +30,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		};
 
 		var _engage = function(slate) {
+			console.log("engage");
 			slate.removeClass(_cls_disengaged);
 			slate.addClass(_cls_engaged);
 
@@ -38,6 +39,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		};
 
 		var _disengage = function(slate) {
+			console.log("disengage");
 			slate.removeClass(_cls_engaged);
 			slate.addClass(_cls_disengaged);
 
@@ -77,7 +79,7 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
         };
 
 		return {
-			onClickTrigger: onClickTrigger,
+			onToggle: onToggle,
 			toggle : toggle,
 			replaceContentFromSignal: replaceContentFromSignal,
 			navigateBack: navigateBack

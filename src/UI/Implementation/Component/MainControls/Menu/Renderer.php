@@ -33,7 +33,7 @@ class Renderer extends AbstractComponentRenderer {
 
         $component = $component->withOnLoadCode(function($id) use ($toggle_signal, $replace_signal, $navback_signal) {
             return "$(document).on('{$toggle_signal}', function(event, signalData) {
-                        il.UI.maincontrols.menu.slate.onClickTrigger(event, signalData, '{$id}');
+                        il.UI.maincontrols.menu.slate.onToggle(event, signalData, '{$id}');
                         return false;
                     });
                     $(document).on('{$replace_signal}', function(event, signalData) {
@@ -71,10 +71,10 @@ class Renderer extends AbstractComponentRenderer {
             "close",
             "#"
         )
-        ->withOnClick($toggle_signal)
-        ->appendOnClick($component->getCloseSignal());
-
-        //->withOnClick();
+        ->withOnClick($toggle_signal);
+        if($component->getCloseSignal()) {
+            $closebtn = $closebtn->appendOnClick($component->getCloseSignal());
+        }
 
         $tpl->setVariable("CLOSE", $default_renderer->render($closebtn));
 

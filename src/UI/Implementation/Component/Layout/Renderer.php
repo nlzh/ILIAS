@@ -32,6 +32,9 @@ class Renderer extends AbstractComponentRenderer {
         $counter = 0;
         foreach ($component->getEntries() as $entry) {
             $engaged = ($counter === $component->getActive());
+            $slate = $entry->getSlate();
+
+            //if a buttons comes twith a slate, sidebarentry will set the action
             $button = $entry->getButton()
                 ->appendOnClick($entry_signal)
                 ->withEngagedState($engaged);
@@ -40,7 +43,6 @@ class Renderer extends AbstractComponentRenderer {
             $tpl->setVariable("BUTTON", $default_renderer->render($button));
             $tpl->parseCurrentBlock();
 
-            $slate = $entry->getSlate();
             if($slate) {
                 $slate = $slate->withActive($engaged) //show?
                     ->withCloseSignal($entry_signal); //disengage button on close
@@ -63,7 +65,6 @@ class Renderer extends AbstractComponentRenderer {
                         $(obj).removeClass(down_class);
                     }
                 });
-
                 //toggle triggerer active/inactive
                 if(signalData.triggerer.hasClass(down_class)) {
                     signalData.triggerer.removeClass(down_class);
