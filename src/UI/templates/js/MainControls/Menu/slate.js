@@ -43,32 +43,18 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 
 			var pagediv = $('.il-layout-page');
 			pagediv.removeClass('with-engaged-slates');
-			/*
-			//should be an additional signal the slate recieves...
-			$('.il-sidebar-triggers .btn').each( function(index, obj) {
-				$(obj).removeClass(_cls_engaged);
-            });
-            */
 		};
 
 		var replaceContentFromSignal = function (event, signalData, id) {
-/*            console.group('REPLACE CONTENT');
-            console.log(event);
-            console.log(signalData);
-            console.log(id);
-            console.groupEnd();
-*/
 			var slate_contents = $('#' + id + ' .il-maincontrol-menu-slate-content'),
 				slate_backbtn = $('#' + id + ' .il-maincontrol-menu-slate-back');
 
+			_appendToHistory(id, slate_contents);
 			slate_contents.html('replaced!');
 
-			_appendToHistory(id, slate_contents);
 			slate_backbtn.removeClass('inactive');
 			slate_backbtn.addClass('active');
-
         };
-
 
         var _appendToHistory = function (id, slate_contents) {
         	if(! _history[id]) {
@@ -80,15 +66,15 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
         var navigateBack = function (id) {
         	var slate_contents = $('#' + id + ' .il-maincontrol-menu-slate-content'),
         		slate_backbtn = $('#' + id + ' .il-maincontrol-menu-slate-back');
+
         	content = _history[id].pop();
         	slate_contents.replaceWith(content);
+
         	if(_history[id].length === 0) {
         		slate_backbtn.removeClass('active');
 				slate_backbtn.addClass('inactive');
         	}
         };
-
-
 
 		return {
 			onClickTrigger: onClickTrigger,
