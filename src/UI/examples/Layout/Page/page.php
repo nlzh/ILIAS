@@ -7,6 +7,10 @@ function page() {
     $f = $DIC->ui()->factory();
     $renderer = $DIC->ui()->renderer();
 
+    if($_GET['rpc']) {
+        handleRPC($f, $renderer);
+    }
+
     $content = $f->legacy("some content");
 
     $page = $f->layout()->page($content)
@@ -57,14 +61,44 @@ function pagedemo_sidebar($f) {
     return $f->layout()->sidebar($entries);
 }
 
+function handleRPC($f, $renderer) {
+    $counter = $_GET['rpc'];
+    $nu_cnt = (int)$counter + 1;
+    $url = str_replace('&rpc=' .$counter, '&rpc=' .$nu_cnt, $_SERVER['REQUEST_URI']);
+
+    $sig_id = $_GET['replaceSignal'];
+    $replace_signal = new \ILIAS\UI\Implementation\Component\Popover\ReplaceContentSignal($sig_id);
+    $replace_signal = $replace_signal->withAsyncRenderUrl($url);
+
+    $btn = $f->button()->standard('Replace Contents', '#')
+    ->withOnClick($replace_signal);
+
+    $contents = $f->maincontrols()->menu()->plank()->withContents([
+        $f->legacy('remote content'),
+        $f->legacy('in depth ' .$counter),
+        $btn
+    ]);
+    echo $renderer->renderAsync($contents);
+    exit();
+}
 
 function pagedemo_planks1($f, $replacesignal){
     $planks = array();
     $planks[] = $f->maincontrols()->menu()->plank()->withContents([
-            $f->legacy('some content'),
-            $f->legacy('in a slate')
-        ]);
+        $f->legacy('some content'),
+        $f->legacy('in a slate')
+    ]);
 
+    $signal_id = $replacesignal->getId();
+    $signal = $replacesignal->withAsyncRenderUrl(
+       $_SERVER['REQUEST_URI']
+        .'&replaceSignal='. $signal_id
+        .'&rpc=1'
+    );
+    $btn = $f->button()->standard('Replace Contents', '#')
+        ->withOnClick($signal);
+
+    $planks[] = $btn;
     return $planks;
 }
 

@@ -113,8 +113,9 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	protected function initSignals() {
 		$this->toggle_signal = $this->signal_generator->create();
-		$this->replace_signal = $this->signal_generator->create();
 		$this->navback_signal = $this->signal_generator->create();
+	//	$this->replace_signal = $this->signal_generator->create();
+		$this->replace_signal = $this->signal_generator->create("ILIAS\\UI\\Implementation\\Component\\Popover\\ReplaceContentSignal");
 	}
 
 	/**

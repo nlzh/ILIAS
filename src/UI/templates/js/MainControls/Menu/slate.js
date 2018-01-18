@@ -30,7 +30,6 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		};
 
 		var _engage = function(slate) {
-			console.log("engage");
 			slate.removeClass(_cls_disengaged);
 			slate.addClass(_cls_engaged);
 
@@ -39,7 +38,6 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 		};
 
 		var _disengage = function(slate) {
-			console.log("disengage");
 			slate.removeClass(_cls_engaged);
 			slate.addClass(_cls_disengaged);
 
@@ -52,10 +50,20 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 				slate_backbtn = $('#' + id + ' .il-maincontrol-menu-slate-back');
 
 			_appendToHistory(id, slate_contents);
-			slate_contents.html('replaced!');
-
 			slate_backbtn.removeClass('inactive');
 			slate_backbtn.addClass('active');
+
+
+            console.log(signalData.options.url);
+            slate_contents.html([
+            	'<div class="il-maincontrol-menu-plank">',
+					'<div class="plank-element">...loading...</div>',
+				'</div>'
+			].join(''));
+            slate_contents.load(signalData.options.url, function() {
+                console.log('loaded');
+            });
+
         };
 
         var _appendToHistory = function (id, slate_contents) {
