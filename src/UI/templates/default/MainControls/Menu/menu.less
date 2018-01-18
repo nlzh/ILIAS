@@ -4,7 +4,10 @@
 
 .il-maincontrol-menu-slate {
  	&.engaged {
- 		display:block;
+ 		// quick solution, better use flex or grid
+	 	display: block;
+	    height: 100%;
+	    position: relative;
  	}
  	&.disengaged {
  		display:none;
@@ -15,7 +18,7 @@
 	border-bottom: @menu-divider;
 	background: @bg-slate-collapsed;
 	display: flex;
-	flex-flow: column;
+	flex-direction: column;
 	font-size: 90%;
 	list-style: none;
 	margin: 0 0 2px 0;
@@ -36,10 +39,35 @@
 	}
 }
 
+.il-maincontrol-menu-slate-back {
+	display: none;
+	&.active {
+		display: block;
+	}
+}
 
 .il-maincontrol-menu-slate-close {
-	align-self: flex-end;
+	bottom: 0;
+    position: absolute;
+    width: 100%;
+    border-top: 1px solid #eee;
+    height: 50px;
 	.iconographic-label {
 		display: none;
+	}
+	.btn-iconographic {
+		width: 100%;
+	    height: 100%;
+	    padding: 0;
+	    margin: 0;
+	    text-align: right;
+	    .glyph {
+	    	padding-right: 20px;
+	    }
+	    &:active,
+	    &:focus,
+	     {
+	    	outline: none;
+	    }
 	}
 }
