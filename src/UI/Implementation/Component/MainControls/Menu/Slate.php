@@ -16,9 +16,9 @@ class Slate implements C\MainControls\Menu\Slate {
 	use JavaScriptBindable;
 
 	/**
-	 * @var \ILIAS\UI\Component\Button\Iconographic
+	 * @var bool
 	 */
-	private $button;
+	private $active;
 
 	/**
 	 * @var Plank[]
@@ -29,6 +29,16 @@ class Slate implements C\MainControls\Menu\Slate {
 	 * @var Signal
 	 */
 	protected $toggle_signal;
+
+	/**
+	 * @var Signal
+	 */
+	protected $replace_signal;
+
+	/**
+	 * @var Signal
+	 */
+	protected $navback_signal;
 
 
 	public function __construct(
@@ -49,10 +59,63 @@ class Slate implements C\MainControls\Menu\Slate {
 	}
 
 	/**
+	 * @param 	Plank 	$plank
+	 * *return Slate
+	 */
+	public function withAdditionalPlank($plank) {
+		$clone = clone $this;
+		$clone->planks[] = $plank;
+		return $clone;
+	}
+
+	/**
+	 * @param 	Plank[] 	$planks
+	 * *return Slate
+	 */
+	public function withPlanks(array $planks) {
+		$clone = clone $this;
+		$clone->planks = $planks;
+		return $clone;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withActive($state) {
+		$this->checkBoolArg('state', $state);
+		$clone = clone $this;
+		$clone->active = $state;
+		return $clone;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getActive() {
+		return $this->active;
+	}
+
+	/**
+	 * this is fired by the close-button.
+	 */
+	public function withCloseSignal($signal) {
+		$clone = clone $this;
+		$clone->close_signal = $signal;
+		return $clone;
+	}
+
+	public function getCloseSignal() {
+		return $this->close_signal;
+	}
+
+	/**
 	 * Set the signals for this component
 	 */
 	protected function initSignals() {
 		$this->toggle_signal = $this->signal_generator->create();
+		$this->navback_signal = $this->signal_generator->create();
+	//	$this->replace_signal = $this->signal_generator->create();
+		$this->replace_signal = $this->signal_generator->create("ILIAS\\UI\\Implementation\\Component\\Popover\\ReplaceContentSignal");
 	}
 
 	/**
@@ -69,6 +132,20 @@ class Slate implements C\MainControls\Menu\Slate {
 	 */
 	public function getToggleSignal() {
 		return $this->toggle_signal;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getReplaceContentSignal() {
+		return $this->replace_signal;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getNavigateBackSignal() {
+		return $this->navback_signal;
 	}
 
 }

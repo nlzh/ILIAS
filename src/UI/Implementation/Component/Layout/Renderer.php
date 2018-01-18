@@ -31,21 +31,21 @@ class Renderer extends AbstractComponentRenderer {
         $entry_signal = $component->getEntryClickSignal();
         $counter = 0;
         foreach ($component->getEntries() as $entry) {
-            $button = $entry->getButton()
-                ->appendOnClick($entry_signal);
+            $engaged = ($counter === $component->getActive());
+            $slate = $entry->getSlate();
 
-            if($counter === $component->getActive()) {
-                $button = $button->withEngagedState(true);
-            } else {
-                $button = $button->withEngagedState(false);
-            }
+            //if a buttons comes twith a slate, sidebarentry will set the action
+            $button = $entry->getButton()
+                ->appendOnClick($entry_signal)
+                ->withEngagedState($engaged);
 
             $tpl->setCurrentBlock("trigger_item");
             $tpl->setVariable("BUTTON", $default_renderer->render($button));
             $tpl->parseCurrentBlock();
 
-            $slate = $entry->getSlate();
             if($slate) {
+                $slate = $slate->withActive($engaged) //show?
+                    ->withCloseSignal($entry_signal); //disengage button on close
                 $tpl->setCurrentBlock("slate_item");
                 $tpl->setVariable("SLATE", $default_renderer->render($slate));
                 $tpl->parseCurrentBlock();
@@ -56,7 +56,6 @@ class Renderer extends AbstractComponentRenderer {
         $component = $component->withOnLoadCode(function($id) use ($entry_signal) {
             $registry = '';
             $registry .= "$(document).on('{$entry_signal}', function(event, signalData) {
-
                 var down_class = 'engaged';
 
                 //set all non-triggerer to inactive
@@ -66,7 +65,6 @@ class Renderer extends AbstractComponentRenderer {
                         $(obj).removeClass(down_class);
                     }
                 });
-
                 //toggle triggerer active/inactive
                 if(signalData.triggerer.hasClass(down_class)) {
                     signalData.triggerer.removeClass(down_class);
