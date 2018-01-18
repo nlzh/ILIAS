@@ -12,7 +12,8 @@
 // shadows
 @shadow-color: #ccc;
 @inner-top-shadow: inset 0 5px 9px -5px @shadow-color;
-@shadow-right: 2px 2px 2px @shadow-color;
+@shadow-right: 1px 0 1px @shadow-color;
+@shadow-bottom: 0 1px 1px @shadow-color;
 
 /* IE10+ not supported */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -39,6 +40,10 @@
 
 .shadow-right {
 	box-shadow: @shadow-right;
+}
+
+.shadow-bottom {
+	box-shadow: @shadow-bottom;
 }
 
 /*
@@ -77,12 +82,15 @@ grid-based layout
 
 /* Metabar */
 header {
+	.shadow-bottom;
     align-items: center;
     background: #fff;
     display: flex;
 	grid-area: header;
 	height: @height-metabar;
 	padding: 0 15px;
+	z-index: 2;
+
 }
 
 .il-layout-page-metabar {
@@ -114,18 +122,18 @@ header {
 	grid-area: sidebar;
 	height: 100%;
 	width: @trigger-width;
-	.shadow-right;
 	.il-sidebar-slates {
+		.shadow-right;
 		display: none;
 		height: 100%;
-		.inner-top-shadow;
 	}
-
 	.il-sidebar-triggers {
+		.shadow-right;
 		background: @bg-sidebar;
 		height: 100%;
 		position: relative; 
 		width: @trigger-width;
+		z-index: 1;
 		.btn-iconographic {
 			align-items: center;
 			background: @bg-sidebar;
@@ -156,11 +164,6 @@ header {
 		sidebar e.g btn-default.navigation
 		****************************************
 		*/
-
-		.btn-iconographic:nth-child(1),
-		.btn-iconographic.engaged:nth-child(1) {
-			.inner-top-shadow;	
-		}
 
 		.btn-iconographic:nth-child(1) .icon {
 			background-image: url('images/icon-sb-cockpit.svg');
@@ -226,11 +229,11 @@ main {
 	grid-area: content;
 	padding: 20px;
 	display: grid;
-	.inner-top-shadow;
 }
 
 /* Footer */
 footer {
 	background-color: @brand-primary;
 	grid-area: footer;
+	z-index: 2;
 }
