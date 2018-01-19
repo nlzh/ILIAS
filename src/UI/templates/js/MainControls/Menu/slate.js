@@ -53,8 +53,6 @@ il.UI.maincontrols.menu = il.UI.maincontrols.menu || {};
 			slate_backbtn.removeClass('inactive');
 			slate_backbtn.addClass('active');
 
-
-            console.log(signalData.options.url);
             slate_contents.html([
             	'<div class="il-maincontrol-menu-plank">',
 					'<div class="plank-element">...loading...</div>',

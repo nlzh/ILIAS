@@ -105,12 +105,24 @@ function pagedemo_planks1($f, $replacesignal){
 function pagedemo_planks2($f, $replacesignal){
     $planks = array();
     $planks[] = $f->maincontrols()->menu()->plank()->withContents([
-            $f->legacy('some other content'),
-            $f->legacy('in a slate')
-        ]);
+        $f->legacy('some other content'),
+        $f->legacy('in a slate')
+    ]);
     $planks[] = $f->maincontrols()->menu()->plank()->withContents([
-            $f->legacy('here is another plank')
-        ]);
+        $f->legacy('here is another plank')
+    ]);
+
+    $signal_id = $replacesignal->getId();
+    $signal = $replacesignal->withAsyncRenderUrl(
+       $_SERVER['REQUEST_URI']
+        .'&replaceSignal='. $signal_id
+        .'&rpc=1'
+    );
+    $btn = $f->button()->standard('Replace Contents of slate 2', '#')
+        ->withOnClick($signal);
+
+    $planks[] = $btn;
+
     return $planks;
 }
 
@@ -127,12 +139,33 @@ function pagedemo_planks4($f, $replacesignal){
     $planks[] = $f->maincontrols()->menu()->plank()->withContents([
         $f->legacy('planks - 4')
     ]);
+    foreach(range(1,3) as $c){
+        $planks[] = $f->maincontrols()->menu()->plank()->withContents([
+            $f->button()->standard('button', '#'),
+            $f->button()->standard('button', '#'),
+            $f->button()->standard('button', '#'),
+            $f->button()->standard('button', '#'),
+            $f->button()->standard('button', '#'),
+            $f->button()->standard('button', '#'),
+        ]);
+    }
     return $planks;
 }
 function pagedemo_planks5($f, $replacesignal){
     $planks = array();
     $planks[] = $f->maincontrols()->menu()->plank()->withContents([
-        $f->legacy('planks - 5')
+        $f->legacy('planks - 5'),
+        $f->legacy('These are long planks to demonstarte scrolling')
     ]);
+    foreach(range(1,12) as $c){
+        $planks[] = $f->maincontrols()->menu()->plank()->withContents([
+            $f->legacy('plankitem'),
+            $f->legacy('plankitem'),
+            $f->legacy('plankitem'),
+            $f->legacy('plankitem'),
+            $f->legacy('plankitem'),
+            $f->legacy('plankitem'),
+        ]);
+    }
     return $planks;
 }
