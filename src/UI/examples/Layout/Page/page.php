@@ -1,7 +1,7 @@
 <?php
 
 function page() {
-    include_once('src/UI/examples/Layout/MetaBar/metabar.php');
+    include_once('src/UI/examples/Layout/Metabar/metabar.php');
 
     global $DIC;
     $f = $DIC->ui()->factory();

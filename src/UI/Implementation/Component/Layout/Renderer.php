@@ -18,15 +18,15 @@ class Renderer extends AbstractComponentRenderer {
         if ($component instanceof Component\Layout\Page) {
             return $this->renderPage($component, $default_renderer);
         }
-        if ($component instanceof Component\Layout\SideBar) {
+        if ($component instanceof Component\Layout\Sidebar) {
             return $this->renderSidebar($component, $default_renderer);
         }
-        if ($component instanceof Component\Layout\MetaBar) {
+        if ($component instanceof Component\Layout\Metabar) {
             return $this->renderMetabar($component, $default_renderer);
         }
     }
 
-    protected function renderSidebar(Component\Layout\SideBar $component, RendererInterface $default_renderer) {
+    protected function renderSidebar(Component\Layout\Sidebar $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("tpl.sidebar.html", true, true);
         $entry_signal = $component->getEntryClickSignal();
         $counter = 0;
@@ -34,7 +34,7 @@ class Renderer extends AbstractComponentRenderer {
             $engaged = ($counter === $component->getActive());
             $slate = $entry->getSlate();
 
-            //if a buttons comes twith a slate, sidebarentry will set the action
+            //if a buttons comes with a slate, sidebarentry will set the action
             $button = $entry->getButton()
                 ->appendOnClick($entry_signal)
                 ->withEngagedState($engaged);
@@ -71,7 +71,6 @@ class Renderer extends AbstractComponentRenderer {
                 } else {
                     signalData.triggerer.addClass(down_class);
                 }
-
             });";
 
             return $registry;
@@ -84,7 +83,7 @@ class Renderer extends AbstractComponentRenderer {
     }
 
 
-    protected function renderMetabar(Component\Layout\MetaBar $component, RendererInterface $default_renderer) {
+    protected function renderMetabar(Component\Layout\Metabar $component, RendererInterface $default_renderer) {
         $f = $this->getUIFactory();
         $tpl = $this->getTemplate("tpl.metabar.html", true, true);
 
@@ -103,7 +102,6 @@ class Renderer extends AbstractComponentRenderer {
     protected function renderPage(Component\Layout\Page $component, RendererInterface $default_renderer) {
         $tpl = $this->getTemplate("tpl.page.html", true, true);
 
-
         if($metabar = $component->getMetabar()) {
             $tpl->setVariable('METABAR', $default_renderer->render($metabar));
         }
@@ -113,10 +111,11 @@ class Renderer extends AbstractComponentRenderer {
 
         $tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
-//2do: this is for demo purposes only!
-if ($_GET['new_ui'] == '1') {
-        $tpl = $this->setHeaderVars($tpl);
-}
+        //2do: this is for demo purposes only!
+        if ($_GET['new_ui'] == '1') {
+                $tpl = $this->setHeaderVars($tpl);
+        }
+
         return $tpl->get();
     }
 
@@ -182,7 +181,7 @@ if ($_GET['new_ui'] == '1') {
      */
     protected function getComponentInterfaceName() {
         return array(
-            Component\Layout\SideBar::class,
+            Component\Layout\Sidebar::class,
             Component\Layout\MetaBar::class,
             Component\Layout\Page::class
         );

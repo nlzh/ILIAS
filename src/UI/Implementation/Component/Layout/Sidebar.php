@@ -11,7 +11,7 @@ use ILIAS\UI\Implementation\Component\SignalGeneratorInterface;
 /**
  * SideBar
  */
-class SideBar implements C\Layout\SideBar {
+class Sidebar implements C\Layout\Sidebar {
 	use ComponentHelper;
 	use JavaScriptBindable;
 
@@ -92,7 +92,5 @@ class SideBar implements C\Layout\SideBar {
 	public function getActive() {
 		return $this->active_entry;
 	}
-
-
 
 }

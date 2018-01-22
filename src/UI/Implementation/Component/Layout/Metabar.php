@@ -9,7 +9,7 @@ use ILIAS\UI\Implementation\Component\ComponentHelper;
 /**
  * Metabar
  */
-class MetaBar implements C\Layout\MetaBar {
+class Metabar implements C\Layout\Metabar {
 	use ComponentHelper;
 
 	/**

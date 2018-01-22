@@ -6,35 +6,35 @@ use ILIAS\UI\Component\JavaScriptBindable;
 use \ILIAS\UI\Component as C;
 
 /**
- * This describes the SideBar
+ * This describes the Sidebar
  */
-interface SideBar extends C\Component, JavaScriptBindable {
+interface Sidebar extends C\Component, JavaScriptBindable {
 
 	/**
-	 * @return \ILIAS\UI\Component\Layout\SidebarEntry[]
+	 * @return 	\ILIAS\UI\Component\Layout\SidebarEntry[]
 	 */
 	public function getEntries();
 
 	/**
-	 * @return Signal
+	 * @return 	Signal
 	 */
 	public function getEntryClickSignal();
 
 	/**
-	 * @return SideBar
+	 * @return 	Sidebar
 	 */
 	public function withResetSignals();
 
 	/**
 	 * This entry is set to active.
-	 * @param string 	$identifier
-	 * @return SideBar
+	 * @param 	string 	$identifier
+	 * @return 	Sidebar
 	 */
 	public function withActive($identifier);
 
 	/**
 	 * This is the identifer of the active entry.
-	 * @return string
+	 * @return 	string
 	 */
 	public function getActive();
 

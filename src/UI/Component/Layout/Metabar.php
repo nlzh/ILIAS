@@ -5,13 +5,13 @@ namespace ILIAS\UI\Component\Layout;
 use \ILIAS\UI\Component as C;
 
 /**
- * This describes the Metabar
+ * This describes the Metabar.
  */
-interface MetaBar extends C\Component {
+interface Metabar extends C\Component {
 
 	/**
 	 * @param
-	 * @return Metabar
+	 * @return 	Metabar
 	 */
 	public function withLogo($logo);
 
@@ -21,13 +21,13 @@ interface MetaBar extends C\Component {
 	public function getLogo();
 
 	/**
-	 * @param mixed 	$element
-	 * @return Metabar
+	 * @param 	mixed 	$element
+	 * @return 	Metabar
 	 */
 	public function withElement($element);
 
 	/**
-	 * @return mixed[]
+	 * @return 	mixed[]
 	 */
 	public function getElements();
 

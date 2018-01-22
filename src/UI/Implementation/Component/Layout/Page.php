@@ -18,12 +18,12 @@ class Page implements C\Layout\Page {
 	private $content;
 
 	/**
-	 * @var ILIAS\UI\Component\Layout\MetaBar
+	 * @var ILIAS\UI\Component\Layout\Metabar
 	 */
 	private $metabar;
 
 	/**
-	 * @var ILIAS\UI\Component\Layout\SideBar
+	 * @var ILIAS\UI\Component\Layout\Sidebar
 	 */
 	private $sidebar;
 
@@ -51,7 +51,7 @@ class Page implements C\Layout\Page {
 	/**
 	 * @inheritdoc
 	 */
-	public function withMetabar(C\Layout\MetaBar $metabar) {
+	public function withMetabar(C\Layout\Metabar $metabar) {
 		$clone = clone $this;
 		$clone->metabar = $metabar;
 		return $clone;
@@ -67,7 +67,7 @@ class Page implements C\Layout\Page {
 	/**
 	 * @inheritdoc
 	 */
-	public function withSidebar(C\Layout\SideBar $sidebar) {
+	public function withSidebar(C\Layout\Sidebar $sidebar) {
 		$clone = clone $this;
 		$clone->sidebar = $sidebar;
 		return $clone;

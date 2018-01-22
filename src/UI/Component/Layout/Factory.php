@@ -38,7 +38,7 @@ interface Factory {
      *     1: The bar MUST have a fixed height.
      * ----
      *
-     * @return  \ILIAS\UI\Component\Layout\MetaBar
+     * @return  \ILIAS\UI\Component\Layout\Metabar
      */
     public function metabar();
 
@@ -138,7 +138,7 @@ interface Factory {
      *
      * @param  \ILIAS\UI\Component\Layout\SidebarEntry[]    $entries
      * @param  int|null  $active
-     * @return  \ILIAS\UI\Component\Layout\SideBar
+     * @return  \ILIAS\UI\Component\Layout\Sidebar
      */
     public function sidebar($entries, $active=null);
 
