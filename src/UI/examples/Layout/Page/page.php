@@ -84,10 +84,6 @@ function handleRPC($f, $renderer) {
 
 function pagedemo_planks1($f, $replacesignal){
     $planks = array();
-    $planks[] = $f->maincontrols()->menu()->plank()->withContents([
-        $f->legacy('some content'),
-        $f->legacy('in a slate')
-    ]);
 
     $signal_id = $replacesignal->getId();
     $signal = $replacesignal->withAsyncRenderUrl(
@@ -98,7 +94,11 @@ function pagedemo_planks1($f, $replacesignal){
     $btn = $f->button()->standard('Replace Contents', '#')
         ->withOnClick($signal);
 
-    $planks[] = $btn;
+    $planks[] = $f->maincontrols()->menu()->plank()->withContents([
+        $f->legacy('some content'),
+        $f->legacy('in a slate'),
+        $btn
+    ]);
     return $planks;
 }
 
@@ -121,7 +121,7 @@ function pagedemo_planks2($f, $replacesignal){
     $btn = $f->button()->standard('Replace Contents of slate 2', '#')
         ->withOnClick($signal);
 
-    $planks[] = $btn;
+    $planks[] = $f->maincontrols()->menu()->plank()->withContents([$btn]);
 
     return $planks;
 }

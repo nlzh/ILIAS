@@ -26,15 +26,15 @@ interface Sidebar extends C\Component, JavaScriptBindable {
 	public function withResetSignals();
 
 	/**
-	 * This entry is set to active.
-	 * @param 	string 	$identifier
+	 * Th entry at this position is set to active.
+	 * @param 	int 	$active
 	 * @return 	Sidebar
 	 */
-	public function withActive($identifier);
+	public function withActive($active);
 
 	/**
-	 * This is the identifer of the active entry.
-	 * @return 	string
+	 * This is the index of the active entry.
+	 * @return 	int
 	 */
 	public function getActive();
 

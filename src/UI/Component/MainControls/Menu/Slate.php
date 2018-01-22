@@ -15,6 +15,12 @@ interface Slate extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 	public function getPlanks();
 
 	/**
+	 * @param 	Plank[] 	$planks
+	 * @return 	Slate
+	 */
+	public function withPlanks(array $planks);
+
+	/**
 	 * @param 	bool 	$state
 	 * @return 	Slate
 	 */
@@ -26,21 +32,22 @@ interface Slate extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 	public function getActive();
 
 	/**
-	 * @param 	string | Signal		$action
-	 * @return 	Slate
-	 */
-	//public function withBacklinkAction($action);
-
-	/**
-	 * @return 	string | Signal
-	 */
-	//public function getBacklinkAction();
-
-
-	/**
 	 * @return 	Slate
 	 */
 	public function withResetSignals();
+
+	/**
+	 * Hand over the Signal that should be fired when clicking the close-button.
+	 * @param 	Signal 	$signal
+	 * @return 	Slate
+	 */
+	public function withCloseSignal($signal);
+
+	/**
+	 * This is fired by the close-button.
+	 * @return 	Signal
+	 */
+	public function getCloseSignal();
 
 	/**
 	 * @return 	Signal
@@ -48,8 +55,15 @@ interface Slate extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 	public function getToggleSignal();
 
 	/**
+	 * Use this to change the contents of the slate.
 	 * @return 	Signal
 	 */
 	public function getReplaceContentSignal();
+
+	/**
+	 * This is the Signal that is triggered by the back-button.
+	 * @return 	Signal
+	 */
+	public function getNavigateBackSignal();
 
 }

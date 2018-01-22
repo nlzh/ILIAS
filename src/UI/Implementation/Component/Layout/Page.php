@@ -13,17 +13,17 @@ class Page implements C\Layout\Page {
 	use ComponentHelper;
 
 	/**
-	 * @var
+	 * @var 	mixed
 	 */
 	private $content;
 
 	/**
-	 * @var ILIAS\UI\Component\Layout\Metabar
+	 * @var 	ILIAS\UI\Component\Layout\Metabar
 	 */
 	private $metabar;
 
 	/**
-	 * @var ILIAS\UI\Component\Layout\Sidebar
+	 * @var 	ILIAS\UI\Component\Layout\Sidebar
 	 */
 	private $sidebar;
 

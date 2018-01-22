@@ -10,12 +10,12 @@ use ILIAS\UI\Component as C;
 interface Page extends C\Component {
 
 	/**
-	 * @return
+	 * @return 	mixed
 	 */
 	public function getContent();
 
 	/**
-	 * @param
+	 * @param 	mixed
 	 * @return 	Page
 	 */
 	public function withContent($content);

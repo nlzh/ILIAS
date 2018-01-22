@@ -13,7 +13,7 @@ class Factory implements Menu\Factory {
 	protected $signal_generator;
 
 	/**
-	 * @param SignalGeneratorInterface $signal_generator
+	 * @param 	SignalGeneratorInterface 	$signal_generator
 	 */
 	public function __construct(SignalGeneratorInterface $signal_generator) {
 		$this->signal_generator = $signal_generator;

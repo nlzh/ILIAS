@@ -20,7 +20,7 @@ function buildSidebar($f) {
             $f->legacy('this will replace the contents of the entire slate'),
             $button
         ]);
-        $slate = $slate->withAdditionalPlank($plank);
+        $slate = $slate->withPlanks($plank);
 
         //triggerer
         $icon = $f->icon()->standard('sidebar_trigger', '')->withSize('medium');

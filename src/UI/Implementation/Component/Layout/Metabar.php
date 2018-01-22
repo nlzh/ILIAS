@@ -13,12 +13,12 @@ class Metabar implements C\Layout\Metabar {
 	use ComponentHelper;
 
 	/**
-	 * @var
+	 * @var 	ILIAS\UI\Component\Image\Image
 	 */
 	private $logo;
 
 	/**
-	 * @var
+	 * @var 	mixed[]
 	 */
 	private $elements = array();
 
