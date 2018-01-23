@@ -242,7 +242,7 @@ interface Factory {
 	 * @param	\ILIAS\UI\Component\Icon\Icon | \ILIAS\UI\Component\Glyph\Glyph		$icon
 	 * @param	string		$label
 	 * @param	string		$action
-	 * @return  \ILIAS\UI\Component\Button\Iconograhic
+	 * @return  \ILIAS\UI\Component\Button\Iconographic
 	 */
 	public function iconographic($icon, $label, $action);
 
