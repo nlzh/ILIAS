@@ -45,7 +45,7 @@ class Slate implements C\MainControls\Menu\Slate {
 		array $planks,
 		SignalGeneratorInterface $signal_generator) {
 
-		$classes = array(\ILIAS\UI\Component\Layout\MainControls\Menu\Plank::class);
+		$classes = array(\ILIAS\UI\Component\MainControls\Menu\Plank::class);
 		$this->checkArgListElements('planks', $planks, $classes);
 
 		$this->planks = $planks;

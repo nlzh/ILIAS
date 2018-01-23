@@ -223,10 +223,9 @@ interface Factory {
 	 *
 	 *   effect: >
 	 *     Both, icon and text, form an entity an can only be operated together.
-	 *     The button CAN have a "down"-state: When the button is used to toggle
+	 *     The button MAY have a "down"-state: When the button is used to toggle
 	 *     the visibility of a slate, it stays engaged until the slate is closed
 	 *     or it is clicked again.
-	 *
 	 *
 	 * context: >
 	 *     Iconographic Buttons are used in the Sidebar.
@@ -235,8 +234,7 @@ interface Factory {
 	 *   style:
 	 *       1: Iconographic Buttons SHOULD only be used in the Sidebar.
 	 *       2: Iconographic Buttons MUST trigger navigation.
-	 *       3: When used to trigger a slate, the button MUST reflect the slate's state
-	 *
+	 *       3: When used to trigger a slate, the button MUST reflect the slate's state.
 	 *
 	 *   accessibility:
 	 *       1: >

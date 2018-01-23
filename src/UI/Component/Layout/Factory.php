@@ -31,7 +31,7 @@ interface Factory {
      *     3: Metabar MUST NOT have exclusively navigational elements.
      *
      *   composition:
-     *     1: The bar MUST contain the logo
+     *     1: The bar MUST contain the logo.
      *     2: The bar SHOULD contain prompts.
      *
      *   style:
@@ -129,7 +129,7 @@ interface Factory {
      *   interaction:
      *     1: >
      *        Operating elements in the bar MUST either lead to further
-     *        navigational options within the bar (open a slate, open a plank)
+     *        navigational options within the bar (open a slate)
      *        OR actually invoke navigation, i.e. change the location/content
      *        of the current page.
      *     2: Elements in the bar MUST NOT open a modal or window.
@@ -150,8 +150,6 @@ interface Factory {
      *     The sidebar entry bundles a button and a slate.
      *   composition: >
      *     There is no composition of this component.
-     * rules:
-     *   usage:
      *
      * ----
      *
@@ -169,6 +167,17 @@ interface Factory {
 	 *     A layout-component (or page-element) describes a section of the ILIAS UI;
       *     the page thus is the user's view upon ILIAS in total.
 	 *
+      *   composition: >
+      *      2do.
+      *
+      *
+      *
+      * rules:
+      *   usage:
+      *     1: The page MUST be rendered with content.
+      *     1: The page SHOULD be rendered with a Metabar.
+      *     2: The page SHOULD be rendered with a Sidebar.
+      *
 	 * ----
 	 *
 	 * @return  \ILIAS\UI\Component\Layout\Page
