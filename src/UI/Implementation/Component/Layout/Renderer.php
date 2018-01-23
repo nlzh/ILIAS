@@ -56,20 +56,24 @@ class Renderer extends AbstractComponentRenderer {
         $component = $component->withOnLoadCode(function($id) use ($entry_signal) {
             $registry = '';
             $registry .= "$(document).on('{$entry_signal}', function(event, signalData) {
-                var down_class = 'engaged';
+                var down_class = 'engaged',
+                    triggerer = signalData.triggerer;
 
                 //set all non-triggerer to inactive
                 result = $('#{$id} .il-sidebar-triggers .btn');
                 result.each( function(index, obj) {
-                    if($(obj).attr('id') != signalData.triggerer.attr('id')) {
+                    if($(obj).attr('id') != triggerer.attr('id')) {
                         $(obj).removeClass(down_class);
+                        $(obj).attr('aria-pressed', false);
                     }
                 });
                 //toggle triggerer active/inactive
-                if(signalData.triggerer.hasClass(down_class)) {
-                    signalData.triggerer.removeClass(down_class);
+                if(triggerer.hasClass(down_class)) {
+                    triggerer.removeClass(down_class);
+                    triggerer.attr('aria-pressed', false);
                 } else {
-                    signalData.triggerer.addClass(down_class);
+                    triggerer.addClass(down_class);
+                    triggerer.attr('aria-pressed', true);
                 }
             });";
 

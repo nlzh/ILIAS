@@ -198,6 +198,13 @@ class Renderer extends AbstractComponentRenderer {
 		}
 		if ($component->isEngaged()) {
 			$tpl->touchBlock("engaged");
+			$tpl->setVariable("ARIA_PRESSED", 'true');
+		} else {
+			if (is_string($component->getAction())) {
+				$tpl->setVariable("ARIA_PRESSED", 'undefined');
+			}else {
+				$tpl->setVariable("ARIA_PRESSED", 'false');
+			}
 		}
 	}
 
