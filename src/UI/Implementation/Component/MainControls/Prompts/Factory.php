@@ -22,14 +22,14 @@ class Factory implements Prompts\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function notificationcenter(){
+	public function notificationCenter(){
 		return new NotificationCenter();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function awarenesstool(){
+	public function awarenessTool(){
 		return new AwarenessTool();
 	}
 

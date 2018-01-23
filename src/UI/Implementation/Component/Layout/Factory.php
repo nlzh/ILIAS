@@ -37,7 +37,7 @@ class Factory implements Layout\Factory {
 	/**
 	 * @inheritdoc
 	 */
-	public function sidebarentry($button, MainControls\Menu\Slate $slate=null) {
+	public function sidebarEntry($button, MainControls\Menu\Slate $slate=null) {
 		return new SidebarEntry($button, $slate);
 	}
 

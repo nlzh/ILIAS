@@ -27,6 +27,11 @@ class Page implements C\Layout\Page {
 	 */
 	private $sidebar;
 
+	/**
+	 * @var 	bool
+	 */
+	private $with_headers = true;
+
 
 	public function __construct($content) {
 		$this->content = $content;
@@ -79,4 +84,22 @@ class Page implements C\Layout\Page {
 	public function getSidebar() {
 		return $this->sidebar;
 	}
+
+	/**
+	 * @param 	bool 	$use_headers
+	 * @return 	Page
+	 */
+	public function withHeaders($use_headers) {
+		$clone = clone $this;
+		$clone->with_headers = $use_headers;
+		return $clone;
+	}
+
+	/**
+	 * @return 	bool
+	 */
+	public function getWithHeaders() {
+		return $this->with_headers;
+	}
+
 }

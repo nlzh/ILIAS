@@ -155,11 +155,11 @@ interface Factory {
      *
      * ----
      *
-     * @param \ILIAS\UI\Component\Button\Iconographic | \ILIAS\UI\Component\Glyph\Glyph   $button
-     * @param \ILIAS\UI\Component\MainControls\Menu\Slate | null   $slate
-     * @return  \ILIAS\UI\Component\Layout\SidebarEntry
+     * @param  \ILIAS\UI\Component\Button\Iconographic | \ILIAS\UI\Component\Glyph\Glyph   $button
+     * @param  \ILIAS\UI\Component\MainControls\Menu\Slate | null   $slate
+     * @return      \ILIAS\UI\Component\Layout\SidebarEntry
      */
-    public function sidebarentry($button, MainControls\Menu\Slate $slate=null);
+    public function sidebarEntry($button, MainControls\Menu\Slate $slate=null);
 
 
 	/**

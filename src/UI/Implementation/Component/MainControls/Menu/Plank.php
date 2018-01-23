@@ -16,7 +16,7 @@ class Plank implements C\MainControls\Menu\Plank {
 	use JavaScriptBindable;
 
 	/**
-	 * @var
+	 * @var 	Component[]
 	 */
 	private $contents = array();
 
@@ -47,8 +47,6 @@ class Plank implements C\MainControls\Menu\Plank {
 		return $this->contents;
 	}
 
-
-
 	/**
 	 * @inheritdoc
 	 */
@@ -64,12 +62,5 @@ class Plank implements C\MainControls\Menu\Plank {
 	protected function initSignals() {
 		$this->toggle_signal = $this->signal_generator->create();
 	}
-
-	/**
-	 * @inheritdoc
-	public function getToggleSignal() {
-		return $this->toggle_signal;
-	}
-	 */
 
 }
