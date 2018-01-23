@@ -8,11 +8,8 @@ function base() {
 	$ico = $ico->withAbbreviation('E')->withSize('medium');
 	$button = $f->button()->iconographic($ico, 'Icon', '#');
 
-
 	$ico = $f->glyph()->briefcase();
-
 	$button2 = $f->button()->iconographic($ico, 'Glyph', '#');
-
 
 	return $renderer->render([
 		$button,
