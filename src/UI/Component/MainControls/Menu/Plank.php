@@ -16,18 +16,18 @@ interface Plank extends \ILIAS\UI\Component\Component, JavaScriptBindable {
 	public function withContents(array $contents);
 
 	/**
-	 * @return Component[]
+	 * @return 	Component[]
 	 */
 	public function getContents();
 
 
 	/**
-	 * @return Plank
+	 * @return 	Plank
 	 */
 	public function withResetSignals();
 
 	/**
-	 * @return Signal
+	 * @return 	Signal
 	 */
 	//public function getToggleSignal();
 

@@ -45,9 +45,11 @@ class Slate implements C\MainControls\Menu\Slate {
 		array $planks,
 		SignalGeneratorInterface $signal_generator) {
 
+		$classes = array(\ILIAS\UI\Component\MainControls\Menu\Plank::class);
+		$this->checkArgListElements('planks', $planks, $classes);
+
 		$this->planks = $planks;
 		$this->signal_generator = $signal_generator;
-
 		$this->initSignals();
 	}
 
@@ -59,20 +61,11 @@ class Slate implements C\MainControls\Menu\Slate {
 	}
 
 	/**
-	 * @param 	Plank 	$plank
-	 * *return Slate
-	 */
-	public function withAdditionalPlank($plank) {
-		$clone = clone $this;
-		$clone->planks[] = $plank;
-		return $clone;
-	}
-
-	/**
-	 * @param 	Plank[] 	$planks
-	 * *return Slate
+	 * @inheritdoc
 	 */
 	public function withPlanks(array $planks) {
+		$classes = array(\ILIAS\UI\Component\MainControls\Menu\Plank::class);
+		$this->checkArgListElements('planks', $planks, $classes);
 		$clone = clone $this;
 		$clone->planks = $planks;
 		return $clone;
@@ -96,7 +89,7 @@ class Slate implements C\MainControls\Menu\Slate {
 	}
 
 	/**
-	 * this is fired by the close-button.
+	 * @inheritdoc
 	 */
 	public function withCloseSignal($signal) {
 		$clone = clone $this;
@@ -104,17 +97,19 @@ class Slate implements C\MainControls\Menu\Slate {
 		return $clone;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getCloseSignal() {
 		return $this->close_signal;
 	}
 
 	/**
-	 * Set the signals for this component
+	 * Set the signals for this component.
 	 */
 	protected function initSignals() {
 		$this->toggle_signal = $this->signal_generator->create();
 		$this->navback_signal = $this->signal_generator->create();
-	//	$this->replace_signal = $this->signal_generator->create();
 		$this->replace_signal = $this->signal_generator->create("ILIAS\\UI\\Implementation\\Component\\Popover\\ReplaceContentSignal");
 	}
 

@@ -2,7 +2,6 @@
 /* Copyright (c) 2017 Nils Haagen <nils.haagen@concepts-and-training.de> Extended GPL, see docs/LICENSE */
 
 namespace ILIAS\UI\Implementation\Component\Button;
-
 use ILIAS\UI\Component as C;
 
 /**
@@ -11,15 +10,14 @@ use ILIAS\UI\Component as C;
 class Iconographic extends Button implements C\Button\Iconographic {
 
 	/**
-	 * @var ILIAS\UI\Component\Icon
+	 * @var 	ILIAS\UI\Component\Icon\Icon | \ILIAS\UI\Component\Glyph\Glyph
 	 */
 	protected $icon;
 
 	/**
-	 * @var bool
+	 * @var 	bool
 	 */
 	protected $engaged = false;
-
 
 	public function __construct($icon, $label, $action) {
 		$this->checkStringArg("label", $label);
@@ -52,6 +50,5 @@ class Iconographic extends Button implements C\Button\Iconographic {
 	public function isEngaged() {
 		return $this->engaged;
 	}
-
 
 }

@@ -15,6 +15,7 @@ use ILIAS\UI\Implementation\Render\DefaultRendererFactory;
 use ILIAS\UI\Implementation\DefaultRenderer;
 use ILIAS\UI\Implementation\ComponentRendererFSLoader;
 use ILIAS\UI\Implementation\Render;
+use ILIAS\UI\Implementation\Component\Glyph\GlyphRendererFactory;
 use ILIAS\UI\Component\Component as IComponent;
 use ILIAS\UI\Factory;
 
@@ -46,6 +47,8 @@ class NoUIFactory implements Factory {
 	public function breadcrumbs(array $crumbs) {}
 	public function chart() {}
 	public function input() {}
+	public function layout() {}
+	public function mainControls() {}
 }
 
 class LoggingRegistry implements ResourceRegistry {
@@ -161,7 +164,14 @@ abstract class ILIAS_UI_TestBase extends PHPUnit_Framework_TestCase {
 							, $tpl_factory
 							, $lng
 							, $js_binding
+							),
+						  new GlyphRendererFactory
+							( $ui_factory
+							, $tpl_factory
+							, $lng
+							, $js_binding
 							)
+
 						)
 					)
 				);

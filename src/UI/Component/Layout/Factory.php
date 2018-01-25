@@ -31,14 +31,14 @@ interface Factory {
      *     3: Metabar MUST NOT have exclusively navigational elements.
      *
      *   composition:
-     *     1: The bar MUST contain the logo
+     *     1: The bar MUST contain the logo.
      *     2: The bar SHOULD contain prompts.
      *
      *   style:
      *     1: The bar MUST have a fixed height.
      * ----
      *
-     * @return  \ILIAS\UI\Component\Layout\MetaBar
+     * @return  \ILIAS\UI\Component\Layout\Metabar
      */
     public function metabar();
 
@@ -129,7 +129,7 @@ interface Factory {
      *   interaction:
      *     1: >
      *        Operating elements in the bar MUST either lead to further
-     *        navigational options within the bar (open a slate, open a plank)
+     *        navigational options within the bar (open a slate)
      *        OR actually invoke navigation, i.e. change the location/content
      *        of the current page.
      *     2: Elements in the bar MUST NOT open a modal or window.
@@ -138,7 +138,7 @@ interface Factory {
      *
      * @param  \ILIAS\UI\Component\Layout\SidebarEntry[]    $entries
      * @param  int|null  $active
-     * @return  \ILIAS\UI\Component\Layout\SideBar
+     * @return  \ILIAS\UI\Component\Layout\Sidebar
      */
     public function sidebar($entries, $active=null);
 
@@ -150,16 +150,14 @@ interface Factory {
      *     The sidebar entry bundles a button and a slate.
      *   composition: >
      *     There is no composition of this component.
-     * rules:
-     *   usage:
      *
      * ----
      *
-     * @param \ILIAS\UI\Component\Button\Iconographic | \ILIAS\UI\Component\Glyph\Glyph   $button
-     * @param \ILIAS\UI\Component\MainControls\Menu\Slate | null   $slate
-     * @return  \ILIAS\UI\Component\Layout\SidebarEntry
+     * @param  \ILIAS\UI\Component\Button\Iconographic | \ILIAS\UI\Component\Glyph\Glyph   $button
+     * @param  \ILIAS\UI\Component\MainControls\Menu\Slate | null   $slate
+     * @return      \ILIAS\UI\Component\Layout\SidebarEntry
      */
-    public function sidebarentry($button, MainControls\Menu\Slate $slate=null);
+    public function sidebarEntry($button, MainControls\Menu\Slate $slate=null);
 
 
 	/**
@@ -169,6 +167,17 @@ interface Factory {
 	 *     A layout-component (or page-element) describes a section of the ILIAS UI;
       *     the page thus is the user's view upon ILIAS in total.
 	 *
+      *   composition: >
+      *      2do.
+      *
+      *
+      *
+      * rules:
+      *   usage:
+      *     1: The page MUST be rendered with content.
+      *     1: The page SHOULD be rendered with a Metabar.
+      *     2: The page SHOULD be rendered with a Sidebar.
+      *
 	 * ----
 	 *
 	 * @return  \ILIAS\UI\Component\Layout\Page

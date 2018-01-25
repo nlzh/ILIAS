@@ -10,35 +10,35 @@ use ILIAS\UI\Component as C;
 interface Page extends C\Component {
 
 	/**
-	 * @return
+	 * @return 	mixed
 	 */
 	public function getContent();
 
 	/**
-	 * @param
-	 * @return Page
+	 * @param 	mixed
+	 * @return 	Page
 	 */
 	public function withContent($content);
 
 	/**
-	 * @param ILIAS\UI\Component\Layout\MetaBar $metabar
-	 * @return Page
+	 * @param 	ILIAS\UI\Component\Layout\Metabar $metabar
+	 * @return 	Page
 	 */
-	public function withMetabar(C\Layout\MetaBar $metabar);
+	public function withMetabar(C\Layout\Metabar $metabar);
 
 	/**
-	 * @return ILIAS\UI\Component\Layout\MetaBar
+	 * @return 	ILIAS\UI\Component\Layout\Metabar
 	 */
 	public function getMetabar();
 
 	/**
-	 * @param ILIAS\UI\Component\Layout\SideBar 	$sidebar
-	 * @return Page
+	 * @param 	ILIAS\UI\Component\Layout\Sidebar 	$sidebar
+	 * @return 	Page
 	 */
-	public function withSidebar(C\Layout\SideBar $sidebar);
+	public function withSidebar(C\Layout\Sidebar $sidebar);
 
 	/**
-	 * @return ILIAS\UI\Component\Layout\SideBar
+	 * @return 	ILIAS\UI\Component\Layout\Sidebar
 	 */
 	public function getSidebar();
 }

@@ -1,6 +1,5 @@
 <?php
 /* Copyright (c) 2017 Nils Haagen <nils.haagen@concepts-and-training.de> Extended GPL, see docs/LICENSE */
-
 namespace ILIAS\UI\Component\Button;
 
 /**
@@ -9,21 +8,19 @@ namespace ILIAS\UI\Component\Button;
 interface Iconographic extends Button {
 
 	/**
-	 * @return ILIAS\UI\Component\Icon
+	 * @return ILIAS\UI\Component\Icon\Icon | \ILIAS\UI\Component\Glyph\Glyph
 	 */
 	public function getIcon();
 
 	/**
 	 * @param 	bool 	$state
-	 * @return Iconographic
+	 * @return 	Iconographic
 	 */
 	public function withEngagedState($state);
 
 	/**
-	 * @return bool
+	 * @return 	bool
 	 */
 	public function isEngaged();
-
-
 
 }

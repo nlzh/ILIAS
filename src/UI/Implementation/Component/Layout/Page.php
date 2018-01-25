@@ -13,19 +13,24 @@ class Page implements C\Layout\Page {
 	use ComponentHelper;
 
 	/**
-	 * @var
+	 * @var 	mixed
 	 */
 	private $content;
 
 	/**
-	 * @var ILIAS\UI\Component\Layout\MetaBar
+	 * @var 	ILIAS\UI\Component\Layout\Metabar
 	 */
 	private $metabar;
 
 	/**
-	 * @var ILIAS\UI\Component\Layout\SideBar
+	 * @var 	ILIAS\UI\Component\Layout\Sidebar
 	 */
 	private $sidebar;
+
+	/**
+	 * @var 	bool
+	 */
+	private $with_headers = true;
 
 
 	public function __construct($content) {
@@ -51,7 +56,7 @@ class Page implements C\Layout\Page {
 	/**
 	 * @inheritdoc
 	 */
-	public function withMetabar(C\Layout\MetaBar $metabar) {
+	public function withMetabar(C\Layout\Metabar $metabar) {
 		$clone = clone $this;
 		$clone->metabar = $metabar;
 		return $clone;
@@ -67,7 +72,7 @@ class Page implements C\Layout\Page {
 	/**
 	 * @inheritdoc
 	 */
-	public function withSidebar(C\Layout\SideBar $sidebar) {
+	public function withSidebar(C\Layout\Sidebar $sidebar) {
 		$clone = clone $this;
 		$clone->sidebar = $sidebar;
 		return $clone;
@@ -79,4 +84,22 @@ class Page implements C\Layout\Page {
 	public function getSidebar() {
 		return $this->sidebar;
 	}
+
+	/**
+	 * @param 	bool 	$use_headers
+	 * @return 	Page
+	 */
+	public function withHeaders($use_headers) {
+		$clone = clone $this;
+		$clone->with_headers = $use_headers;
+		return $clone;
+	}
+
+	/**
+	 * @return 	bool
+	 */
+	public function getWithHeaders() {
+		return $this->with_headers;
+	}
+
 }

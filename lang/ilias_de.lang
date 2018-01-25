@@ -50,7 +50,7 @@ lti#:#lti_released_objects#:#Objekt-Freigaben
 lti#:#lti_consumer#:#Released for
 orgu#:#orgu_global_set_form#:#Globale Einstellungen
 orgu#:#orgu_global_set_positions#:#Anzeige von Benutzerdaten nach Positionen in Organisationseinheiten
-orgu#:#orgu_global_set_positions_type_active#:#Positionen in
+orgu#:#orgu_global_set_positions_type_active#:#Positionen in: 
 orgu#:#orgu_global_set_type_changeable#:#Verhalten neuer Objekte
 orgu#:#orgu_global_set_type_changeable_object#:#Änderbare Einstellung im Objekt
 orgu#:#orgu_global_set_type_changeable_no#:#Positionen sind im Objekt nicht deaktivierbar
@@ -555,16 +555,16 @@ assessment#:#dont_use_questionpool#:#Fragen nicht in einen Fragenpool einfügen 
 assessment#:#duplicate#:#Kopieren
 assessment#:#duplicate_matching_values_selected#:#Sie haben mindestens einen doppelten Zuordnungswert ausgewählt!
 assessment#:#duplicate_order_values_entered#:#Sie haben mindestens eine doppelte Reihenfolge angegeben!
-assessment#:#ects_allow_ects_grades#:#ECTS-Note zusätzlich zur erreichten Note anzeigen
+assessment#:#ects_grade_desc_prefix#:#Bedeutung der Note: 
+assessment#:#ects_grade_a_desc#:#ausgezeichnete Leistungen und nur wenige unbedeutende Fehler
+assessment#:#ects_grade_b_desc#:#überdurchschnittliche Leistungen, aber einige Fehler
+assessment#:#ects_grade_c_desc#:#insgesamt gute und solide Arbeit, jedoch mit einigen grundlegenden Fehlern
+assessment#:#ects_grade_d_desc#:#mittelmäßig, jedoch deutliche Mängel
+assessment#:#ects_grade_e_desc#:#die gezeigten Leistungen entsprechen den Mindestanforderungen
+assessment#:#ects_grade_f_desc#:#es sind erhebliche Verbesserungen erforderlich
+assessment#:#ects_grade_fx_desc#:#es sind Verbesserungen erforderlich, bevor die Leistung anerkannt wird
 assessment#:#ects_grade#:#ECTS-Note
-assessment#:#ects_grade_a#:#ausgezeichnete Leistungen und nur wenige unbedeutende Fehler
-assessment#:#ects_grade_a_short#:#HERVORRAGEND
-assessment#:#ects_grade_b_short#:#SEHR GUT
-assessment#:#ects_grade_c_short#:#GUT
-assessment#:#ects_grade_d_short#:#BEFRIEDIGEND
-assessment#:#ects_grade_e_short#:#AUSREICHEND
-assessment#:#ects_grade_f#:#es sind erhebliche Verbesserungen erforderlich
-assessment#:#ects_grade_fx#:#es sind Verbesserungen erforderlich, bevor die Leistung anerkannt wird
+assessment#:#ects_allow_ects_grades#:#ECTS-Note zusätzlich zur erreichten Note anzeigen
 assessment#:#ects_output_of_ects_grades#:#Ausgabe von ECTS-Noten
 assessment#:#use_ects_fx#:#Verwenden der ECTS-Note 'FX'
 assessment#:#ects_fx_threshold#:#Grenzwert
@@ -741,6 +741,7 @@ assessment#:#ass_lac_expression#:#Ausdruck
 assessment#:#ass_lac_unable_to_parse_condition#:#Der Ausdruck "%s" kann nicht validiert werden.
 assessment#:#tst_skill_triggerings_num_req_answers#:#Benötigte Anzahl Antworten für Kompetenzerhebungen
 assessment#:#tst_skill_triggerings_num_req_answers_desc#:#Kompetenzen werden erst erhoben, wenn mindestens diese Anzahl Antworten zur Berechnung der Kompetenz-Ausprägung beitragen.
+assessment#:#tst_skill_triggerings_num_req_answers_not_reached_warn#:#Mindestens eine im Test adressierte Kompetenz ist nicht ausreichend vielen Fragen zugeordnet.<br />Die Mindestanzahl für zugewiesene Fragen: %s
 assessment#:#qpl_qst_skl_usg_skill_col#:#Kompetenz
 assessment#:#qpl_qst_skl_usg_numq_col#:#Fragenanzahl im gesamten Pool, welche die Kompetenz adressieren
 assessment#:#qpl_qst_skl_usg_sklpnt_col#:#Summe aller Kompetenzpunkte je Kompetenz
@@ -788,7 +789,7 @@ assessment#:#grading_obligations_listlabel#:#Verpflichtende Fragen
 assessment#:#grading_obligations_answered_listentry#:#Beantwortet
 assessment#:#grading_obligations_missing_listentry#:#Offen
 assessment#:#grading_mark_msg#:#Sie haben die Note &quot;[mark]&quot; erzielt.
-assessment#:#mark_tst_ects#:#Ihre ECTS-Note lautet &quot;[markects]&quot;
+assessment#:#mark_tst_ects#:#Ihre ECTS-Note lautet "[markects]" (European Credit Transfer System)
 assessment#:#tst_pass_finished_on#:#Testdurchlauf beendet am
 assessment#:#matches#:#passt zu
 assessment#:#matching_pairs#:#Zuordnungspaare
@@ -1230,7 +1231,7 @@ assessment#:#tst_processing_time#:#Bearbeitungsdauer begrenzen
 assessment#:#tst_processing_time_desc#:#Teilnehmer können den Test nur für eine begrenzte Zeit bearbeiten. Die Zeit läuft von dem Moment des ersten Startens durch den Teilnehmer. "Test unterbrechen" stoppt den Ablauf der Bearbeitungsdauer nicht.
 assessment#:#tst_qst_order#:#Nr.
 assessment#:#tst_question#:#Frage
-assessment#:#tst_question_mark#:#Frage markieren###fau: testNav
+assessment#:#tst_question_mark#:#Frage markieren
 assessment#:#tst_question_marked#:#Sie haben die Frage markiert
 assessment#:#tst_question_marker#:#Markiert
 assessment#:#tst_question_no#:#Reihenfolge
@@ -1307,11 +1308,11 @@ assessment#:#tst_score_cut_question_desc#:#Bei der Vergabe negativer Punkte für
 assessment#:#tst_score_cut_test#:#Negatives Gesamttestergebnis in "0 Punkte" ändern
 assessment#:#tst_score_cut_test_desc#:#Es können pro Frage Minuspunkte erzielt werden. Die Punktestände aller Fragen werden aufsummiert und erst wenn diese Summe noch negativ ist, wird das Gesamtergebnis des Tests auf 0 Punkte gesetzt. Mit dieser Einstellung fallen negative Punkte sehr stark ins Gewicht.
 assessment#:#tst_score_cutting#:#Negative Punkte
-assessment#:#tst_score_mcmr_questions#:#Multiple-Choice-Fragen mit leerer Antwort###fau: testNav
-assessment#:#tst_score_mcmr_use_scoring_system#:#Leere Antworten speichern und bewerten (veraltet)###fau: testNav
-assessment#:#tst_score_mcmr_use_scoring_system_desc#:#Eine zusätzliche Option "Keine der obigen" erlaubt es, leere Antworten zu speichern. Die nicht ausgewählten Optionen werden so bewertet, wie in der Frage definiert ist. Diese Einstellung ist nur noch für bestehende Tests verfügbar und wird in einer folgenden ILIAS-Version nicht mehr unterstützt.###fau: testNav
-assessment#:#tst_score_mcmr_zero_points_when_unanswered#:#Leere Antworten nicht speichern###fau: testNav
-assessment#:#tst_score_mcmr_zero_points_when_unanswered_desc#:#Antworten ohne ausgewählte Option werden nicht gespeichert. Die Teilnehmer erhalten 0 Punkte auf diese Fragen.###fau: testNav
+assessment#:#tst_score_mcmr_questions#:#Multiple-Choice-Fragen mit leerer Antwort
+assessment#:#tst_score_mcmr_use_scoring_system#:#Leere Antworten speichern und bewerten (veraltet)
+assessment#:#tst_score_mcmr_use_scoring_system_desc#:#Eine zusätzliche Option "Keine der obigen" erlaubt es, leere Antworten zu speichern. Die nicht ausgewählten Optionen werden so bewertet, wie in der Frage definiert ist. Diese Einstellung ist nur noch für bestehende Tests verfügbar und wird in einer folgenden ILIAS-Version nicht mehr unterstützt.
+assessment#:#tst_score_mcmr_zero_points_when_unanswered#:#Leere Antworten nicht speichern
+assessment#:#tst_score_mcmr_zero_points_when_unanswered_desc#:#Antworten ohne ausgewählte Option werden nicht gespeichert. Die Teilnehmer erhalten 0 Punkte auf diese Fragen.
 assessment#:#tst_score_reporting#:#Ergebnisausgabe
 assessment#:#tst_score_reporting_date#:#Datum der Ergebnisausgabe
 assessment#:#tst_search_users#:#Teilnehmer suchen
@@ -1681,8 +1682,6 @@ certificate#:#certificate_background_image#:#Hintergrundbild
 certificate#:#certificate_confirm_deletion_text#:#Wollen Sie wirklich die Zertifikat-Vorlage und alle zugehörigen Daten löschen?
 certificate#:#certificate_custom#:#Eigenes Format...
 certificate#:#certificate_edit#:#Zertifikat-Vorlage erstellen/bearbeiten
-certificate#:#certificate_enabled_scorm#:#Aktiviert
-certificate#:#certificate_enabled_scorm_introduction#:#Wenn ausgewählt, wird das Zertifikat für alle Teilnehmer des SCORM-Lernmoduls angeboten, die das Lernmodul durchgearbeitet haben.
 certificate#:#certificate_error_import#:#Während des Zertifikat-Imports ist ein Fehler aufgetreten!
 certificate#:#certificate_error_upload_bgimage#:#Beim Hochladen des Hintergrundbildes ist ein Fehler aufgetreten!
 certificate#:#certificate_export#:#Exportieren
@@ -1924,6 +1923,7 @@ cmps#:#cmps_id#:#ID
 cmps#:#cmps_ilias_max_version#:#Maximale ILIAS-Version
 cmps#:#cmps_ilias_min_version#:#Minimale ILIAS-Version
 cmps#:#cmps_inactive#:#Inaktiv
+cmps#:#cmps_install#:#Installieren
 cmps#:#cmps_lang_files#:#Sprachdatei
 cmps#:#cmps_lang_prefix#:#Präfix Sprachvariable
 cmps#:#cmps_languages#:#Sprachen
@@ -3266,7 +3266,7 @@ common#:#msg_min_one_role#:#Jeder Benutzer muss mindestens einer globalen Rolle 
 common#:#msg_multi_language_selected#:#Es ist nicht möglich, für mehrere Übersetzungen die gleiche Sprache auszuwählen
 common#:#msg_no_default_language#:#Keine Standardübersetzung bestimmt! Sie müssen eine Sprache als Standardübersetzung definieren.
 common#:#msg_no_delete_yourself#:#Sie können nicht Ihr eigenes Benutzerkonto löschen.
-common#:#msg_no_file#:#Sie haben keine Datei ausgewählt oder die ausgewählte Datei ware zu groß.
+common#:#msg_no_file#:#Sie haben keine Datei ausgewählt oder die ausgewählte Datei war zu groß.
 common#:#msg_no_language_selected#:#Angabe einer Übersetzungsprache fehlt! Sie müssen für alle Übersetzungen eine Sprache bestimmen
 common#:#msg_no_perm_assign_role_to_user#:#Sie haben keine Berechtigung die Rollenzuweisung des Benutzers zu ändern
 common#:#msg_no_perm_assign_user_to_role#:#Sie habe keine Berechtigung, um die Benutzerzuweisung zu ändern
@@ -4418,6 +4418,7 @@ content#:#cont_deactivate_page#:#Seite deaktivieren
 content#:#cont_deactivated#:#Deaktiviert
 content#:#cont_debug#:#Testwerkzeug bereitstellen
 content#:#cont_debug_deactivate#:#Es wird ein Testwerkzeug angezeigt. Es liefert im Präsentationsmodus des SCORM-Lernmoduls Daten, anhand welcher überprüft werden kann, wie das Lernmodul mit ILIAS interagiert. Um das Testwerkzeug aufzurufen, muss der linke Navigationsbaum angezeigt werden.
+content#:#cont_debug_deactivate12#:#Es wird ein Testwerkzeug angezeigt. Es liefert im Präsentationsmodus des SCORM-Lernmoduls Daten, anhand welcher überprüft werden kann, wie das Lernmodul mit ILIAS interagiert.
 content#:#cont_debug_deactivated#:#Hinweis: Das Werkzeug zum Überprüfen des Lernmoduls auf SCORM-Konformität ist global für alle Lernmodule deaktiviert.
 content#:#cont_decimal#:#Dezimal
 content#:#cont_def_layout#:#Standard-Layout
@@ -4582,7 +4583,7 @@ content#:#cont_header#:#Kopfzeile
 content#:#cont_Headline1#:#Überschrift 1
 content#:#cont_Headline2#:#Überschrift 2
 content#:#cont_Headline3#:#Überschrift 3
-content#:#cont_height#:#Höhe
+content#:#cont_height#:#Höhe in Pixel
 content#:#cont_hidenavig#:#Linken Navigationsbaum ausblenden
 content#:#cont_href#:#href
 content#:#cont_html_export_ids#:#HTML-Export-IDs
@@ -4871,7 +4872,8 @@ content#:#cont_saved_interactive_image#:#Interaktives Bild gespeichert
 content#:#cont_saved_map_area#:#Link-Bereich gespeichert.
 content#:#cont_saved_map_data#:#Image-Map gespeichert.
 content#:#cont_saving#:#Speichern...
-content#:#cont_sc_auto_continue#:#Automatische Fortsetzung
+content#:#cont_sc_auto_continue#:#Benutzer weiterleiten
+content#:#cont_sc_auto_continue_info#:#Leitet Benutzer automatisch nach der letzten Aktivität in das nächste SCO weiter. Diese Funktion wird nicht von allen SCORM 1.2 Lernmodulen unterstützt.
 content#:#cont_sc_less_mode_browse#:#Nur Vorschau / Preview ('browse')
 content#:#cont_sc_less_mode_normal#:#Normale Nutzung ('normal')
 content#:#cont_sc_max_attempt_exceed#:#Die maximale Anzahl an Versuchen für dieses Modul wurde erreicht.
@@ -5015,7 +5017,7 @@ content#:#cont_version#:#Version
 content#:#cont_versions#:#Versionen
 content#:#cont_whole_glossary#:#Gesamtes Glossar
 content#:#cont_WholePicture#:#Ganzes Bild
-content#:#cont_width#:#Breite
+content#:#cont_width#:#Breite in Pixel
 content#:#cont_wiki_page_link#:#Wiki-Seiten-Link
 content#:#cont_wrong_answers#:#Anzahl Fehler
 content#:#cont_wrong_answers_single#:#Falsche Wahl.
@@ -8822,6 +8824,7 @@ survey#:#phrase_added#:#Phrase hinzugefügt
 survey#:#phrase_new#:#Neue Phrase erstellen
 survey#:#phrase_saved#:#Die Phrase wurde erfolgreich gespeichert
 survey#:#please_enter_mail_code#:#Bitte verwenden Sie den Platzhalter für den Zugangscode [code].
+survey#:#please_enter_mail_url#:#Bitte verwenden Sie den Platzhalter für die URL [url].
 survey#:#please_select#:#-- bitte auswählen --
 survey#:#predefined_users#:#Ausgewählten Benutzern auf den Schreibtisch legen
 survey#:#preview#:#Vorschau
@@ -10176,7 +10179,7 @@ mathjax#:#mathjax_server_timeout_info#:#Maximale Wartezeit auf eine Antwort des 
 mathjax#:#mathjax_server_for_pdf#:#Für die PDF-Erzeugung verwenden
 mathjax#:#mathjax_server_for_pdf_info#:#Der Server wird zur Darstellung von TeX in PDF-Dokumenten verwendet.
 mathjax#:#mathjax_server_for_browser#:#Für den Browser verwenden
-mathjax#:#mathjax_server_for_browser_info#:#TeX wird als SVG-Grafik eingebunden. Damit ist die Aktivierung von MathJax im Browser überflüssig.###fau: lateex
+mathjax#:#mathjax_server_for_browser_info#:#TeX wird als SVG-Grafik eingebunden. Damit ist die Aktivierung von MathJax im Browser überflüssig.
 mathjax#:#mathjax_server_for_export#:#Für HTML-Exporte verwenden
 mathjax#:#mathjax_server_for_export_info#:#TeX wird in HTML-Exporten von Lernmodulen als SVG-Grafik exportiert.
 mathjax#:#mathjax_server_clear_cache#:# » Cache leeren
@@ -10215,7 +10218,6 @@ content#:#cont_scorm_options#:#Aufzeichnung von Bearbeitungsdaten
 content#:#cont_rte_settings#:#RTE-Einstellungen
 content#:#cont_debugging#:#Debugging
 content#:#cont_auto_last_visited_info#:#Dem Benutzer wird beim erneuten Aufrufen des SCORM-Lernmoduls das zuletzt besuchte SCO oder Asset angezeigt.
-content#:#cont_credit_mode_info#:#Diese Einstellung ist nur wirksam im Modus 'normal'.
 content#:#cont_sc_usession_info#:#Es werden regelmäßig Anfragen an ILIAS gesendet, damit der Benutzer in der Plattform weiter eingeloggt bleibt. ILIAS würde sonst die Bearbeitung des SCORM-Lernmoduls nicht als Aktivität werten und die ILIAS-Sitzung beenden. Dadurch gingen Bearbeitungsdaten verloren.
 content#:#cont_sequencing_info#:#Aktiviert die Vorgaben des Lernmoduls zur interaktiven Steuerung der Navigationsmöglichkeiten von Benutzern innerhalb des Lernmoduls in Abhängigkeit von Ereignissen oder Ergebnissen. <br />Prüfen Sie zunächst, ob Ihr Lernmodul solche Angaben zu 'Sequencing & Navigation' überhaupt enthält. Dies ist nur selten der Fall.
 content#:#cont_time_from_lms_info#:#Um häufig auftretende Schwierigkeiten bei der Zeiterfassung durch das SCORM-Lernmodul vorzubeugen, kann die Zeiterfassung durch ILIAS selbst vorgenommen werden. Die strikten Vorgaben des SCORM-Standards werden hierbei eingehalten.
@@ -10537,6 +10539,7 @@ common#:#file_rollback_done#:#Dateiversion %s ist nun die aktuelle Version.
 common#:#file_version_new_version#:#Neue Version
 common#:#file_version_create#:#Initiale Version
 common#:#file_version_replace#:#Alle Versionen ersetzt
+common#:#file_version_rollback#:#Auf Version %s von %s zurückkehren
 common#:#file_rollback#:#Zur aktuellen Version machen
 obj#:#edit_questions#:#Fragen bearbeiten
 common#:#frm_import#:#Forum importieren
@@ -10985,6 +10988,7 @@ obj#:#obj_orgunit_positions#:#Zugriffsregelungen nach Organisationseinheiten
 obj#:#obj_orgunit_positions_info#:#Wenn aktiviert, können zusätzliche Zugriffsregelungen über Positionen in Organisationseinheiten vergeben werden.
 orgu#:#authorities#:#Befugnisse
 orgu#:#positions#:#Positionen
+orgu#:#add_position#:#Position hinzufügen
 orgu#:#scope_1#:#eigener Organisationseinheit
 orgu#:#scope_2#:#untergeordneten Organisationseinheiten
 orgu#:#scope_3#:#allen Organisationseinheiten
@@ -11005,15 +11009,14 @@ mst#:#mst_show_courses#:#Einschreibungen
 mst#:#mst_courses_of#:#Einschreibungen von %s
 orgu#:#msg_position_udpated#:#Position updated
 orgu#:#remove_successful#:#Der Benutzer wurde erfolgreich entfernt.
-orgu#:#add_position#:#Position hinzufügen
 orgu#:#orgu_enable_my_staff#:#‘Ansicht Mitarbeiter’ aktivieren
 orgu#:#orgunit_position_permissions_not_active_for#:#Das Überschreiben der Zugriffsregelung für die Positionen darf nicht lokal vorgenommen werden für den Typ:
 orgu#:#orgu_enable_my_staff_info#:#Die Ansicht ‘Meine Mitarbeiter’ zeigt die Lernfortschritte der eigenen Mitarbeiter an.
 orgu#:#org_op_manage_members#:#Mitglieder bearbeiten
 orgu#:#org_op_read_learning_progress#:#Lernfortschritt von anderen Benutzern einsehen
-orgu#:#org_op_edit_submissions_grades#:#Abgaben von anderen Benutzern bearbeiten.
-rbac#:#org_op_edit_submissions_grades#:#Abgaben von anderen Benutzern bearbeiten.
-orgu#:#org_op_write_learning_progress#:#Lernfortschritt von anderen Benutzern setzen.
+orgu#:#org_op_edit_submissions_grades#:#Abgaben von anderen Benutzern bearbeiten
+rbac#:#org_op_edit_submissions_grades#:#Abgaben von anderen Benutzern bearbeiten
+orgu#:#org_op_write_learning_progress#:#Lernfortschritt von anderen Benutzern setzen
 rbac#:#org_op_write_learning_progress#:#Lernfortschritt untergeordneter Benutzer setzen
 rbac#:#positions_override_operations#:#Globale Einstellungen überschreiben
 orgu#:#form_title_org_default_permissions_update#:#Standardrechte
@@ -11543,6 +11546,7 @@ content#:#cont_fourth_edition#:#Neueste Version 'SCORM 2004 4th edition'
 content#:#cont_fourth_edition_info#:#'SCORM 2004 4th edition' bietet gegenüber der '3rd edition' einige Erweiterungen. Es können Daten über SCO-Grenzen hinweg ausgetauscht werden. Diese Möglichkeiten werden allerdings nur selten genutzt und wirken sich negativ auf die Geschwindigkeit aus.
 content#:#offline_mode_manager#:#Offline-Nutzung
 content#:#offline_mode_users#:#Nutzer im Offline-Modus
+content#:#offline_mode_users_info#:#Benutzer können händisch auf dem Offline-Modus herausgenommen werden und danach auch wieder das Lernmodul online benutzen. Dies ergibt Sinn, wenn z.B. der Laptop mit den Lernmodulen gestohlen wurde.
 content#:#cont_offline_mode_disable_not_allowed_info#:#Da das Lernmodul von Nutzern aktuell im Offline-Modus genutzt wird, kann der Offline-Modus nicht deaktiviert werden.
 content#:#stop_user_offline_mode#:#Offline-Modus beenden
 content#:#stop_user_offline_mode_for_user#:#Offline-Modus beenden für
@@ -12182,6 +12186,7 @@ wfe#:#start_event_form_header#:#Relevante Ereignisse für den Start der Workflow
 wfe#:#wfe_sure_to_delete_process_def#:#Sind Sie sicher, dass Sie die Definition löschen möchten?
 wfe#:#wfe_request_missing_process_id#:#Für die gewählte Aktion wurde keine Prozess-ID übertragen.
 wfe#:#wfe_started_listening#:#Der Prozess wurde scharf geschaltet.
+wfe#:#wfe_stopped_listening#:#Der Prozess wurde unscharf geschaltet, das Event wird nicht berücksichtigt.
 common#:#ps_export_scorm#:#SCORM-Protokolldaten
 common#:#enable_export_scorm_desc#:#Erlaube den Export von Persönlichen Daten aus SCORM-Lernmodulen
 mail#:#link_check_introduction#:#die folgenden Externen Links sind ungültig:
@@ -12363,6 +12368,8 @@ grp#:#grp_admission_link_failure_membership_limited#:#Kein Beitritt möglich. Di
 crs#:#crs_admission_link_failure_membership_limited#:#Kein Beitritt möglich. Die Mitgliederzahl der Gruppe ist begrenzt.
 grp#:#grp_admission_link_success_registration#:#Erfolgreich zur Gruppe "%s" beigetreten.
 crs#:#crs_admission_link_success_registration#:#Erfolgreich zum Kurs "%s" beigetreten.
+crs#:#crs_admission_link_failure_offline#:#Kein Beitritt möglich. Der Kurs ist offline.
+crs#:#crs_admission_link_failure_availability#:#Kein Beitritt möglich. Der Kurs ist online.
 rbac#:#ilias_id#:#ILIAS-ID
 scormtrac#:#exportselectedraw#:#Rohdaten
 scormtrac#:#lvalue#:#Key
@@ -12426,7 +12433,7 @@ mail#:#mail_threshold#:#Schwellenwert
 mail#:#mail_threshold_info#:#Interne Mails, die älter als der hier definierte Schwellenwert sind, werden unwiderruflich gelöscht (inklusive evtl vorhandener Anhänge).<br> Bitte bedenken Sie, dass bei erstmaliger Ausführung dieses Cron-Jobs je nach Schwellenwert sehr viele Nachrichten gelöscht werden und eine E-Mail als Warnung nicht mehr versendet werden kann.
 mail#:#mail_orphaned_mails_desc#:#Löschen alter oder verwaister Mails
 mail#:#only_inbox_trash#:#Nur Posteingang/Papierkorb berücksichtigen
-mail#:#only_inbox_trash_info#:#Fallls aktiviert, werden ausschließlich Mails gelöscht, die sich zum Zeitpunkt der Cron-Job-Ausführung im Posteingang und Papierkorb der jeweiligen Benutzer befinden. Ansonsten werden alle Mails unabhängig vom Ordner gelöscht.
+mail#:#only_inbox_trash_info#:#Falls aktiviert, werden ausschließlich Mails gelöscht, die sich zum Zeitpunkt der Cron-Job-Ausführung im Posteingang und Papierkorb der jeweiligen Benutzer befinden. Ansonsten werden alle Mails unabhängig vom Ordner gelöscht.
 mail#:#mail_notify_orphaned#:#Benachrichtigungsmail
 mail#:#mail_notify_orphaned_info#:#Wenn Sie hier einen Wert größer oder gleich 1 eintragen, sendet ILIAS eine E-Mail an den Benutzer bevor eine interne Mail gelöscht wird. Bitte stellen Sie sicher, dass ein externer E-Mail-Empfang möglich ist.
 prtt#:#prtt_portfolio_created#:#Portfoliovorlage wurde hinzugefügt
@@ -12580,7 +12587,7 @@ exc#:#exc_adopt_group_teams_conflict#:#Benutzer "%1$s" ist bereits in Gruppe "%2
 exc#:#exc_adopt_group_teams_added#:#%s Benutzer wurden hinzugefügt.
 exc#:#exc_adopt_group_teams_blocked#:#%s Benutzer waren bereits vorhanden.
 exc#:#exc_deadline_ext_mismatch#:#Die Nachfrist muss nach dem Abgabetermin enden.
-exc#:#exc_peer_review_ass_setting_info#:#Nachdem der Abgabetermin und ggfs. die Nachfrist verstrichen sind, können Teilnehmer ihre Arbeitsergebnisse gegenseitig bewerten. Genaue Einstellungen zum Peer-Feedback werden im gleichnamigen Reiter vorgenommen. Der Reiter wird eingeblendet, wenn diese Option aktiviert und gepeichert wurde. 
+exc#:#exc_peer_review_ass_setting_info#:#Nachdem der Abgabetermin und ggfs. die Nachfrist verstrichen sind, können Teilnehmer ihre Arbeitsergebnisse gegenseitig bewerten. Genaue Einstellungen zum Peer-Feedback werden im gleichnamigen Reiter vorgenommen. Der Reiter wird eingeblendet, wenn diese Option aktiviert und gespeichert wurde.
 exc#:#exc_peer_review_min_number#:#Geforderte Anzahl von Feedbacks
 exc#:#exc_peer_review_min_number_info#:#Anzahl von Feedback, die ein Teilnehmer den Peers geben muss. Sollte die Anzahl der geforderten Feedbacks die Anzahl der tatsächlichen Einreichungen übersteigen, wird die geforderte Anzahl automatisch auf die Anzahl der tatsächlichen Einreichungen reduziert.
 exc#:#exc_criteria_catalogues#:#Kriterienkataloge
@@ -12713,13 +12720,13 @@ content#:#cont_upload_multi_srt_howto#:#Erlaubt das Hochladen mehrerer Untertite
 content#:#cont_moved_srt_files#:#Die Untertitel-Dateien wurden den Medienobjekten zugeordnet.
 content#:#cont_subtitle_file#:#SRT-ZIP-Datei
 content#:#cont_multi_srt_files#:#SRT-Dateien
-content#:#cont_master_language_only#:#Hauptsprache für Übersetzung (Master)
+content#:#cont_master_language_only#:#Hauptsprache für Übersetzung - Master
 content#:#cont_import#:#Import
-content#:#cont_trans_import_info#:#Wenn Sie dieses Modul als "XML/Hauptsprache für Übersetzung (Master)" in eine andere Installation exportiert haben, können Sie hier die übersetzten Export-Dateien dieser Installation wieder importieren.
+content#:#cont_trans_import_info#:#Wenn Sie dieses Modul als "XML (Hauptsprache für Übersetzung - Master)" in eine andere Installation exportiert haben, können Sie hier die übersetzten Export-Dateien dieser Installation wieder importieren.
 content#:#cont_import_trans#:#Übersetzung importieren
 content#:#cont_import_lang#:#Zielsprache
-mep#:#mep_master_language_only#:#Hauptsprache für Übersetzung (Master)
-mep#:#mep_trans_import_info#:#Wenn Sie dieses Modul als "XML/Hauptsprache für Übersetzung (Master)" in eine andere Installation exportiert haben, können Sie hier die übersetzten Export-Dateien dieser Installation wieder importieren.
+mep#:#mep_master_language_only#:#Hauptsprache für Übersetzung - Master
+mep#:#mep_trans_import_info#:#Wenn Sie dieses Modul als "XML (Hauptsprache für Übersetzung - Master)" in eine andere Installation exportiert haben, können Sie hier die übersetzten Export-Dateien dieser Installation wieder importieren.
 mep#:#mep_import_trans#:#Übersetzung importieren
 mep#:#mep_import_lang#:#Zielsprache
 content#:#cont_snippet_from_another_installation#:#Inhaltsbaustein stammt von einer anderen ILIAS-Installation.
@@ -12995,8 +13002,8 @@ common#:#objs_prg#:#Studienprogramme
 common#:#obj_prgs_desc#:#Studienprogramm Administration
 trac#:#trac_mode_study_programme#:#Studienprogramm abgeschlossen
 common#:#manage_members#:#Mitglieder verwalten
-maps#:#maps_tile_server#:#Server for Tiles###30 08 2015 new variable
-maps#:#maps_geolocation_server#:#Server for Reverse Geolocation###30 08 2015 new variable
+maps#:#maps_tile_server#:#Server für Kacheln
+maps#:#maps_geolocation_server#:#Server für Reverse Geolocation
 mail#:#orphaned_mail_subject#:#Benachrichtigung über verwaiste Mails
 mail#:#orphaned_mail_body#:#Es existieren veraltete oder verwaiste Mails in den folgenden Postfächern. Beachten Sie, dass diese Mails in kürze automatisch gelöscht werden.
 rbac#:#rbac_permissions#:#Rechte
@@ -13467,8 +13474,8 @@ style#:#adapt_less#:#Anpassung der Less Datei
 style#:#adapt_less_description#:#Dies ist die Darstellung aller less Variablen aus dem aktuellen Skin. Variablennamen und Beschreibungen sind direkt aus den Dateien ausgelesen und daher nur in Originalsprache vorhanden. Der ausgewählte Style wird beim Aktualisieren/Zurücksetzen der Variablen vollständig neu kompiliert. Das Zurücksetzten der Variablen erstellt eine exakte Kopie des ursprünglichen "delos style".
 style#:#adapt_icons_description#:#Alle svg Icons, welche im Ordner images gefunden wurden, werden hier aufgelistet. Wenn eine Farbe geändert wird, ist dies in allen hier aufgelisteten Icons sofort ersichtlich.
 style#:#adapt_icons#:#Anpassung der Iconfarben
-style#:#invalid_less_path#:#Der angegebene lessc Pfad ist ungültig oder kann vom Webserver nicht gelesen und ausgeführt werden. Die lessc Datei unter dem angegebenen Pfad (oder die verlinkte Datei, falls der Pfad auf einen symlink verweist) muss vom Webserver gelesen und ausgeführt werden können.
-style#:#provided_less_path#:#Angegebener lessc Pfad:
+style#:#invalid_less_path#:#Der angegebene lessc-Pfad ist ungültig oder kann vom Webserver nicht gelesen und ausgeführt werden. Die lessc-Datei unter dem angegebenen Pfad (oder die verlinkte Datei, falls der Pfad auf einen symlink verweist) muss vom Webserver gelesen und ausgeführt werden können.
+style#:#provided_less_path#:#Angegebener lessc-Pfad:
 style#:#used_colors#:#Benutzte Farben:
 style#:#style_imported#:#Style wurde erfolgreich importiert nach:
 style#:#style_copied#:#Style wurde erfolgreich kopiert.
@@ -13775,8 +13782,8 @@ crs#:#crs_edit_lo_introduction#:#Einleitung bearbeiten
 rbac#:#grp_manage_members#:#Mitglieder einer Gruppe verwalten
 rbac#:#crs_manage_members#:#Mitglieder eines Kurses verwalten
 iass#:#iass_copy#:#Individuelle Bewertung kopieren
-survey#:#error_save_code#:#Value not saved properly. <b>The E- mail: '%s' is not valid</b>. First name: '%s', Last name: '%s'.<br>###07 02 2017 new variable
-survey#:#cannot_send_emails#:#You do not possess sufficient permissions to send emails.###07 02 2017 new variable
+survey#:#error_save_code#:#Werte wurden nicht korrekt gespeichert. <b>Die E-Mail '%s' ist nicht gültig.</b>. Vorname: '%s', Nachname: '%s'.<br>
+survey#:#cannot_send_emails#:#Sie haben keine ausreichenden Rechte, um E-Mails zu versenden.
 rbac#:#book_copy#:#Buchungspool kopieren
 mep#:#mobs_black_list_file_types#:#Verbotene Dateitypen
 mep#:#mobs_black_list_file_types_info#:#Diese List schränkt die Menge der erlaubten Dateitypen ein. Tragen Sie dazu die jeweilige Dateiendungen mit Komma getrennt ein (z.B. jpg,gif). Dies ist sinnvoll, wenn die vorangegangene Option leer ist (alle Typen erlaubt).
@@ -13787,8 +13794,8 @@ ecs#:#ecs_member_auth_type#:#Authentifizierungsmethode für Kursmitglieder
 background_tasks#:#background_tasks#:#Background Tasks
 background_tasks#:#background_tasks_running#:#Background Tasks
 background_tasks#:#scheduled#:#Geplant
-background_tasks#:#dismiss#:#Schliessen
-background_tasks#:#abort#:#Beenden
+background_tasks#:#dismiss#:#Entfernen
+background_tasks#:#remove#:#Entfernen
 background_tasks#:#completed#:#Abgeschlossen
 background_tasks#:#waiting#:#Warten
 background_tasks#:#proceed_job#:#Weiter
@@ -13972,10 +13979,10 @@ prtf#:#prtf_add_existing_blog#:#Vorhandenes Blog nutzen
 blog#:#blog_draft_text#:#Unveröffentlichter Beitrag
 user#:#usr_letter_avatars#:#Letter-Avatare
 user#:#usr_letter_avatars_info#:#Zeigt die Initialen des Benutzernamens oder Logins an, wenn kein öffentliches Profilbild vorliegt.
-mep#:#mep_master_language_only_no_media#:#Hauptsprache für Übersetzung (ohne Medienobjekte)
-content#:#cont_master_language_only_no_media#:#Hauptsprache für Übersetzung (ohne Medienobjekte)
-mep#:#mep_content#:#Content
-mep#:#mep_media_subtitles#:#Media Subtitles
+mep#:#mep_master_language_only_no_media#:#Hauptsprache für Übersetzung - ohne Medienobjekte
+content#:#cont_master_language_only_no_media#:#Hauptsprache für Übersetzung - ohne Medienobjekte
+mep#:#mep_content#:#Medienobjekte
+mep#:#mep_media_subtitles#:#Untertitel
 content#:#cont_last_visited_page#:#Zuletzt besuchte Seite
 content#:#cont_first_page#:#Erste Seite
 content#:#cont_lm_starting_point#:#Startseite für ILIAS-Lernmodule
@@ -14058,6 +14065,7 @@ prtf#:#prtf_signature_info#:#Das PDF enthält ein Feld, in welchem die Benutzer 
 prtf#:#prtf_signature_date#:#Datum, Unterschrift
 lti#:#lti_not_allowed#:#Zugriff nicht erlaubt. Sie wurden in den ursprünglichen LTI Bereich umgeleitet.
 lti#:#lti_navigation#:#Navigation
+lti#:#lti_session#:#LTI Sitzung
 lti#:#lti_exit#:#LTI Sitzung beenden
 lti#:#lti_exited#:#LTI Sitzung beendet
 lti#:#lti_exited_info#:#Die LTI Sitzung wurde erfolgreich beendet
@@ -14073,17 +14081,18 @@ orgu#:#confirm_deletion_button#:#Löschen
 orgu#:#msg_deleted#:#Gelöscht
 orgu#:#msg_position_updated#:#Position wurde aktualisiert.
 orgu#:#msg_position_created#:#Position wurde erstellt.
+orgu#:#msg_success_permission_saved#:#Rechte wurden gespeichert.
 common#:#scorm_login_as_learner_id#:#SCORM 2004: set ILIAS Username as cmi.learner_id###31 08 2017 new variable
 common#:#scorm_login_as_learner_id_info#:#If enabled, the Username instead of the User ID is set for cmi.learner_id.###31 08 2017 new variable
 iass#:#iass_upload_file#:#Prüfungsblatt
 iass#:#iass_file_visible_examinee#:#Datei für Teilnehmer sichtbar
 iass#:#iass_usr_download_attachment#:#Datei herunterladen
 iass#:#iass_save_amend#:#Geänderte Prüfungsdaten speichern
-dateplaner#:#cal_exc_inst_files#:#Instruction Files###31 08 2017 new variable
+dateplaner#:#cal_exc_inst_files#:#Datei
 dateplaner#:#cal_repo_obj#:#Magazinobjekt
-survey#:#sub_tab_dashboard#:#Dashboard###31 08 2017 new variable
-survey#:#svy_print_show_labels#:#Show labels###31 08 2017 new variable
-survey#:#svy_print_hide_labels#:#Hide labels###31 08 2017 new variable
+survey#:#sub_tab_dashboard#:#Dashboard
+survey#:#svy_print_show_labels#:#Labels anzeigen
+survey#:#svy_print_hide_labels#:#Labels ausblenden
 content#:#cont_grid_width_m#:#Medium
 grp#:#grp_created_and_user_been_added#:#Die Gruppe wurde erstellt und der Benutzer hinzugefügt.
 cont#:#cont_assign_skills#:#Kompetenzen zuweisen
@@ -14144,3 +14153,5 @@ common#:#usr_name_undisclosed#:#Nicht freigegeben
 common#:#obj_exc_duplicate#:#Übung kopieren
 meta#:#adt_error_max_length#:#Der eingegebene Text is zu lang, bitte geben Sie einen kürzeren Text ein.
 form#:#form_chars_remaining#:#Verbleibende Zeichen:
+poll#:#poll_voting_period_full_info#:#Voting period from %s to %s###20 12 2017 new variable
+crs#:#crs_subscription_min_members_err#:#Die minimale Anzahl darf nicht größer als die maximale Anzahl sein.

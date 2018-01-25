@@ -24,20 +24,20 @@ class Factory implements Layout\Factory {
 	 * @inheritdoc
 	 */
 	public function metabar(){
-		return new MetaBar();
+		return new Metabar();
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function sidebar($entries, $active=null){
-		return new SideBar($this->signal_generator, $entries, $active);
+		return new Sidebar($this->signal_generator, $entries, $active);
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function sidebarentry($button, MainControls\Menu\Slate $slate=null) {
+	public function sidebarEntry($button, MainControls\Menu\Slate $slate=null) {
 		return new SidebarEntry($button, $slate);
 	}
 
