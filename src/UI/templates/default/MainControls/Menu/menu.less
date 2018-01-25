@@ -5,7 +5,8 @@
 .il-maincontrol-menu-slate {
  	&.engaged {
  		// quick solution, better use flex or grid
-	 	display: block;
+	 	display: flex;
+	 	flex-direction: column;
 	    height: 100%;
 	    position: relative;
  	}
@@ -52,15 +53,16 @@
 }
 
 .il-maincontrol-menu-slate-close {
-	bottom: 0;
-    position: absolute;
     width: 100%;
+    border-bottom: 1px solid #eee;
     border-top: 1px solid #eee;
     height: 50px;
+    margin-top: auto;
 	.iconographic-label {
 		display: none;
 	}
 	.btn-iconographic {
+		background-color: #fff;
 		width: 100%;
 	    height: 100%;
 	    padding: 0;
@@ -68,6 +70,9 @@
 	    text-align: right;
 	    .glyph {
 	    	padding-right: 20px;
+	    }
+	    &.engaged {
+	    	background-color: #fff;
 	    }
 	    &:active,
 	    &:focus,
