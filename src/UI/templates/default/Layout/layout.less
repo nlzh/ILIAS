@@ -1,3 +1,4 @@
+// variables 
 @height-metabar: 75px;
 @trigger-height: 80px;
 @trigger-width: 80px;
@@ -14,6 +15,20 @@
 @inner-top-shadow: inset 0 5px 9px -5px @shadow-color;
 @shadow-right: 1px 0 1px @shadow-color;
 @shadow-bottom: 0 1px 1px @shadow-color;
+
+
+// mixins
+.inner-top-shadow {
+	box-shadow: @inner-top-shadow;
+}
+
+.shadow-right {
+	box-shadow: @shadow-right;
+}
+
+.shadow-bottom {
+	box-shadow: @shadow-bottom;
+}
 
 /* IE10+ not supported */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -33,17 +48,19 @@
 }
 
 
-// mixins
-.inner-top-shadow {
-	box-shadow: @inner-top-shadow;
+* {
+	box-sizing: border-box;
 }
 
-.shadow-right {
-	box-shadow: @shadow-right;
-}
-
-.shadow-bottom {
-	box-shadow: @shadow-bottom;
+menu, 
+article, 
+aside, 
+details, 
+footer, 
+header, 
+nav, 
+section {
+    display: block;
 }
 
 /*
@@ -77,15 +94,21 @@ grid-based layout
 
 /* Metabar */
 header {
+	grid-area: header;
+}
+
+.header-inner {
 	.shadow-bottom;
-    align-items: center;
+	align-items: center;
     background: #fff;
     display: flex;
+    flex-direction: row;
 	grid-area: header;
 	height: @height-metabar;
 	padding: 0 15px;
+	position: fixed;
+	width: 100%;
 	z-index: 2;
-
 }
 
 .il-layout-page-metabar {
