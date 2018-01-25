@@ -1,9 +1,16 @@
 // variables 
-@height-metabar: 75px;
+@height-header: 75px;
+@height-footer: 75px;
+
+/* 
+height of areas outside sidebar - 
+important for calculating the scrollable area inside sidebar slates
+*/
+@height-header-footer: ((@height-header + @height-footer)*1);
+
 @trigger-height: 80px;
 @trigger-width: 80px;
 @trigger-border: 1px solid rgba(255, 255, 255, .2);
-@height-metabar: 75px;
 @slate-width: 400px;
 @bg-sidebar: #4a4a4a;
 @bg-sidebar-engaged: #fff;
@@ -73,7 +80,7 @@ grid-based layout
 	display: grid;
 	grid-gap: 0px;
     grid-template-columns: 80px 1fr;
-    grid-template-rows: 75px 1fr 75px;
+    grid-template-rows: @height-header 1fr @height-footer;
     grid-template-areas:
     "header header"
     "sidebar content"
@@ -81,13 +88,16 @@ grid-based layout
     height: 100%;
 	width: 100%;
 	&.with-engaged-slates {
-		grid-template-columns: @slate-width+@trigger-width 1fr;
+		grid-template-columns: @slate-width + @trigger-width 1fr;
 		.il-layout-page-sidebar {
 			width: @slate-width + @trigger-width;
 			// slate 
 			.il-sidebar-slates {
 				display: flex;
 				flex-direction: column;
+				// height: ~"calc(100vh - 150px)";
+				height: calc(~"100vh - " @height-header-footer);
+				overflow-y: scroll;
 			}
 		}
 	}
@@ -105,7 +115,7 @@ header {
     display: flex;
     flex-direction: row;
 	grid-area: header;
-	height: @height-metabar;
+	height: @height-header;
 	padding: 0 15px;
 	position: fixed;
 	width: 100%;
