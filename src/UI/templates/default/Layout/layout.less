@@ -1,9 +1,9 @@
-// variables 
+// variables
 @height-header: 75px;
 @height-footer: 75px;
 
-/* 
-height of areas outside sidebar - 
+/*
+height of areas outside sidebar -
 important for calculating the scrollable area inside sidebar slates
 */
 @height-header-footer: ((@height-header + @height-footer)*1);
@@ -59,13 +59,13 @@ important for calculating the scrollable area inside sidebar slates
 	box-sizing: border-box;
 }
 
-menu, 
-article, 
-aside, 
-details, 
-footer, 
-header, 
-nav, 
+menu,
+article,
+aside,
+details,
+footer,
+header,
+nav,
 section {
     display: block;
 }
@@ -86,12 +86,13 @@ grid-based layout
     "sidebar content"
     "footer footer"; // not supported IE
     height: 100%;
+	overflow: hidden;
 	width: 100%;
 	&.with-engaged-slates {
 		grid-template-columns: @slate-width + @trigger-width 1fr;
 		.il-layout-page-sidebar {
 			width: @slate-width + @trigger-width;
-			// slate 
+			// slate
 			.il-sidebar-slates {
 				display: flex;
 				flex-direction: column;
@@ -162,7 +163,7 @@ nav {
 .il-sidebar-triggers {
 	.shadow-right;
 	background: @bg-sidebar;
-	position: relative; 
+	position: relative;
 	width: @trigger-width;
 	z-index: 1;
 	.btn-iconographic {
@@ -189,12 +190,12 @@ nav {
 
 	/*
 	****************************************
-	nth-child selector ist not usefull when 
+	nth-child selector ist not usefull when
 	something changes in the sidebar.
-	add an additional class/id for each item in 
+	add an additional class/id for each item in
 	sidebar e.g btn-default.navigation
 	****************************************
-	
+
 
 	.btn-iconographic:nth-child(1) .icon {
 		background-image: url('images/icon-sb-cockpit.svg');
@@ -217,7 +218,7 @@ nav {
 	}
 
 	.btn-iconographic.engaged:nth-child(1) .icon {
-		background-image: url('images/icon-sb-cockpit-engaged.svg');	
+		background-image: url('images/icon-sb-cockpit-engaged.svg');
 	}
 
 	.btn-iconographic.engaged:nth-child(2) .icon {
@@ -255,8 +256,8 @@ nav {
 
 
 /*
-main-tag is important for screenreader 
-fix due to main-tag is not supported in IE 
+main-tag is important for screenreader
+fix due to main-tag is not supported in IE
 */
 
 /* Content */
@@ -265,9 +266,10 @@ main {
 }
 
 .il-layout-page-content {
-	grid-area: content;
-	padding: 20px;
 	display: grid;
+	grid-area: content;
+	overflow: auto;
+	padding: 20px;
 }
 
 /* Footer */
