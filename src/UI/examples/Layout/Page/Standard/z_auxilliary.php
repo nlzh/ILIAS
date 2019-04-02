@@ -45,11 +45,19 @@ function pagedemoMetabar($f)
 
 	$notes = $f->maincontrols()->slate()->legacy(
 		'Notification',
-		$f->glyph()->notification(),
+		$f->glyph()->notification()
+			->withCounter($f->counter()->novelty(3)),
 		$f->legacy('some content')
 	);
 
+	$more_btn = $f->button()->bulky(
+		$f->icon()->standard('', ''),
+		'more',
+		'#'
+	);
+
 	$metabar = $f->mainControls()->metabar()
+		->withMoreButton($more_btn)
 		->withAdditionalEntry('search', $search)
 		->withAdditionalEntry('help', $help)
 		->withAdditionalEntry('notes', $notes)
