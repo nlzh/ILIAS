@@ -82,6 +82,21 @@ class Renderer extends AbstractComponentRenderer {
 			true
 		);
 
+		$f = $this->getUIFactory();
+		$more_label = $component->getMoreButton()->getLabel();
+		$more_symbol = $component->getMoreButton()->getIconOrGlyph();
+		$more_slate = $f->maincontrols()->slate()
+			->legacy($more_label, $more_symbol, $f->legacy(''));
+
+
+		$this->renderTriggerButtonsAndSlates(
+			$tpl, $default_renderer, $entry_signal,
+			static::BLOCK_METABAR_ENTRIES,
+			[$more_slate],
+			$active,
+			true
+		);
+
 		$component = $component->withOnLoadCode(
 			function($id) use ($entry_signal) {
 				return "
@@ -89,6 +104,8 @@ class Renderer extends AbstractComponentRenderer {
 						'{$id}',
 						'{$entry_signal}'
 					);
+					il.UI.maincontrols.metabar.init();
+					$(window).resize(il.UI.maincontrols.metabar.init);
 				";
 			}
 		);
