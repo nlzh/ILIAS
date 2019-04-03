@@ -78,24 +78,22 @@ class Renderer extends AbstractComponentRenderer {
 			$tpl, $default_renderer, $entry_signal,
 			static::BLOCK_METABAR_ENTRIES,
 			$component->getEntries(),
-			$active,
-			true
+			$active
 		);
 
 		$f = $this->getUIFactory();
 		$more_label = $component->getMoreButton()->getLabel();
 		$more_symbol = $component->getMoreButton()->getIconOrGlyph();
 		$more_slate = $f->maincontrols()->slate()
-			->legacy($more_label, $more_symbol, $f->legacy(''));
-
+			->combined($more_label, $more_symbol, $f->legacy(''));
 
 		$this->renderTriggerButtonsAndSlates(
 			$tpl, $default_renderer, $entry_signal,
 			static::BLOCK_METABAR_ENTRIES,
 			[$more_slate],
-			$active,
-			true
+			$active
 		);
+
 
 		$component = $component->withOnLoadCode(
 			function($id) use ($entry_signal) {
@@ -121,8 +119,7 @@ class Renderer extends AbstractComponentRenderer {
 		Signal $entry_signal,
 		string $block,
 		array $entries,
-		string $active = null,
-		bool $slate_is_contained_in_entry = false
+		string $active = null
 	) {
 		foreach ($entries as $id=>$entry) {
 
@@ -149,12 +146,9 @@ class Renderer extends AbstractComponentRenderer {
 
 			$tpl->setCurrentBlock($block);
 			$tpl->setVariable("BUTTON", $default_renderer->render($button));
-			if($slate && $slate_is_contained_in_entry) {
-				$tpl->setVariable("SLATE", $default_renderer->render($slate));
-			}
 			$tpl->parseCurrentBlock();
 
-			if($slate && $slate_is_contained_in_entry === false) {
+			if($slate) {
 				$tpl->setCurrentBlock("slate_item");
 				$tpl->setVariable("SLATE", $default_renderer->render($slate));
 				$tpl->parseCurrentBlock();

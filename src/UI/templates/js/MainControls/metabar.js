@@ -8,7 +8,10 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 		var id
 			,_breakpoint_max_width = 767 //this corresponds to @grid-float-breakpoint-max, see mainbar.less/metabar.less
 			,_cls_btn_engaged = 'engaged'
-			,_cls_entry = 'il-metabar-entry'
+			,_cls_entries = 'il-metabar-entries'
+			,_cls_slates = 'il-metabar-slates'
+			,_cls_more_btn = 'il-metabar-more-button'
+			,_cls_more_slate = 'il-metabar-more-slate'
 			,_cls_single_slate = false //class of one single slate, will be set on registerSignals
 			,_cls_slate_engaged = false //engaged class of a slate, will be set on registerSignals
 		;
@@ -34,7 +37,9 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			} else {
 				_disengageAllSlates();
 				_disengageAllButtons();
-				_engageButton(btn);
+				if(btn.attr('data-inmoreslate') != 'true') {
+					_engageButton(btn);
+				}
 			}
 		};
 
@@ -53,8 +58,8 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 		};
 
 		var _disengageAllButtons = function() {
-			$('#' + id +' .' + _cls_entry)
-			.children('.btn.engaged')
+			$('#' + id +' .' + _cls_entries)
+			.children('.btn.' + _cls_btn_engaged)
 			.each(
 				function(i, btn) {
 					_disengageButton($(btn));
@@ -78,18 +83,35 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 		  * decide and init condensed/wide version
 		  */
 		var init = function () {
-			window.top.console.log('INIT METABAR:' + id);
-			window.top.console.log('mobile? ' + _isCondensedMode());
-			_tagMoreEntry();
+			_tagMoreButton();
+			_tagMoreSlate();
 			_isCondensedMode() ? _initCondensed() : _initWide();
 		};
 
-		var _tagMoreEntry = function() {
-			if(_getMoreEntry().length === 0) {
-				console.log('ADDING')
-				var entries = $('#' + id +' .' + _cls_entry),
-					more = entries[entries.length - 1];
-				$(more).addClass('il-metabar-more-entry');
+		var _initCondensed = function () {
+			_initMoreSlate();
+			_getMetabarEntries().hide();
+			_getMoreButton().show();
+		};
+
+		var _initWide = function () {
+			_getMoreButton().hide();
+			_getMetabarEntries().show();
+		};
+
+		var _tagMoreButton = function() {
+			if(_getMoreButton().length === 0) {
+				var entries = $('#' + id +' .' + _cls_entries).find('.btn'),
+					more = entries.last();
+				$(more).addClass(_cls_more_btn);
+			}
+		}
+
+		var _tagMoreSlate = function() {
+			if(_getMoreSlate().length === 0) {
+				var slates = $('#' + id +' .' + _cls_slates).children('.' + _cls_single_slate),
+					more = slates.last();
+				$(more).addClass(_cls_more_slate);
 			}
 		}
 
@@ -99,35 +121,28 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			return window.matchMedia(media_query).matches;
 		}
 
-		var _getMoreEntry = function() {
-			return $('.il-metabar-more-entry');
-		}
-
 		var _getMoreButton = function() {
-			return $('.il-metabar-more-entry').children('.btn');
+			return $('.' + _cls_more_btn);
 		}
 
-		var _getMoreSlateContentArea = function() {
-			var slate = _getMoreEntry().find('.' + _cls_single_slate),
-				contentarea = slate.children()[0];
-			return $(contentarea);
+		var _getMoreSlate = function() {
+			return $('.' + _cls_more_slate);
 		}
 
 		var _getMetabarEntries = function() {
-			return $('#' + id +' .' + _cls_entry).not('.il-metabar-more-entry');
+			return $('#' + id +' .' + _cls_entries)
+				.children('.btn')
+				.not('.' + _cls_more_btn);
 		}
 
-		var _initCondensed = function () {
-			_getMoreButton().show();
-			_getMetabarEntries().appendTo(_getMoreSlateContentArea());
-
-		};
-
-		var _initWide = function () {
-			_getMoreButton().hide();
-			_getMetabarEntries().insertBefore(_getMoreEntry());
-
-		};
+		var _initMoreSlate = function() {
+			var content = _getMoreSlate().children('.il-maincontrols-slate-content');
+			if(content.children().length == 0) {
+				_getMetabarEntries().clone(true, true)
+					.attr('data-inmoreslate', true)
+					.appendTo(content);
+			}
+		}
 
 		return {
 			registerSignals: registerSignals,

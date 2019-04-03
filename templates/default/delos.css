@@ -9490,54 +9490,54 @@ footer {
 .il-maincontrols-metabar .il-metabar-entries .il-logout {
   padding-left: 10px;
 }
-.il-metabar-entry {
+.il-metabar-entries .btn {
   position: relative;
 }
-.il-metabar-entry .btn .badge {
+.il-metabar-entries .btn .badge {
   margin-top: -20px;
 }
-.il-metabar-entry .il-counter-status {
+.il-metabar-entries .il-counter-status {
   margin-top: -4px;
 }
-.il-metabar-entry > .btn-bulky > div > .bulky-label {
+.il-metabar-entries > .btn-bulky > div > .bulky-label {
   display: none;
 }
-.il-metabar-entry .btn-bulky {
+.il-metabar-entries .btn-bulky {
   background-color: transparent;
   height: 60px;
   min-width: 60px;
 }
-.il-metabar-entry .btn-bulky.engaged,
-.il-metabar-entry .btn-bulky.engaged:focus {
+.il-metabar-entries .btn-bulky.engaged,
+.il-metabar-entries .btn-bulky.engaged:focus {
   box-shadow: 1px 3px 4px #cccccc;
   background-color: #fafafa;
   border: none;
   color: initial;
   outline-color: transparent;
 }
-.il-metabar-entry .btn-bulky .glyphicon {
+.il-metabar-entries .btn-bulky .glyphicon {
   color: #aaaaaa;
   font-size: 2.3rem;
 }
-.il-metabar-entry .glyphicon {
+.il-metabar-entries .glyphicon {
   font-family: 'il-icons';
 }
-.il-metabar-entry .glyphicon-bell:before {
+.il-metabar-entries .glyphicon-bell:before {
   content: "\e027";
 }
-.il-metabar-entry .glyphicon-comment:before {
+.il-metabar-entries .glyphicon-comment:before {
   content: "\e04a";
 }
-.il-metabar-entry .glyphicon-envelope:before {
+.il-metabar-entries .glyphicon-envelope:before {
   content: "\e086";
 }
-.il-metabar-entry .glyphicon-question-sign:before {
+.il-metabar-entries .glyphicon-question-sign:before {
   content: "\e05d";
 }
-.il-metabar-entry .glyphicon-search:before {
+.il-metabar-entries .glyphicon-search:before {
   content: "\e090";
 }
-.il-metabar-entry .glyphicon-user:before {
+.il-metabar-entries .glyphicon-user:before {
   content: "\e005";
 }
 .il-metabar-slates {
@@ -9545,6 +9545,19 @@ footer {
   background-color: #fafafa;
   position: absolute;
   right: 0;
+  /*TODO: remove hack*/
+  right: 20px;
+  top: 60px;
+  /*end of hack*/
+}
+.il-metabar-slates .il-maincontrols-slate {
+  min-width: 760px;
+  min-height: 300px;
+}
+@media only screen and (max-width: 767px) {
+  .il-metabar-slates .il-maincontrols-slate {
+    min-width: 260px;
+  }
 }
 .il-maincontrols-mainbar .btn-bulky {
   font-size: 0.7rem;
