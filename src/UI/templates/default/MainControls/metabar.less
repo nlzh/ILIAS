@@ -13,9 +13,9 @@
 	}
 }
 
-.il-metabar-entry {
-	position: relative;
+.il-metabar-entries {
 	.btn {
+		position: relative;
 		.badge {
 	    	margin-top: -20px;
 		}
@@ -72,4 +72,18 @@
     background-color: @il-metabar-slates-bg-color;
 	position: absolute;
 	right: 0;
+
+	/*TODO: remove hack*/
+	right: 20px;
+	top: 60px;
+	.il-maincontrols-slate {
+		min-width: 760px;
+		min-height: 300px;
+
+		@media only screen and (max-width: @grid-float-breakpoint-max) {
+			min-width: 260px;
+		}
+	}
+	/*end of hack*/
 }
+

@@ -40,14 +40,18 @@ function pagedemoContent($f)
 function pagedemoMetabar($f)
 {
 	$help = $f->button()->bulky($f->glyph()->help(),'Help', '#');
-	$search = $f->button()->bulky($f->glyph()->search(),'Search', '#');
 	$user = $f->button()->bulky($f->glyph()->user(),'User', '#');
 
+	$search = $f->maincontrols()->slate()->legacy(
+		'Search',
+		$f->glyph()->search(),
+		$f->legacy('search content')
+	);
 	$notes = $f->maincontrols()->slate()->legacy(
 		'Notification',
 		$f->glyph()->notification()
 			->withCounter($f->counter()->novelty(3)),
-		$f->legacy('some content')
+		$f->legacy('notification content')
 	);
 
 	$more_btn = $f->button()->bulky(
@@ -69,12 +73,12 @@ function pagedemoMetabar($f)
 
 function pagedemoMainbar($f, $r)
 {
-
 	$tools_btn = $f->button()->bulky(
 		$f->icon()->custom('./src/UI/examples/Layout/Page/Standard/grid.svg', ''),
 		'Tools',
 		'#'
 	);
+
 	$more_btn = $f->button()->bulky(
 		$f->icon()->standard('', ''),
 		'more',
@@ -84,7 +88,6 @@ function pagedemoMainbar($f, $r)
 	$mainbar = $f->mainControls()->mainbar()
 		->withToolsButton($tools_btn)
 		->withMoreButton($more_btn);
-
 
 	$entries = [];
 	$entries['repository'] = getDemoEntryRepository($f);

@@ -10,8 +10,13 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 		;
 
 		var onToggleSignal = function(event, signalData, id) {
-			var slate = $('#' + id);
+			var slate = $('#' + id),
+				is_in_metabar_more = signalData.triggerer.parents('.il-metabar-more-slate').length > 0;
+
 			toggle(slate);
+			if(is_in_metabar_more) {
+				return;
+			}
 			if(_isEngaged(slate)) {
 				signalData.triggerer.addClass(_cls_engaged);
 				signalData.triggerer.removeClass(_cls_disengaged);

@@ -32,6 +32,9 @@ class Renderer extends AbstractComponentRenderer {
 		$breadcrumbs = $component->getBreadcrumbs();
 		if($breadcrumbs) {
 			$tpl->setVariable('BREADCRUMBS', $default_renderer->render($breadcrumbs));
+
+			$dropdown = $this->convertBreadcrumbsToDropdownLocator($breadcrumbs);
+			$tpl->setVariable('HEADER_BREADCRUMBS', $default_renderer->render($dropdown));
 		}
 
 		$logo = $component->getLogo();
@@ -45,6 +48,24 @@ class Renderer extends AbstractComponentRenderer {
 			$tpl = $this->setHeaderVars($tpl);
 		}
 		return $tpl->get();
+	}
+
+	protected function convertBreadcrumbsToDropdownLocator(
+		Component\Breadcrumbs\Breadcrumbs $breadcrumbs
+	): Component\Dropdown\Dropdown
+	{
+		$f = $this->getUIFactory();
+		$buttons = [];
+		$items = array_reverse($breadcrumbs->getItems());
+		$current = array_shift($items);
+		foreach ($items as $item) {
+			$button = $f->button()->shy(
+				$item->getLabel(),
+				$item->getAction()
+			);
+			$buttons[] = $button;
+		}
+		return $f->dropdown()->standard($buttons)->withLabel($current->getLabel());
 	}
 
 	/**
