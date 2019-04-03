@@ -37,7 +37,7 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			} else {
 				_disengageAllSlates();
 				_disengageAllButtons();
-				if(btn.attr('data-inmoreslate') != 'true') {
+				if(btn.parents('.' + _cls_more_slate).length == 0) {
 					_engageButton(btn);
 				}
 			}
@@ -139,7 +139,6 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			var content = _getMoreSlate().children('.il-maincontrols-slate-content');
 			if(content.children().length == 0) {
 				_getMetabarEntries().clone(true, true)
-					.attr('data-inmoreslate', true)
 					.appendTo(content);
 			}
 		}
