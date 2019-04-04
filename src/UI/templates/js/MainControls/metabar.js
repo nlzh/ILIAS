@@ -12,13 +12,15 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			,_cls_slates = 'il-metabar-slates'
 			,_cls_more_btn = 'il-metabar-more-button'
 			,_cls_more_slate = 'il-metabar-more-slate'
+			,_cls_auxillary = 'il-metabar-slate-auxillary'
 			,_cls_single_slate = false //class of one single slate, will be set on registerSignals
 			,_cls_slate_engaged = false //engaged class of a slate, will be set on registerSignals
 		;
 
 		var registerSignals = function (
 			component_id,
-			entry_signal
+			entry_signal,
+			close_slates_signal
 		) {
 			id = component_id;
 			_cls_single_slate = il.UI.maincontrols.slate._cls_single_slate;
@@ -26,6 +28,10 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 
 			$(document).on(entry_signal, function(event, signalData) {
 				onClickEntry(event, signalData);
+				return false;
+			});
+			$(document).on(close_slates_signal, function(event, signalData) {
+				onClickDisengageAll(event, signalData);
 				return false;
 			});
 		};
@@ -41,6 +47,11 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 					_engageButton(btn);
 				}
 			}
+		};
+		var onClickDisengageAll = function(event, signalData) {
+			console.log('DIENGAGE_ALL');
+			_disengageAllButtons();
+			_disengageAllSlates();
 		};
 
 		var _engageButton = function(btn) {
@@ -92,11 +103,13 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			_initMoreSlate();
 			_getMetabarEntries().hide();
 			_getMoreButton().show();
+			_addAuxillaryToSlates();
 		};
 
 		var _initWide = function () {
 			_getMoreButton().hide();
 			_getMetabarEntries().show();
+			_removeAuxillaryFromSlates();
 		};
 
 		var _tagMoreButton = function() {
@@ -141,6 +154,20 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 				_getMetabarEntries().clone(true, true)
 					.appendTo(content);
 			}
+		}
+
+		var _getAllSlates = function() {
+			return $('#' + id + ' .' + _cls_single_slate)
+				.not('.' + _cls_more_slate);
+		}
+
+		var _addAuxillaryToSlates = function() {
+			var aux = $('#' + id).children('.' + _cls_auxillary);
+			_getAllSlates().append(aux.clone(true, true));
+		}
+
+		var _removeAuxillaryFromSlates = function() {
+			_getAllSlates().find('.' + _cls_auxillary).remove();
 		}
 
 		return {

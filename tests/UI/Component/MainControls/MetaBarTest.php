@@ -80,12 +80,14 @@ class MetaBarTest extends ILIAS_UI_TestBase
 				return $this->button_factory;
 			}
 			public function glyph() {
-				return new I\Glyph\Factory();
+				return new I\Component\Glyph\Factory();
 			}
 			public function mainControls(): C\MainControls\Factory
 			{
-				$sig_gen = new I\SignalGenerator();
-				return new I\MainControls\Factory($sig_gen);
+				$sig_gen = new I\Component\SignalGenerator();
+				$counter_factory = new I\Component\Counter\Factory();
+				$slate_factory = new I\Component\MainControls\Slate\Factory($sig_gen, $counter_factory);
+				return new I\Component\MainControls\Factory($sig_gen, $slate_factory);
 			}
 		};
 		$factory->button_factory = $this->button_factory;
@@ -107,40 +109,41 @@ class MetaBarTest extends ILIAS_UI_TestBase
 		$slate = $this->getSlate();
 		$mb = $this->metabar
 			->withAdditionalEntry('button', $button)
-			->withAdditionalEntry('button2', $button);
+			->withAdditionalEntry('button2', $button)
+			->withMoreButton($button);
 
 		$html = $r->render($mb);
 
 		$expected = <<<EOT
-		<div class="il-maincontrols-metabar" id="id_3">
-			<div class="il-metabar-entries">
-				<div class="il-metabar-entry">
+			<div class="il-maincontrols-metabar" id="id_6">
+				<div class="il-metabar-entries">
 					<button class="btn btn-bulky" data-action="#" id="id_1" >
-						<div class="icon custom small" aria-label="">
-							<img src="" />
-						</div>
-						<div>
-							<span class="bulky-label">TestEntry</span>
-						</div>
+						<div class="icon custom small" aria-label=""><img src="" /></div>
+						<div><span class="bulky-label">TestEntry</span></div>
 					</button>
-					<div class="il-metabar-slates">
+					<button class="btn btn-bulky" data-action="#" id="id_2" >
+						<div class="icon custom small" aria-label=""><img src="" /></div>
+						<div><span class="bulky-label">TestEntry</span></div>
+					</button>
+					<button class="btn btn-bulky" id="id_3" aria-pressed="false" >
+						<div class="icon custom small" aria-label=""><img src="" /></div>
+						<div><span class="bulky-label">TestEntry</span></div>
+					</button>
+				</div>
+				<div class="il-metabar-slates">
+					<div class="il-maincontrols-slate disengaged" id="id_4">
+						<div class="il-maincontrols-slate-content" data-replace-marker="content"></div>
 					</div>
 				</div>
-
-				<div class="il-metabar-entry">
-					<button class="btn btn-bulky" data-action="#" id="id_2" >
-						<div class="icon custom small" aria-label="">
-							<img src="" />
-						</div>
-						<div>
-							<span class="bulky-label">TestEntry</span>
-						</div>
+				<div class="il-metabar-slate-auxillary">
+					<button class="btn btn-bulky" id="id_5" >
+						<span class="glyph" href="#" aria-label="back">
+							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						</span>
+						<div><span class="bulky-label">close</span></div>
 					</button>
-					<div class="il-metabar-slates">
-					</div>
 				</div>
 			</div>
-		</div>
 EOT;
 
 		$this->assertEquals(
