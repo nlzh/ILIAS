@@ -103,6 +103,7 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			_initMoreSlate();
 			_getMetabarEntries().hide();
 			_getMoreButton().show();
+			_removeAuxillaryFromSlates();
 			_addAuxillaryToSlates();
 		};
 
@@ -177,4 +178,3 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 
 	})($);
 })($, il.UI.maincontrols);
-

@@ -235,9 +235,8 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 				btn_offset_left = $(btn).offset().left,
 				btn_height = $(btn).height(),
 				btn_width = $(btn).width(),
-				vertically_visible = (btn_offset_top + btn_height) < window_height,
-				horizontally_visible = (btn_offset_left + btn_width) < window_width;
-
+				vertically_visible = (btn_offset_top + btn_height) <= window_height,
+				horizontally_visible = (btn_offset_left + btn_width) <= window_width;
 			return (vertically_visible && horizontally_visible);
 		};
 
@@ -303,4 +302,3 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 
 	})($);
 })($, il.UI.maincontrols);
-
