@@ -9574,6 +9574,10 @@ footer {
   border: 0;
   outline: 0;
 }
+.il-maincontrols-mainbar > .il-metabar-slate-auxillary,
+.il-maincontrols-metabar > .il-metabar-slate-auxillary {
+  display: none;
+}
 .il-mainbar-triggers {
   background: #4a4a4a;
   display: flex;
