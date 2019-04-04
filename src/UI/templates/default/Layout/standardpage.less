@@ -44,13 +44,6 @@ grid-based layout
     grid-template-columns: @il-mainbar-btn-width 1fr;
 	-ms-grid-rows: @il-standard-page-header-height @il-standard-page-breadcrumbs-height 1fr;
     grid-template-rows: @il-standard-page-header-height @il-standard-page-breadcrumbs-height 1fr;
-    /* // not supported in IE, use track-line instead
-	grid-template-areas:
-    "header header"
-	"breadcrumbs breadcrumbs"
-    "mainbar content"
-    "footer footer";
-	*/
     height: 100%;
 	overflow: hidden;
 	width: 100%;
@@ -59,6 +52,7 @@ grid-based layout
 			display: none;
 		}
 	}
+	// main grid with active slates
 	&.with-mainbar-slates-engaged {
 		-ms-grid-columns: @il-standard-page-slate-width + @il-mainbar-btn-width 1fr;
 		grid-template-columns: @il-standard-page-slate-width + @il-mainbar-btn-width 1fr;
@@ -274,8 +268,8 @@ footer {
 		grid-gap: 0px;
 		-ms-grid-columns: 1fr;
 	    grid-template-columns: 1fr;
-		-ms-grid-rows: @il-standard-page-small-header-height @il-standard-page-breadcrumbs-height 1fr @il-standard-page-small-mainbar-height;
-	    grid-template-rows: @il-standard-page-small-header-height @il-standard-page-breadcrumbs-height 1fr @il-standard-page-small-mainbar-height;
+		-ms-grid-rows: @il-standard-page-small-header-height 1fr @il-standard-page-small-mainbar-height;
+	    grid-template-rows: @il-standard-page-small-header-height 1fr @il-standard-page-small-mainbar-height;
 	    height: 100%;
 		overflow: hidden;
 		width: 100%;
@@ -309,11 +303,9 @@ footer {
 			grid-template-columns: 1fr;
 			.nav.il-maincontrols {
 				-ms-grid-column: 1;
-				-ms-grid-row: 3;
-				-ms-grid-row-span: 2;
+				-ms-grid-row: 2;
 				grid-column: 1;
-				grid-row: 3;
-				grid-row-end: 4;
+				grid-row: 2;
 				height: 100%; // calc(100% - (@il-standard-page-small-header-height + @il-standard-page-breadcrumbs-height);
 				.il-maincontrols-mainbar {
 					-ms-grid-columns: 1fr;
@@ -341,8 +333,8 @@ footer {
 					}
 					// show slate remove btn
 					.il-mainbar-close-slates {
-						display: -ms-flexbox;
-						display: flex;
+						// display: -ms-flexbox;
+						display: none;
 					}
 				}
 			}
@@ -367,36 +359,15 @@ footer {
 
 	/* breadcrumbs */
 	.breadcrumbs {
-		-ms-flex-align: center;
-		align-items: center;
-		background-color: @il-standard-page-breadcrumbs-bg-color;
-		border-top: 1px solid @il-standard-page-border-light-color;
-		display: -ms-flexbox;
-		display: flex;
-		-ms-flex-direction: row;
-		flex-direction: row;
-		-ms-grid-column: 1;
-		-ms-grid-row: 2;
-		grid-column: 1;
-		grid-row: 2;
-		z-index: @il-standard-page-zindex-breadcrumbs;
-		.shadow-bottom();
-		ul.breadcrumb {
-			padding-left: @il-standard-page-content-padding;
-			&>li+li:before {
-				content: " \e606";
-				color: @il-standard-page-breadcrumbs-divider-color;
-				font-family: "il-icons";
-			}
-		}
+		display: none;
 	}
 
 	/* mainbar */
 	nav.il-maincontrols {
 		-ms-grid-column: 1;
-		-ms-grid-row: 4;
+		-ms-grid-row: 3;
 		grid-column: 1;
-		grid-row: 4;
+		grid-row: 3;
 		width: 100%;
 		z-index: @il-standard-page-zindex-maincontrols;
 	}
@@ -472,9 +443,9 @@ footer {
 
 	.il-layout-page-content {
 		-ms-grid-column: 1;
-		-ms-grid-row: 3;
+		-ms-grid-row: 2;
 		grid-column: 1;
-		grid-row: 3;
+		grid-row: 2;
 		overflow: auto;
 		padding: @il-standard-page-content-padding;
 	}
