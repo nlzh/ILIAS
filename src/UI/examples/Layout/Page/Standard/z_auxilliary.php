@@ -55,7 +55,7 @@ function pagedemoMetabar($f)
 	);
 
 	$more_btn = $f->button()->bulky(
-		$f->icon()->standard('', ''),
+		$f->icon()->custom('./src/UI/examples/Layout/Page/Standard/options-vertical.svg', ''),
 		'more',
 		'#'
 	);
@@ -80,7 +80,7 @@ function pagedemoMainbar($f, $r)
 	);
 
 	$more_btn = $f->button()->bulky(
-		$f->icon()->standard('', ''),
+		$f->icon()->custom('./src/UI/examples/Layout/Page/Standard/options.svg', ''),
 		'more',
 		'#'
 	);
