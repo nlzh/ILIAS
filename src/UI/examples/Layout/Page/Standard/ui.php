@@ -76,16 +76,26 @@ function pagedemoContent($f)
 function pagedemoMetabar($f)
 {
 	$help = $f->button()->bulky($f->glyph()->help(),'Help', '#');
-	$search = $f->button()->bulky($f->glyph()->search(),'Search', '#');
 	$user = $f->button()->bulky($f->glyph()->user(),'User', '#');
-
+	$search = $f->maincontrols()->slate()->legacy(
+		'Search',
+		$f->glyph()->search()->withCounter($f->counter()->status(1)),
+		$f->legacy(substr(loremIpsum(), 0, 180))
+	);
 	$notes = $f->maincontrols()->slate()->legacy(
 		'Notification',
-		$f->glyph()->notification(),
+		$f->glyph()->notification()->withCounter($f->counter()->novelty(3)),
 		$f->legacy('some content')
 	);
 
+	$more_btn = $f->button()->bulky(
+		$f->icon()->custom('./src/UI/examples/Layout/Page/Standard/options-vertical.svg', ''),
+		'more',
+		'#'
+	);
+
 	$metabar = $f->mainControls()->metabar()
+		->withMoreButton($more_btn)
 		->withAdditionalEntry('search', $search)
 		->withAdditionalEntry('help', $help)
 		->withAdditionalEntry('notes', $notes)
@@ -103,7 +113,7 @@ function pagedemoMainbar($f, $r)
 		'#'
 	);
 	$more_btn = $f->button()->bulky(
-		$f->icon()->standard('', ''),
+		$f->icon()->custom('./src/UI/examples/Layout/Page/Standard/options.svg', ''),
 		'more',
 		'#'
 	);
