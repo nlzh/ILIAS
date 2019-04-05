@@ -268,8 +268,8 @@ footer {
 		grid-gap: 0px;
 		-ms-grid-columns: 1fr;
 	    grid-template-columns: 1fr;
-		-ms-grid-rows: @il-standard-page-small-header-height 1fr @il-standard-page-small-mainbar-height;
-	    grid-template-rows: @il-standard-page-small-header-height 1fr @il-standard-page-small-mainbar-height;
+		-ms-grid-rows: @il-standard-page-small-header-height 1fr;
+	    grid-template-rows: @il-standard-page-small-header-height 1fr;
 	    height: 100%;
 		overflow: hidden;
 		width: 100%;
@@ -362,6 +362,25 @@ footer {
 		display: none;
 	}
 
+	.il-header-locator {
+		.open>.dropdown-toogle.btn-default:hover,
+		button.dropdown-toggle {
+			background-color: transparent;
+			border: none;
+			color: @gray;
+			font-size: 1.5rem;
+			&:before {
+			    content: " \e604";
+			    font-family: "il-icons";
+			    font-size: 2rem;
+			    margin-right: 10px;
+			}
+		}
+		span.caret {
+			display: none;
+		}
+	}
+
 	/* mainbar */
 	nav.il-maincontrols {
 		-ms-grid-column: 1;
@@ -381,8 +400,11 @@ footer {
 	// mainbar
 	.il-mainbar {
 		background-color: @il-mainbar-btn-bg-color;
+		box-shadow: none;
 		display: -ms-flexbox;
 		display: flex;
+		max-height: @il-mainbar-small-btn-height;
+		overflow: hidden;
 		z-index: @il-standard-page-zindex-mainbar;
 	}
 
