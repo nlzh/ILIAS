@@ -31,6 +31,10 @@
 		background-color: transparent;
 		height: @il-metabar-entry-height;
 		min-width: @il-metabar-entry-width;
+			@media only screen and (max-width: @grid-float-breakpoint-max) {
+				height: @il-metabar-small-entry-height;
+				min-width: @il-metabar-small-entry-width;
+			}
 		&.engaged,
 		&.engaged:focus {
 			.shadow-right;
@@ -71,12 +75,14 @@
 	.shadow-right;
     background-color: @il-metabar-slates-bg-color;
 	position: absolute;
-	right: 0;
-
-	/*TODO: remove hack*/
-
 	right: 20px;
-	top: 60px;
+	top: @il-metabar-entry-height;
+	@media only screen and (max-width: @grid-float-breakpoint-max) {
+		min-width: 260px;
+		top: @il-metabar-small-entry-height;
+		right: 0;
+	}
+	/*TODO: remove hack*/
 	.il-maincontrols-slate {
 		min-width: 760px;
 		min-height: 300px;
@@ -102,4 +108,3 @@
 }
 
 /*end of hack*/
-
