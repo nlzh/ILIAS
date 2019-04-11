@@ -7,6 +7,10 @@
 	box-shadow: @il-standard-page-header-shadow-bottom;
 }
 
+.shadow-top {
+	box-shadow: @il-mainbar-shadow-top;
+}
+
 @il-standard-page-zindex-base: @zindex-navbar;
 @il-standard-page-zindex-header: @il-standard-page-zindex-base - 1;
 @il-standard-page-zindex-breadcrumbs: @il-standard-page-zindex-header - 1;
@@ -281,6 +285,7 @@ footer {
 				grid-template-columns: 1fr;
 				-ms-grid-rows: 0 @il-standard-page-small-mainbar-height;
 				grid-template-rows: 0 @il-standard-page-small-mainbar-height;
+
 				.il-mainbar-close-slates {
 					display: none;
 				}
@@ -289,6 +294,7 @@ footer {
 					-ms-grid-row: 2;
 					grid-column: 1;
 					grid-row: 2;
+					.shadow-top();
 				}
 				.il-mainbar-slates {
 					-ms-grid-column: 1;
@@ -314,6 +320,7 @@ footer {
 				    grid-template-rows: 1fr @il-standard-page-small-mainbar-height;
 					width: 100%;
 					.il-mainbar {
+						.shadow-top();
 					}
 					// slate
 					.il-mainbar-slates {
