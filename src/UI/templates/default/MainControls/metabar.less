@@ -73,7 +73,7 @@
 	}
 	@media only screen and (max-width: @grid-float-breakpoint-max) {
 		.il-metabar-more-button {
-			margin-right: 10px;
+			padding-right: 20px;
 			.icon.custom {
 				position: relative;
 				img {
@@ -107,19 +107,47 @@
 	}
 	/*TODO: remove hack*/
 	.il-maincontrols-slate {
-		min-width: 760px;
-		min-height: 300px;
-
+		min-width: 500px;
 		@media only screen and (max-width: @grid-float-breakpoint-max) {
 			min-width: 260px;
 		}
 	}
-
 	/*end of hack*/
+
+	.il-maincontrols-slate-content {
+		// padding: 10px;
+	}
 }
 
-
 /*TODO: remove hack*/
+
+// close mobile metabar slate
+.il-metabar-slate-auxillary {
+	.btn-bulky {
+		background-color: fade(@brand-primary, 15%);
+		border-top: @il-mainbar-btn-border;
+		display: flex;
+		flex-direction: column;
+		height: @il-metabar-close-slate-btn-height;
+		justify-content: center;
+		.bulky-label {
+			display: none;
+			margin-left: 10px;
+		}
+		.glyph {
+			&:before {
+				content:" \e607";
+				display: block;
+				font-family: "il-icons"; // should be defined more general at .glyphicon
+				font-size: 1.9rem;
+			}
+			.glyphicon {
+				display: none;
+			}
+		}
+	}
+}
+
 .il-header-locator {
 	display: none;
 }
