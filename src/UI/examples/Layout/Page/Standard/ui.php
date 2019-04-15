@@ -85,7 +85,7 @@ function pagedemoMetabar($f)
 	$notes = $f->maincontrols()->slate()->legacy(
 		'Notification',
 		$f->glyph()->notification()->withCounter($f->counter()->novelty(3)),
-		$f->legacy('some content')
+		$f->legacy('<p>some content</p>')
 	);
 
 	$more_btn = $f->button()->bulky(

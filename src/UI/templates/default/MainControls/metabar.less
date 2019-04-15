@@ -50,28 +50,9 @@
 			font-size: @il-metabar-glyph-size;
 		}
 	}
-	.glyphicon {
-	    font-family: 'il-icons';
-	}
-	.glyphicon-bell:before {
-	    content: "\e027";
-	}
-	.glyphicon-comment:before {
-	    content: "\e04a";
-	}
-	.glyphicon-envelope:before {
-	    content: "\e086";
-	}
-	.glyphicon-question-sign:before {
-	    content: "\e05d";
-	}
-	.glyphicon-search:before {
-	    content: "\e090";
-	}
-	.glyphicon-user:before {
-	    content: "\e005";
-	}
+
 	@media only screen and (max-width: @grid-float-breakpoint-max) {
+
 		.il-metabar-more-button {
 			padding-right: 20px;
 			.icon.custom {
@@ -92,6 +73,28 @@
 			}
 		}
 	}
+}
+
+.glyphicon {
+	font-family: 'il-icons';
+}
+.glyphicon-bell:before {
+	content: "\e027";
+}
+.glyphicon-comment:before {
+	content: "\e04a";
+}
+.glyphicon-envelope:before {
+	content: "\e086";
+}
+.glyphicon-question-sign:before {
+	content: "\e05d";
+}
+.glyphicon-search:before {
+	content: "\e090";
+}
+.glyphicon-user:before {
+	content: "\e005";
 }
 
 .il-metabar-slates {
@@ -155,6 +158,23 @@
 @media only screen and (max-width: @grid-float-breakpoint-max) {
 	.il-header-locator {
 		display: block;
+	}
+
+	.il-metabar-slates {
+		.glyphicon {
+			color: @il-metabar-glyph-color;
+			font-size: @il-metabar-small-glyph-size;
+		}
+		.il-counter-status,
+		.il-counter-novelty {
+			margin-top: -20px;
+		}
+		.bulky-label {
+			margin-left: 10px;
+		}
+		.il-counter-spacer {
+			margin-left: -18px;
+		}
 	}
 }
 /*end of hack*/
