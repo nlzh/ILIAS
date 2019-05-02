@@ -19,6 +19,10 @@
 		  outline: 0;
 	  }
 	}
+
+	> .il-metabar-slate-auxillary {
+		display: none;
+	}
 }
 
 // mainbar triggers
@@ -68,8 +72,9 @@
 // mainbar slates
 .il-mainbar-slates {
 	.shadow-right;
-	width: @il-standard-page-slate-width;
 	display: none;
+	position: relative;
+	width: @il-standard-page-slate-width;
 }
 
 .il-mainbar-tools-button {
@@ -86,14 +91,16 @@
 }
 
 .il-mainbar-tools-entries {
-	display:none;
+	display: none;
 	&.engaged {
-		display: block;
+		display: flex;
+		height: @il-mainbar-btn-height + @il-mainbar-remove-tools-btn-height;
 		flex-shrink: 0;
 	}
 	.btn-bulky {
 		background-color: lighten(@brand-primary, 25%);
 		color: @il-mainbar-btn-color;
+		margin-right: 2px;
 		padding: 0;
 		.icon {
 			filter: invert(100%);
@@ -106,6 +113,33 @@
 				filter: invert(60%);
 			}
 		}
+	}
+	/*
+	.il-mainbar-tooltrigger-blank {
+		background-color: #eee;
+		height: @il-mainbar-btn-height;
+		margin-right: 2px;
+		width: @il-mainbar-btn-width;
+	}
+	*/
+}
+
+// remove tools
+.il-mainbar-remove-tool {
+	display: none;
+	.il-mainbar-tools-entries.engaged & {
+		display: block;
+		position: absolute;
+	    top: @il-mainbar-btn-height;
+	    right: 0;
+	}
+	.close {
+		color: @brand-primary;
+	    font-size: 4.5rem;
+	    font-weight: 300;
+		height: auto;
+		padding: 0 20px;
+		width: auto;
 	}
 }
 
@@ -139,17 +173,6 @@
 	}
 }
 
-.il-mainbar-remove-tool {
-	.close {
-		color: @brand-primary;
-	    font-size: 4.5rem;
-	    font-weight: 300;
-		height: auto;
-		padding: 0 30px;
-		width: auto;
-	}
-}
-
 .il-mainbar-slates > .il-maincontrols-slate.engaged {
 	display: flex;
 	flex-direction: column;
@@ -179,5 +202,19 @@
 		   height: @il-mainbar-small-btn-height;
 		   width: @il-mainbar-small-btn-width;
 	   }
+	}
+	.il-mainbar-tools-entries {
+		&.engaged {
+			height: @il-mainbar-small-btn-height + @il-mainbar-remove-tools-btn-height;
+			.il-mainbar-remove-tool {
+				top: @il-mainbar-small-btn-height;
+			}
+		}
+	/*
+		.il-mainbar-tooltrigger-blank {
+			height: @il-mainbar-small-btn-height;
+		}
+	*/
+
 	}
 }

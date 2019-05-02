@@ -85,7 +85,9 @@ class LayoutContent {
 	 */
 	protected function getMetaBar(): MetaBar {
 		$f = $this->ui->factory();
-		$meta_bar = $f->mainControls()->metaBar();
+		$meta_bar = $f->mainControls()->metaBar()->withMoreButton(
+			$f->button()->bulky($f->icon()->custom('./src/UI/examples/Layout/Page/Standard/options-vertical.svg', ''),'more','#')
+		);
 
 		foreach ($this->gs->collector()->metaBar()->getStackedItems() as $item) {
 			switch (true) {
