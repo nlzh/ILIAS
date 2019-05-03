@@ -51,6 +51,16 @@ class Renderer extends AbstractComponentRenderer {
 
 		$tpl->setVariable('CONTENT', $default_renderer->render($component->getContent()));
 
+		$component = $component->withOnLoadCode(
+			function($id) {
+				return "$(document).ready(function() {
+					il.UI.page.init();
+				});";
+			}
+		);
+		$id = $this->bindJavaScript($component);
+		$tpl->setVariable('ID', $id);
+
 		if ($component->getWithHeaders()) {
 			$tpl = $this->setHeaderVars($tpl, $component->getIsUIDemo());
 		}
@@ -150,6 +160,13 @@ class Renderer extends AbstractComponentRenderer {
 		return $tpl;
 	}
 
+	/**
+	 * @inheritdoc
+	 */
+	public function registerResources(\ILIAS\UI\Implementation\Render\ResourceRegistry $registry) {
+		parent::registerResources($registry);
+		$registry->register('./src/UI/templates/js/Page/stdpage.js');
+	}
 
 	/**
 	 * @inheritdoc

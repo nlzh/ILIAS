@@ -105,7 +105,7 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 		var init = function () {
 			_tagMoreButton();
 			_tagMoreSlate();
-			_isCondensedMode() ? _initCondensed() : _initWide();
+			il.UI.page.isSmallScreen() ? _initCondensed() : _initWide();
 		};
 
 		var _initCondensed = function () {
@@ -134,12 +134,6 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 					more = slates.last();
 				$(more).addClass(_cls_more_slate);
 			}
-		}
-
-		var _isCondensedMode  = function() {
-			var media_query = "only screen"
-				+ " and (max-width: " + _breakpoint_max_width + "px)";
-			return window.matchMedia(media_query).matches;
 		}
 
 		var _getMoreButton = function() {

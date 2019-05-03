@@ -172,6 +172,12 @@ function getDemoEntryRepository($f)
 		->withAdditionalEntry($button->withLabel('Study Programme'))
 		->withAdditionalEntry($button->withLabel('Own Repository-Objects'))
 		;
+
+	foreach (range(1, 20) as $cnt) {
+		$slate = $slate
+			->withAdditionalEntry($button->withLabel('fillup ' .$cnt));
+	}
+
 	return $slate;
 }
 

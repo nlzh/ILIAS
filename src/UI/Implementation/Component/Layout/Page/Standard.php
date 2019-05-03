@@ -5,6 +5,7 @@ namespace ILIAS\UI\Implementation\Component\Layout\Page;
 
 use ILIAS\UI\Component\Layout\Page;
 use ILIAS\UI\Implementation\Component\ComponentHelper;
+use ILIAS\UI\Implementation\Component\JavaScriptBindable;
 use ILIAS\UI\Component\MainControls\MetaBar;
 use ILIAS\UI\Component\MainControls\MainBar;
 use ILIAS\UI\Component\Breadcrumbs\Breadcrumbs;
@@ -16,6 +17,8 @@ use ILIAS\UI\Component\Image\Image;
 class Standard implements Page\Standard {
 
 	use ComponentHelper;
+	use JavaScriptBindable;
+
 	/**
 	 * @var mixed
 	 */

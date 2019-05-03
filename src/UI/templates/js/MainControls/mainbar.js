@@ -31,7 +31,9 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			_cls_slate_engaged = il.UI.maincontrols.slate._cls_engaged;
 
 			$(document).on(entry_signal, function(event, signalData) {
-				onClickEntry(event, signalData);
+				if(! il.UI.page.isTouchMoving()) {
+					onClickEntry(event, signalData);
+				}
 				return false;
 			});
 			$(document).on(close_slates_signal, function(event, signalData) {
@@ -54,7 +56,11 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			var btn = _getAllButtons()
 				.filter('.' + _cls_btn_engaged);
 			_disengageButton(btn);
-			btn.click();
+
+			if(!il.UI.page.isSmallScreen()) {
+				btn.click();
+			}
+
 		}
 
 		var onClickEntry = function(event, signalData) {
