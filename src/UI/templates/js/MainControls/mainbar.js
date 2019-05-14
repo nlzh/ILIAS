@@ -31,9 +31,7 @@ il.UI.maincontrols = il.UI.maincontrols || {};
 			_cls_slate_engaged = il.UI.maincontrols.slate._cls_engaged;
 
 			$(document).on(entry_signal, function(event, signalData) {
-				if(! il.UI.page.isTouchMoving()) {
-					onClickEntry(event, signalData);
-				}
+				onClickEntry(event, signalData);
 				return false;
 			});
 			$(document).on(close_slates_signal, function(event, signalData) {

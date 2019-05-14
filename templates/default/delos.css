@@ -9536,6 +9536,7 @@ footer {
   display: flex;
   margin-bottom: 2px;
   padding: 10px 20px;
+  /*&:hover,*/
 }
 .il-maincontrols-slate .btn-bulky.disengaged:before {
   content: " \e606";
@@ -9549,7 +9550,6 @@ footer {
   font-size: 2.1rem;
   margin-right: 10px;
 }
-.il-maincontrols-slate .btn-bulky:hover,
 .il-maincontrols-slate .btn-bulky.engaged {
   background-color: #d1d8e3;
   border-color: #e0e0e0;
@@ -9861,6 +9861,14 @@ footer {
 }
 .il-mainbar-tools-entries {
   display: none;
+  /*
+	.il-mainbar-tooltrigger-blank {
+		background-color: #eee;
+		height: @il-mainbar-btn-height;
+		margin-right: 2px;
+		width: @il-mainbar-btn-width;
+	}
+	*/
 }
 .il-mainbar-tools-entries.engaged {
   display: flex;
@@ -9883,12 +9891,6 @@ footer {
 }
 .il-mainbar-tools-entries .btn-bulky.engaged .icon {
   filter: invert(60%);
-}
-.il-mainbar-tools-entries .il-mainbar-tooltrigger-blank {
-  background-color: #eee;
-  height: 80px;
-  margin-right: 2px;
-  width: 80px;
 }
 .il-mainbar-remove-tool {
   display: none;
@@ -9961,14 +9963,18 @@ footer {
     height: 50px;
     width: 75px;
   }
+  .il-mainbar-tools-entries {
+    /*
+		.il-mainbar-tooltrigger-blank {
+			height: @il-mainbar-small-btn-height;
+		}
+	*/
+  }
   .il-mainbar-tools-entries.engaged {
     height: 95px;
   }
   .il-mainbar-tools-entries.engaged .il-mainbar-remove-tool {
     top: 50px;
-  }
-  .il-mainbar-tools-entries .il-mainbar-tooltrigger-blank {
-    height: 50px;
   }
 }
 /*		Color scheme

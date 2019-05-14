@@ -5,7 +5,6 @@ il.UI = il.UI || {};
 
 		var breakpoint_max_width = 767, //this corresponds to @grid-float-breakpoint-max, see mainbar.less/metabar.less
 			mq_orientation = window.matchMedia("(orientation: portrait)"),
-			is_touch_moving = false;
 
 		var isSmallScreen = function() {
 			var media_query = "only screen"
@@ -23,18 +22,10 @@ il.UI = il.UI || {};
 			return isPortrait() ? 'portrait' : 'landscape';
 		};
 
-		var isTouchMoving = function() {
-			return is_touch_moving;
-		};
-
-
 		var init = function() {
 			mq_orientation.addListener(function(mq) {
 				window.location.reload();
 			});
-
-			document.ontouchmove = function(e) { is_touch_moving = true; }
-			document.ontouchend = function(e) { is_touch_moving = false; }
 		};
 
 		return {
@@ -43,7 +34,6 @@ il.UI = il.UI || {};
 			getOrientation: getOrientation,
 			isPortrait: isPortrait,
 			isLandscape: isLandscape,
-			isTouchMoving: isTouchMoving
 		};
 
 	})($);
