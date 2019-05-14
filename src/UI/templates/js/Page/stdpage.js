@@ -4,7 +4,7 @@ il.UI = il.UI || {};
 	ui.page = (function($) {
 
 		var breakpoint_max_width = 767, //this corresponds to @grid-float-breakpoint-max, see mainbar.less/metabar.less
-			mq_orientation = window.matchMedia("(orientation: portrait)"),
+			mq_orientation = window.matchMedia("(orientation: portrait)");
 
 		var isSmallScreen = function() {
 			var media_query = "only screen"

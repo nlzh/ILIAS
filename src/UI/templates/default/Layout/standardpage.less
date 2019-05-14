@@ -69,9 +69,12 @@ grid-based layout
 				display: flex;
 				-ms-flex-direction: column;
 				flex-direction: column;
+
 				z-index: @il-standard-page-zindex-mainbar-slates;
 				.il-maincontrols-slate {
 					overflow-y: auto;
+					-webkit-overflow-scrolling: touch;
+					min-height: 0;
 				}
 			}
 			// show slate remove btn

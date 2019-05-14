@@ -7195,9 +7195,6 @@ fieldset[disabled] .btn-primary.focus {
 .btn.disabled,
 .btn[disabled],
 fieldset[disabled] .btn,
-.btn.disabled:hover,
-.btn[disabled]:hover,
-fieldset[disabled] .btn:hover,
 .btn.disabled:focus,
 .btn[disabled]:focus,
 fieldset[disabled] .btn:focus,
@@ -7213,7 +7210,6 @@ fieldset[disabled] .btn.active {
   cursor: default;
 }
 .btn.engaged,
-.btn.engaged:hover,
 .btn.engaged:focus,
 .btn.engaged:active,
 .btn.engaged.active {
@@ -9209,6 +9205,8 @@ grid-based layout
 }
 .il-layout-page.with-mainbar-slates-engaged .il-maincontrols-mainbar .il-mainbar-slates .il-maincontrols-slate {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
 }
 .il-layout-page.with-mainbar-slates-engaged .il-maincontrols-mainbar .il-mainbar-close-slates {
   display: -ms-flexbox;
@@ -9536,7 +9534,6 @@ footer {
   display: flex;
   margin-bottom: 2px;
   padding: 10px 20px;
-  /*&:hover,*/
 }
 .il-maincontrols-slate .btn-bulky.disengaged:before {
   content: " \e606";
@@ -9550,6 +9547,7 @@ footer {
   font-size: 2.1rem;
   margin-right: 10px;
 }
+.il-maincontrols-slate .btn-bulky:hover,
 .il-maincontrols-slate .btn-bulky.engaged {
   background-color: #d1d8e3;
   border-color: #e0e0e0;
@@ -9565,9 +9563,11 @@ footer {
 .il-maincontrols-slate .il-maincontrols-slate .btn-bulky {
   background-color: #e3e3e3;
 }
+/*
 .il-maincontrols-slate-overflow {
-  min-height: 0;
+	min-height: 0;
 }
+*/
 .il-maincontrols-slate-content p,
 .il-maincontrols-slate-content h1,
 .il-maincontrols-slate-content h2,
