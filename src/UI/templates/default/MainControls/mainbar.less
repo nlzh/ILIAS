@@ -2,6 +2,7 @@
 .il-maincontrols-mainbar {
 	.btn-bulky {
 		font-size: @il-mainbar-btn-label-size;
+		line-height: @il-mainbar-btn-label-size * 1.11111111;
 	}
 	.bulky-label {
 		white-space: normal;
@@ -59,9 +60,14 @@
 			outline: none;
 		}
 		.bulky-label {
-			white-space: normal;
+			display: -webkit-box;
 			margin-top: @il-mainbar-bulky-label-margin-top;
-    		display: block;
+			white-space: normal;
+			word-break: break-word;
+    		padding: 0 2px;
+			overflow: hidden;
+			-webkit-line-clamp: 2;
+		    -webkit-box-orient: vertical;
 		}
 	}
 	&.engaged {
@@ -211,6 +217,10 @@
 		   border: 0;
 		   height: @il-mainbar-small-btn-height;
 		   width: @il-mainbar-small-btn-width;
+		   .icon.small {
+			   height: @icon-size-xsmall;
+			   width: @icon-size-xsmall;
+		   }
 	   }
 	}
 	.il-mainbar-tools-entries {
