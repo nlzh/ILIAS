@@ -207,6 +207,12 @@
 
 
 @media only screen and (max-width: @grid-float-breakpoint-max) {
+	.il-mainbar-entries {
+	    display: flex;
+	    justify-content: space-evenly;
+	    width: 100%;
+	}
+
 	.il-mainbar-triggers {
 	   background: @il-mainbar-btn-bg-color;
 	   display: flex;
@@ -223,6 +229,7 @@
 		   }
 	   }
 	}
+	
 	.il-mainbar-tools-entries {
 		&.engaged {
 			height: @il-mainbar-small-btn-height + @il-mainbar-remove-tools-btn-height;
