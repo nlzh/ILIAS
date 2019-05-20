@@ -229,19 +229,17 @@
 		   }
 	   }
 	}
-	
+
 	.il-mainbar-tools-entries {
 		&.engaged {
-			height: @il-mainbar-small-btn-height + @il-mainbar-remove-tools-btn-height;
+			height: @il-mainbar-small-btn-height;
 			.il-mainbar-remove-tool {
-				top: @il-mainbar-small-btn-height;
+				top: 0;
+				.close {
+					font-size: 4rem;
+					height: @il-mainbar-small-btn-height;
+				}
 			}
 		}
-	/*
-		.il-mainbar-tooltrigger-blank {
-			height: @il-mainbar-small-btn-height;
-		}
-	*/
-
 	}
 }
