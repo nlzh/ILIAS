@@ -107,7 +107,7 @@
 	display: none;
 	&.engaged {
 		display: flex;
-		height: @il-mainbar-btn-height + @il-mainbar-remove-tools-btn-height;
+		height: @il-mainbar-btn-height;
 		flex-shrink: 0;
 	}
 	.btn-bulky {
@@ -140,14 +140,14 @@
 	.il-mainbar-tools-entries.engaged & {
 		display: block;
 		position: absolute;
-	    top: @il-mainbar-btn-height;
+	    top: 0;
 	    right: 0;
 	}
 	.close {
 		color: @brand-primary;
 	    font-size: 4.5rem;
 	    font-weight: 300;
-		height: auto;
+		height: @il-mainbar-btn-height;
 		padding: 0 20px;
 		width: auto;
 		&:focus {
