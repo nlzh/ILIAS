@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * Storage of images in settings.
@@ -11,6 +9,9 @@ class ilLearningSequenceFilesystem extends ilFileSystemStorage
 {
     const IMG_ABSTRACT = 'abstract';
     const IMG_EXTRO = 'extro';
+
+    const FS_DIRNAME = 'LSO'; //under WEBDIR
+    const FS_FOLDER_POSTFIX= 'Images';
 
     public function __construct()
     {
@@ -85,7 +86,7 @@ class ilLearningSequenceFilesystem extends ilFileSystemStorage
      */
     protected function getPathPrefix()
     {
-        return 'LSO';
+        return self::FS_DIRNAME;
     }
 
     /**
@@ -93,6 +94,6 @@ class ilLearningSequenceFilesystem extends ilFileSystemStorage
      */
     protected function getPathPostfix()
     {
-        return 'Images';
+        return self::FS_FOLDER_POSTFIX;
     }
 }
