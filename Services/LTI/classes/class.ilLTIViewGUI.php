@@ -97,6 +97,7 @@ class ilLTIViewGUI
 		{
 			return false;
 		}
+return true;
 		return (strpos($this->user->getAuthMode(),'lti_') === 0);
 		/* for testing standalone faking a LTI session by special user with login name '*_lti' */
 		//$_SESSION['lti_launch_css_url'] = "https://ilias.example.com/lti.css";
@@ -157,6 +158,9 @@ class ilLTIViewGUI
 	 * */
 	public function isActive() 
 	{
+
+return true;
+
 		return (isset($_SESSION['il_lti_mode']));
 	}
 
