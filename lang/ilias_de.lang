@@ -16091,3 +16091,5 @@ ui#:#ui_numeric_only#:#Bitte geben sie eine ganze Zahl ein.
 mmbr#:#mmbr_memberships#:#Mitgliedschaften
 notes#:#note_without_object#:#Ohne Objektbezug
 prg#:#msg_fill_required#:#Bitte füllen Sie alle Pflichtfelder aus.
+lm#:#lm_btn_lp_toggle_state_completed#:#Auf "Nicht bearbeitet" setzen
+lm#:#lm_btn_lp_toggle_state_not_completed#:#Auf "Bearbeitet" setzen

@@ -86,6 +86,8 @@ class ilLMPresentationGUI
     public $offline;
     public $offline_directory;
 
+    protected $embed_mode = false;
+
     /**
      * @var int
      */
@@ -165,7 +167,9 @@ class ilLMPresentationGUI
         $a_export_format = "",
         $a_all_languages = false,
         $a_export_dir = "",
-        bool $claim_repo_context = true
+        bool $claim_repo_context = true,
+        $query_params = null,
+        $embed_mode = false
     ) {
         global $DIC;
 
@@ -201,7 +205,10 @@ class ilLMPresentationGUI
 
         // note: using $DIC->http()->request()->getQueryParams() here will
         // fail, since the goto magic currently relies on setting $_GET
-        $this->initByRequest($_GET);
+        if (!is_array($query_params)) {
+            $query_params = $_GET;
+        }
+        $this->initByRequest($query_params, $embed_mode);
 
         // check, if learning module is online
         if (!$rbacsystem->checkAccess("write", $this->requested_ref_id)) {
@@ -213,8 +220,24 @@ class ilLMPresentationGUI
         if ($claim_repo_context) {
             $DIC->globalScreen()->tool()->context()->claim()->repository();
 
+        }
+
+        if (!$ilCtrl->isAsynch()) {
             // moved this into the if due to #0027200
-            $DIC->globalScreen()->tool()->context()->current()->addAdditionalData(ilLMGSToolProvider::SHOW_TOC_TOOL, true);
+            if (!$embed_mode) {
+                $DIC->globalScreen()->tool()->context()->current()->addAdditionalData(ilLMGSToolProvider::SHOW_TOC_TOOL, true);
+            }
+            $DIC->globalScreen()->tool()->context()->current()->addAdditionalData(ilLMGSToolProvider::SHOW_LINK_SLATES, true);
+        }
+
+        if ($embed_mode) {
+            $ilCtrl->setParameter($this, "embed_mode", 1);
+            $params = [
+                "obj_id" => $this->requested_obj_id,
+                "ref_id" => $this->lm->getRefId(),
+                "frame" => ""
+            ];
+            $DIC->globalScreen()->tool()->context()->current()->addAdditionalData(\ilLMGSToolProvider::LM_QUERY_PARAMS, $params);
         }
     }
 
@@ -226,14 +249,16 @@ class ilLMPresentationGUI
      *
      * @param array $query_params request query params
      */
-    public function initByRequest($query_params)
+    public function initByRequest($query_params, bool $embed_mode = false)
     {
         $this->service = new ilLMPresentationService(
             $this->user,
             $query_params,
             $this->offline,
             $this->export_all_languages,
-            $this->export_format
+            $this->export_format,
+            null,
+            $embed_mode
         );
 
         $request = $this->service->getRequest();
@@ -253,12 +278,25 @@ class ilLMPresentationGUI
         $this->lm = $this->service->getLearningModule();
         $this->tracker = $this->service->getTracker();
         $this->linker = $this->service->getLinker();
+        $this->embed_mode = $embed_mode;
+        if ($request->getRequestedEmbedMode()) {
+            $this->embed_mode = true;
+        }
 
         // language translation
         $this->lang = $this->service->getPresentationStatus()->getLang();
 
         $this->lm_tree = $this->service->getLMTree();
         $this->focus_id = $this->service->getPresentationStatus()->getFocusId();
+    }
+
+    /**
+     * Get service
+     * @return ilLMPresentationService
+     */
+    public function getService(): \ilLMPresentationService
+    {
+        return $this->service;
     }
 
     /**
@@ -580,6 +618,7 @@ class ilLMPresentationGUI
                         $this->renderPageTitle();
                         $this->setHeader();
                         $this->ilLMMenu();
+                        $this->addHeaderAction();
                         $content = $this->getContent();
                         $content .= $this->ilLMNotes();
                         $this->tpl->setContent($content);
@@ -700,6 +739,7 @@ class ilLMPresentationGUI
 
         // @todo 6.0
         //$this->tpl->fillBodyClass();
+
 
         if ($doShow) {
             // (horrible) workaround for preventing template engine
@@ -989,19 +1029,28 @@ class ilLMPresentationGUI
      */
     public function redrawHeaderAction()
     {
-        echo $this->addHeaderAction(true);
+        echo $this->getHeaderAction(true);
         exit;
     }
 
     /**
      * Add header action
      */
-    public function addHeaderAction($a_redraw = false)
+    public function addHeaderAction()
+    {
+        $this->tpl->setVariable("HEAD_ACTION", $this->getHeaderAction());
+    }
+
+    /**
+     * Add header action
+     */
+    public function getHeaderAction($a_redraw = false)
     {
         if ($this->offline) {
             return;
         }
         $ilAccess = $this->access;
+        $ilSetting = $this->settings;
         $tpl = $this->tpl;
 
         $lm_id = $this->lm->getId();
@@ -1018,16 +1067,19 @@ class ilLMPresentationGUI
         );
         $dispatcher->setSubObject("pg", $this->getCurrentPageId());
 
+        $this->ctrl->setParameter($this, "embed_mode", $this->embed_mode);
         ilObjectListGUI::prepareJSLinks(
             $this->ctrl->getLinkTarget($this, "redrawHeaderAction", "", true),
             $this->ctrl->getLinkTargetByClass(array("ilcommonactiondispatchergui", "ilnotegui"), "", "", true, false),
             $this->ctrl->getLinkTargetByClass(array("ilcommonactiondispatchergui", "iltagginggui"), "", "", true, false),
             $this->tpl
         );
-
+        
         $lg = $dispatcher->initHeaderAction();
-        $lg->enableNotes(true);
-        $lg->enableComments($this->lm->publicNotes(), false);
+        if (!$ilSetting->get("disable_notes") && !$this->embed_mode) {
+            $lg->enableNotes(true);
+            $lg->enableComments($this->lm->publicNotes(), false);
+        }
                 
         if ($this->lm->hasRating() && !$this->offlineMode()) {
             $lg->enableRating(
@@ -1039,7 +1091,7 @@ class ilLMPresentationGUI
         }
 
         // notification
-        if ($this->user->getId() != ANONYMOUS_USER_ID) {
+        if ($this->user->getId() != ANONYMOUS_USER_ID && !$this->embed_mode) {
             if (ilNotification::hasNotification(ilNotification::TYPE_LM, $this->user->getId(), $lm_id)) {
                 $this->ctrl->setParameter($this, "ntf", 1);
                 if (ilNotification::hasOptOut($lm_id)) {
@@ -1079,7 +1131,7 @@ class ilLMPresentationGUI
         }
         
         if (!$a_redraw) {
-            $this->tpl->setVariable("HEAD_ACTION", $lg->getHeaderAction($this->tpl));
+            return $lg->getHeaderAction($this->tpl);
         } else {
             // we need to add onload code manually (rating, comments, etc.)
             return $lg->getHeaderAction() .
@@ -1098,12 +1150,6 @@ class ilLMPresentationGUI
         // no notes in offline (export) mode
         if ($this->offlineMode()) {
             return "";
-        }
-        
-        // output notes (on top)
-        
-        if (!$ilSetting->get("disable_notes")) {
-            $this->addHeaderAction();
         }
         
         // now output comments
@@ -1431,7 +1477,7 @@ class ilLMPresentationGUI
      * @param int $a_page_id header / footer page id
      * @return string
      */
-    public function getContent()
+    public function getContent($skip_nav = false)
     {
         $this->fill_on_load_code = true;
         $this->setContentStyles();
@@ -1453,8 +1499,10 @@ class ilLMPresentationGUI
         );
 
 
-        $tpl->setVariable("TOP_NAVIGATION", $navigation_renderer->renderTop());
-        $tpl->setVariable("BOTTOM_NAVIGATION", $navigation_renderer->renderBottom());
+        if (!$skip_nav) {
+            $tpl->setVariable("TOP_NAVIGATION", $navigation_renderer->renderTop());
+            $tpl->setVariable("BOTTOM_NAVIGATION", $navigation_renderer->renderBottom());
+        }
         $tpl->setVariable("PAGE_CONTENT", $this->getPageContent());
 
         return $tpl->get();
@@ -1558,7 +1606,7 @@ class ilLMPresentationGUI
      * @param
      * @return
      */
-    public function basicPageGuiInit($a_page_gui)
+    public function basicPageGuiInit(\ilLMPageGUI $a_page_gui)
     {
         $a_page_gui->setStyleId(ilObjStyleSheet::getEffectiveContentStyleId(
             $this->lm->getStyleSheetId(),
@@ -1580,6 +1628,7 @@ class ilLMPresentationGUI
             $this->ctrl->setParameter($this, "obj_id", $this->requested_obj_id);
         }
         $a_page_gui->setFullscreenLink($this->linker->getLink("fullscreen"));
+        $a_page_gui->setSourcecodeDownloadScript($this->linker->getLink("download_paragraph"));
     }
 
 
@@ -2758,20 +2807,20 @@ class ilLMPresentationGUI
             return;
         }
 
-        $this->setContentStyles();
-        $this->renderPageTitle();
+        //$this->setContentStyles();
+        //$this->renderPageTitle();
 
-        $this->tpl->loadStandardTemplate();
+        //$this->tpl->loadStandardTemplate();
 
-        $this->renderTabs("download", 0);
+        //$this->renderTabs("download", 0);
 
-        $this->ilLocator(true);
+        //$this->ilLocator(true);
         //$this->tpl->stopTitleFloating();
-        $this->tpl->addBlockFile("ADM_CONTENT", "adm_content", "tpl.lm_download_list.html", "Modules/LearningModule");
+        $tpl = new ilTemplate("tpl.lm_download_list.html", true, true, "Modules/LearningModule");
 
         // set title header
-        $this->tpl->setTitle($this->getLMPresentationTitle());
-        $this->tpl->setTitleIcon(ilUtil::getImagePath("icon_lm.svg"));
+        //$this->tpl->setTitle($this->getLMPresentationTitle());
+        //$this->tpl->setTitleIcon(ilUtil::getImagePath("icon_lm.svg"));
 
         // output copyright information
         $md = new ilMD($this->lm->getId(), 0, $this->lm->getType());
@@ -2782,17 +2831,23 @@ class ilLMPresentationGUI
 
             if ($copyright != "") {
                 $this->lng->loadLanguageModule("meta");
-                $this->tpl->setCurrentBlock("copyright");
-                $this->tpl->setVariable("TXT_COPYRIGHT", $this->lng->txt("meta_copyright"));
-                $this->tpl->setVariable("LM_COPYRIGHT", $copyright);
-                $this->tpl->parseCurrentBlock();
+                $tpl->setCurrentBlock("copyright");
+                $tpl->setVariable("TXT_COPYRIGHT", $this->lng->txt("meta_copyright"));
+                $tpl->setVariable("LM_COPYRIGHT", $copyright);
+                $tpl->parseCurrentBlock();
             }
         }
 
-
         $download_table = new ilLMDownloadTableGUI($this, "showDownloadList", $this->lm);
-        $this->tpl->setVariable("DOWNLOAD_TABLE", $download_table->getHTML());
-        $this->tpl->printToStdout();
+        $tpl->setVariable("DOWNLOAD_TABLE", $download_table->getHTML());
+        //$this->tpl->printToStdout();
+
+        $modal = $this->ui->factory()->modal()->roundtrip(
+            $this->lng->txt("download"),
+            $this->ui->factory()->legacy($tpl->get())
+        );
+        echo $this->ui->renderer()->render($modal);
+        exit();
     }
 
     
@@ -3021,4 +3076,24 @@ class ilLMPresentationGUI
         );
         $navigation_renderer->render();
     }
+
+    /**
+     * Get HTML (called by kios mode through ilCtrl)
+     * @param $pars
+     * @return string|void
+     * @throws ilLMPresentationException
+     */
+    public function getHTML($pars)
+    {
+        switch ($pars["cmd"]) {
+            case "layout":
+                $tpl = new ilTemplate("tpl.embedded_view.html", true, true, "Modules/LearningModule");
+                $tpl->setVariable("HEAD_ACTION", $this->getHeaderAction());
+                $tpl->setVariable("PAGE", $this->getContent(true));
+                $tpl->setVariable("COMMENTS", $this->ilLMNotes());
+                return $tpl->get();
+        }
+        return "";
+    }
+
 }

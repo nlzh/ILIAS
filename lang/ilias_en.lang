@@ -16091,3 +16091,5 @@ ui#:#ui_numeric_only#:#Please insert a whole number.
 mmbr#:#mmbr_memberships#:#Memberships
 notes#:#note_without_object#:#Without reference
 prg#:#msg_fill_required#:#Please fill all required fields.
+lm#:#lm_btn_lp_toggle_state_completed#:#Set Not Completed
+lm#:#lm_btn_lp_toggle_state_not_completed#:#Set Completed
