@@ -31,8 +31,10 @@ class LSItemOnlineStatus
 
     public function getOnlineStatus(int $ref_id) : bool
     {
-        $obj = $this->getObjectFor($ref_id);
-        return !$obj->getOfflineStatus();
+        if(!$this->hasOnlineStatus($ref_id)) {
+            return true;
+        }
+        return !\ilObject::lookupOfflineStatus(\ilObject::_lookupObjId($ref_id));
     }
 
     public function hasOnlineStatus(int $ref_id) : bool

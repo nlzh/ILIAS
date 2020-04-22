@@ -20,6 +20,9 @@ class ilLearningSequenceConditionController implements ilConditionControllerInte
     /**
      * @inheritdoc
      */
+
+    protected $cached_apply_for_current_user;
+
     public function getConditionSetForRepositoryObject($a_container_child_ref_id) : ilConditionSet
     {
         $f = $this->getConditionsFactory();
@@ -28,8 +31,12 @@ class ilLearningSequenceConditionController implements ilConditionControllerInte
         $container_ref_id = $this->getParentRefIdFor((int) $a_container_child_ref_id);
 
         //for users with edit-permissions, do not apply conditions
-        if ($this->applyConditionsForCurrentUser($container_ref_id)) {
-            $sequence = $this->getSequencedItems($container_ref_id);
+        if(!is_null($this->$cached_apply_for_current_user)) {
+            $this->cached_apply_for_current_user = $this->applyConditionsForCurrentUser($container_ref_id);
+        }
+        if ($this->cached_apply_for_current_user) {
+
+            $sequence = $this->getSequencedItems($container_ref_id); // ! initialisiert in LSItemOnlineStatus!!!
 
             //find position
             foreach ($sequence as $index => $item) {
