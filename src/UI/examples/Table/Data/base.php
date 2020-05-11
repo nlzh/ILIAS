@@ -56,15 +56,39 @@ function base()
                 //maybe do something with the record
                 $record['f4'] = $record['f3'] * 2;
                 //and yield the row
-                yield $row_factory->map($record);
+                yield $row_factory->standard($record);
             }
         }
     };
+
+    // define actions
+    $action_delete = new class('Delete', 'records2delete', '#') extends T\Action
+    {
+        public function applicable($record) : bool
+        {
+            return $record['f4'] > 3;
+        }
+
+        public function getId($record) : string
+        {
+            return 'del_' .$record['f1'];
+        }
+    }
+
+    $action_edit = new class('Edit', 'ref_id', '#', T\Action::SCOPE_SINGLE) extends T\Action
+    {
+        public function getId($record) : string
+        {
+            return $record['f1'];
+        }
+    }
 
     //setup the table
     $table = $f->table()->data('a data table', 50)
         ->withColumns($columns)
         ->withData($data_retrieval);
+        ->withAction($action_edit);
+        ->withAction($action_delete)
 
     //apply request and render
     $request = $DIC->http()->request();

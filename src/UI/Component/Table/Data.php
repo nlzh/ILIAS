@@ -59,4 +59,25 @@ interface Data extends \ILIAS\UI\Component\Table\Table
      * column-titles (think of ordering...).
      */
     public function withRequest(ServerRequestInterface $request) : Data;
+
+    /**
+     * Consumers may attach actions to the table; an action is a Signal or
+     * URL carrying a parameter that references the targeted record(s).
+     * While there are actions that make sense for only one record (e.g. "edit" or "goto")
+     * there are others that will only be used with more than one record (e.g. "export", "compare"),
+     * and finally those to be valid for both single and multi records (e.g. "delete").
+     *
+     * However, actions share a common concept - they will trigger an URL or Signal,
+     * relay a parameter derived from the record to identiy targets and bear a label.
+     *
+     * If there is at least one Single Action, an additional column will be added at the
+     * very end of the table containing a Button (or Dropdown, for more than one action).
+     * If there is at least one Multi Action, an unlabled column will be added at the very
+     * beginning of the table containing a checkbox to include the row in the selection.
+     *
+     */
+    public function withAction(Action $action) : Data;
+
+    public function withActionColumnTitle(string $title) : Data;
+    public function getActionColumnTitle() : string;
 }
