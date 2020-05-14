@@ -68,16 +68,20 @@ interface Data extends \ILIAS\UI\Component\Table\Table
      * and finally those to be valid for both single and multi records (e.g. "delete").
      *
      * However, actions share a common concept - they will trigger an URL or Signal,
-     * relay a parameter derived from the record to identiy targets and bear a label.
+     * relay a parameter derived from the record to identify targets and bear a label.
      *
-     * If there is at least one Single Action, an additional column will be added at the
-     * very end of the table containing a Button (or Dropdown, for more than one action).
+     * If applicable, an additional column will be added at the very end of the table
+     * containing a Button (or Dropdown, for more than one action).
      * If there is at least one Multi Action, an unlabled column will be added at the very
      * beginning of the table containing a checkbox to include the row in the selection.
      *
+     * ---
+     * @param array <string, Action>    $actions
      */
-    public function withAction(Action $action) : Data;
+    public function withActions(array $actions) : Data;
 
-    public function withActionColumnTitle(string $title) : Data;
-    public function getActionColumnTitle() : string;
+    /**
+     * @return Action[]
+     */
+    public function getActions() : array;
 }

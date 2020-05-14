@@ -8,13 +8,14 @@ interface Action
     const SCOPE_SINGLE = 2;
     const SCOPE_MULTI = 3;
 
-    public function applicable() : bool;
-    public function scope() : mixed;
-    public function getId() : string;
     public function getLabel() : string;
+
     public function getParameterName() : string;
+
     /**
-     * @return URL | Signal
+     * @return Data\URI | UI\Component\Signal
      */
     public function getTarget();
+
+    public function getScope();
 }

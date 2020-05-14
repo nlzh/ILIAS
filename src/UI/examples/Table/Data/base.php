@@ -38,6 +38,19 @@ function base()
             ->withIsOptional(false)
     ];
 
+    // define actions
+    $df = new \ILIAS\Data\Factory();
+    $url = $df->uri($_SERVER['REQUEST_SCHEME'] .'://' .$_SERVER['SERVER_NAME'] .':' .$_SERVER['SERVER_PORT']
+        .$_SERVER['SCRIPT_NAME'] .'?' .$_SERVER['QUERY_STRING']);
+
+    $signal = $some_edit_modal->getShowSignal();
+
+    $actions = [
+        'delete' => new T\Action('Delete', 'ids', $url),
+        'compare' => new T\Action('Compare', 'ids', $url, T\Action::SCOPE_MULTI),
+        'edit' => new T\Action('Edit', 'ref_id', $signal, T\Action::SCOPE_SINGLE)
+    ];
+
     // retrieve data and map records to table rows
     $data_retrieval = new class($dummy_records) extends T\DataRetrieval {
         public function __construct(array $dummy_records)
@@ -52,43 +65,28 @@ function base()
             array $visible_column_ids,
             array $additional_parameters
         ) : \Generator {
-            foreach ($this->records as $record) {
+            foreach ($this->records as $idx => $record) {
+                //identify record (e.g. for actions)
+                $row_id = (string)$idx;
+
                 //maybe do something with the record
                 $record['f4'] = $record['f3'] * 2;
+
+                //decide on availability of actions
+                $not_to_be_deleted = $record['f3'] > 3;
+
                 //and yield the row
-                yield $row_factory->standard($record);
+                yield $row_factory->standard($row_id, $record)
+                    ->withDisabledAction('delete', $not_to_be_deleted);
             }
         }
     };
 
-    // define actions
-    $action_delete = new class('Delete', 'records2delete', '#') extends T\Action
-    {
-        public function applicable($record) : bool
-        {
-            return $record['f4'] > 3;
-        }
-
-        public function getId($record) : string
-        {
-            return 'del_' .$record['f1'];
-        }
-    }
-
-    $action_edit = new class('Edit', 'ref_id', '#', T\Action::SCOPE_SINGLE) extends T\Action
-    {
-        public function getId($record) : string
-        {
-            return $record['f1'];
-        }
-    }
-
     //setup the table
     $table = $f->table()->data('a data table', 50)
         ->withColumns($columns)
+        ->withActions($actions)
         ->withData($data_retrieval);
-        ->withAction($action_edit);
-        ->withAction($action_delete)
 
     //apply request and render
     $request = $DIC->http()->request();
