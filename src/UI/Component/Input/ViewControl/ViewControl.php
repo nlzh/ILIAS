@@ -17,6 +17,6 @@ interface ViewControl extends Component, Input, Triggerer
     /**
      * Trigger this signal when the control is being operated.
      */
-    public function withOnChange(Signal $signal): Control;
+    public function withOnChange(Signal $signal): ViewControl;
 }
 

@@ -16,11 +16,13 @@ interface FieldSelection extends BaseControl
 
     public function getDropdownLabel(): string;
     public function getButtonLabel(): string;
-    public function getInput(): Input;
+    //public function getInput(): Input;
 
     /**
      * This is an internal signal, used to submit the current choice
      */
-    public function getSubmissionTrigger(): Signal;
-    public function withResetSignals(): FieldSelection;
+    //public function getSubmissionTrigger(): Signal;
+    //public function withResetSignals(): FieldSelection;
+
+
 }

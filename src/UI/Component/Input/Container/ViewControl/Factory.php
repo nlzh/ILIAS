@@ -20,7 +20,7 @@ interface Factory
      *      as well as receiving and distributing values accordingly.
      * ---
      *
-     * @param array<string,\ILIAS\UI\Component\Input\ViewControl> $controls
+     * @param \ILIAS\UI\Component\Input\ViewControl[] $controls
      * @return \ILIAS\UI\Component\Input\Container\ViewControl\Standard
      */
     public function standard(array $controls) : Standard;

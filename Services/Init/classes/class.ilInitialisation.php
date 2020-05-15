@@ -1567,7 +1567,9 @@ class ilInitialisation
             );
         };
         $c["ui.factory.input.container.viewcontrol"] = function ($c) {
-            return new ILIAS\UI\Implementation\Component\Input\Container\ViewControl\Factory();
+            return new ILIAS\UI\Implementation\Component\Input\Container\ViewControl\Factory(
+                $c["ui.signal_generator"]
+            );
         };
         $c["ui.factory.input.viewcontrol"] = function ($c) {
             return new ILIAS\UI\Implementation\Component\Input\ViewControl\Factory();
