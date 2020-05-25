@@ -43,7 +43,7 @@ function base()
     $url = $df->uri($_SERVER['REQUEST_SCHEME'] .'://' .$_SERVER['SERVER_NAME'] .':' .$_SERVER['SERVER_PORT']
         .$_SERVER['SCRIPT_NAME'] .'?' .$_SERVER['QUERY_STRING']);
 
-    $signal = $some_edit_modal->getShowSignal();
+    //$signal = $some_edit_modal->getShowSignal();
 
     $actions = [
         'delete' => $f->table()->action('Delete', 'ids', $url),

@@ -6,7 +6,8 @@ use ILIAS\UI\Component\Table as T;
 use ILIAS\UI\Component\Signal;
 use ILIAS\Data\URI;
 
-abstract class Action implements T\Action
+//abstract class Action implements T\Action
+class Action implements T\Action
 {
     protected $label;
     protected $parameter;
@@ -16,8 +17,8 @@ abstract class Action implements T\Action
     public function __construct(
         string $label,
         string $parameter_name,
-        mixed $target,
-        mixed $scope = T\Action::SCOPE_BOTH
+        $target,
+        $scope = T\Action::SCOPE_BOTH
     ) {
         $this->label = $label;
         $this->parameter_name = $parameter_name;
@@ -27,7 +28,7 @@ abstract class Action implements T\Action
         }
         $this->target = $target;
 
-        if(in_array($scope, [
+        if(! in_array($scope, [
             T\Action::SCOPE_BOTH,
             T\Action::SCOPE_SINGLE,
             T\Action::SCOPE_MULTI
