@@ -223,6 +223,10 @@ interface Factory
      *       If there is at least one Multi Action, an unlabled column will be
      *       added at the very beginning of the table containing a checkbox to
      *       include the row in the selection.
+     *       There is also a "withDisabledAction"-switch on an Action to opt out
+     *       an Action for a specific row; use it to disable a specific Action by
+     *       introspection of a record or to exit early on multi-Actions
+     *       with invalid selections.
      *
      * context:
      *   - Use actions with Tables.
@@ -232,16 +236,7 @@ interface Factory
      *       1: Actions MUST have a meaningful label describing the purpose of the action.
      *
      * ---
-     * @param string $label
-     * @param string $parameter_name
-     * @param Data\URI|UI\Component\Signal $target
-     * @param mixed $scope
-     * @return \ILIAS\UI\Component\Table\Action
+     * @return \ILIAS\UI\Component\Table\Column\Factory
      */
-    public function action(
-          string $label,
-          string $parameter_name,
-          $target,
-          $scope = Action::SCOPE_BOTH
-     ) : Action;
+    public function action() : Action\Factory;
 }

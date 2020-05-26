@@ -32,6 +32,11 @@ abstract class Column implements C\Column
      */
     protected $initially_visible = true;
 
+    /**
+     * @var int
+     */
+    protected $index;
+
 
     public function __construct(string $title)
     {
@@ -81,4 +86,15 @@ abstract class Column implements C\Column
         return $this->initially_visible;
     }
 
+    public function withIndex(int $index) : C\Column
+    {
+        $clone = clone $this;
+        $clone->index = $index;
+        return $clone;
+    }
+
+    public function getIndex() : int
+    {
+        return $this->index;
+    }
 }
