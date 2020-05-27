@@ -2,7 +2,7 @@
 
 namespace ILIAS\UI\Component\Table;
 
-interface Action
+interface Action extends \ILIAS\UI\Component\Component
 {
     const SCOPE_BOTH = 1;
     const SCOPE_SINGLE = 2;

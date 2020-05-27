@@ -46,9 +46,9 @@ function base()
     $signal = $some_edit_modal->getShowSignal();
 
     $actions = [
-        'delete' => new T\Action('Delete', 'ids', $url),
-        'compare' => new T\Action('Compare', 'ids', $url, T\Action::SCOPE_MULTI),
-        'edit' => new T\Action('Edit', 'ref_id', $signal, T\Action::SCOPE_SINGLE)
+        'delete' => $f->table()->action('Delete', 'ids', $url),
+        'compare' => $f->table()->action('Compare', 'ids', $url, T\Action::SCOPE_MULTI),
+        'edit' => $f->table()->action('Edit', 'ref_id', $signal, T\Action::SCOPE_SINGLE)
     ];
 
     // retrieve data and map records to table rows

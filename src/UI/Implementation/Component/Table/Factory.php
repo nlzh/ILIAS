@@ -49,4 +49,16 @@ class Factory implements T\Factory
     {
         return new Column\Factory();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function action(
+          string $label,
+          string $parameter_name,
+          $target,
+          $scope = T\Action::SCOPE_BOTH
+     ) : T\Action {
+        throw new \ILIAS\UI\NotImplementedException('NYI');
+    }
 }
