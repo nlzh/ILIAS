@@ -140,8 +140,9 @@ class Renderer extends AbstractComponentRenderer
 
     public function renderDataTable(Component\Table\Data $component, RendererInterface $default_renderer)
     {
-        //TODO: fix/implement the following
+        $f = $this->getUIFactory();
         $df = new \ILIAS\Data\Factory();
+        //TODO: fix/implement the following
         $range = $df->range(0, 10);
         $order = $df->order('f1', \ILIAS\Data\Order::ASC);
         $visible_col_ids = [];
@@ -158,22 +159,15 @@ class Renderer extends AbstractComponentRenderer
             ARRAY_FILTER_USE_KEY
         );
 
-        $signal = $component->getMultiActionSignal();
-        $component = $component->withAdditionalOnLoadCode(function ($id) use ($signal) {
-            return "
-                $(document).on('{$signal}', function(event, signal_data) {
-                    il.UI.table.data.doMultiAction('{$id}', signal_data);
-                    return false;
-                });";
-        });
-
-
-        list($component, $triggerer) = $this->registerMultiActionsForTable($component);
+        $component = $this->registerActionsForTable($component);
+        $multi_actions_dropdown = $this->getMultiActionDropdown($component);
 
         $tpl = $this->getTemplate("tpl.datatable.html", true, true);
         $tpl->setVariable('TITLE', $component->getTitle());
         $tpl->setVariable('COL_COUNT', count($columns)); //TODO: or filtered?!
-        $tpl->setVariable('MULTI_ACTION_TRIGGERER', $default_renderer->render($triggerer));
+        if ($multi_actions_dropdown) {
+            $tpl->setVariable('MULTI_ACTION_TRIGGERER', $default_renderer->render($multi_actions_dropdown));
+        }
         $tpl->setVariable('ID', $this->bindJavaScript($component));
 
         foreach ($columns as $col_id => $col) {
@@ -212,6 +206,69 @@ class Renderer extends AbstractComponentRenderer
                 return !is_a($action, $exclude);
             }
         );
+    }
+
+    protected function registerActionsForTable(Component\Table\Data $component) : Component\Table\Data
+    {
+        //register handler
+        $action_signal = $component->getActionSignal();
+        $component = $component->withAdditionalOnLoadCode(function ($id) use ($action_signal) {
+            return "
+                $(document).on('{$action_signal}', function(event, signal_data) {
+                    il.UI.table.data.doAction('{$id}', signal_data, il.UI.table.data.collectSelectedRowIds('{$id}'));
+                    return false;
+                });";
+        });
+
+        //register actions
+        $actions = $component->getActions();
+        foreach ($actions as $action_id => $act) {
+            $parameter_name = $act->getParameterName();
+            $target = $act->getTarget();
+
+            if ($target instanceof \ILIAS\Data\URI) {
+                $type = 'URL';
+                parse_str($target->getQuery(), $params);
+                $target = $target->getBaseURI() . '?' . http_build_query($params);
+            }
+            if ($target instanceof Component\Signal) {
+                $type = 'SIGNAL';
+                $target = json_encode([
+                    'id' => $target->getId(),
+                    'options' => $target->getOptions()
+                ]);
+            }
+
+            $component = $component->withAdditionalOnLoadCode(function ($id) use ($action_id, $type, $target, $parameter_name) {
+                return "
+                    il.UI.table.data.registerAction('{$id}', '{$action_id}', '{$type}', '{$target}', '{$parameter_name}');
+                ";
+            });
+        }
+
+        return $component;
+    }
+
+    protected function getMultiActionDropdown(Component\Table\Data $component) : ?Component\Dropdown\Dropdown
+    {
+        $f = $this->getUIFactory();
+        $actions = $component->getActions();
+        $multi_actions = $this->getFilteredActions(
+            $actions,
+            Component\Table\Action\Single::class
+        );
+        if (count($multi_actions) == 0) {
+            return null;
+        }
+        $buttons = [];
+        foreach ($multi_actions as $action_id => $act) {
+            $buttons[] = $f->button()->shy(
+                $act->getLabel(),
+                $component->getActionSignal($action_id)
+            );
+        }
+        $multi_actions_dropdown = $f->dropdown()->standard($buttons); //TODO ->withLabel("Actions")
+        return $multi_actions_dropdown;
     }
 
     public function renderStandardRow(Component\Table\Row $component, RendererInterface $default_renderer)
@@ -274,50 +331,6 @@ class Renderer extends AbstractComponentRenderer
             $triggerer = $f->dropdown()->standard($buttons); //TODO (maybe?) ->withLabel("Actions")
         }
         return $default_renderer->render($triggerer);
-    }
-
-    /**
-     * @return array <Table, DropDown>
-     */
-    protected function registerMultiActionsForTable(Table $component) : array
-    {
-        $multi_actions = $this->getFilteredActions(
-            $component->getActions(),
-            Component\Table\Action\Single::class
-        );
-
-        if (count($multi_actions) === 0) {
-            return '';
-        };
-
-        $f = $this->getUIFactory();
-        $buttons = [];
-        foreach ($multi_actions as $action_id => $act) {
-            $buttons[] = $f->button()->shy(
-                $act->getLabel(),
-                $component->getMultiActionSignal($action_id)
-            );
-
-            $type = 'URL';
-            $target = $this->amendParameters($act, '');
-            $parameter_name = $act->getParameterName($act, '');
-            if ($target instanceof Component\Signal) {
-                $type = 'SIGNAL';
-                $target = json_encode([
-                    'id' => $target->getId(),
-                    'options' => $target->getOptions()
-                ]);
-            }
-
-            $component = $component->withAdditionalOnLoadCode(function ($id) use ($action_id, $type, $target, $parameter_name) {
-                return "
-                    il.UI.table.data.registerMultiAction('{$id}', '{$action_id}', '{$type}', '{$target}', '{$parameter_name}');
-                ";
-            });
-        }
-
-        $triggerer = $f->dropdown()->standard($buttons); //TODO ->withLabel("Actions")
-        return [$component, $triggerer];
     }
 
     protected function amendParameters(Action\Action $action, string $row_id)

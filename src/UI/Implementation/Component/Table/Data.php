@@ -132,7 +132,7 @@ class Data extends Table implements T\Data, JSBindable
         return $this->actions;
     }
 
-    public function getMultiActionSignal(string $id = null) : Signal
+    public function getActionSignal(string $id = null) : Signal
     {
         $sig = $this->multi_action_signal;
         if ($id) {
