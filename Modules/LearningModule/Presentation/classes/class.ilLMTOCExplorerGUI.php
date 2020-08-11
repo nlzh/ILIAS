@@ -486,7 +486,6 @@ class ilLMTOCExplorerGUI extends ilLMExplorerGUI
         ->end()
         ->end()
         ->end();*/
-
     }
 
     /**
@@ -521,8 +520,8 @@ class ilLMTOCExplorerGUI extends ilLMExplorerGUI
             }
             $node_toc->end();
         } else {
-            $toc->item($current_node["title"], $current_node["child"]);
+            $highlight = $this->isNodeHighlighted($current_node);
+            $toc->item($current_node["title"], $current_node["child"], null, $highlight);
         }
     }
-
 }
