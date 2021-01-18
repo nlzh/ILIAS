@@ -1292,7 +1292,6 @@ class ilPageObjectGUI
         //if($this->outputToTemplate())
         //{
         if ($this->getOutputMode() == "edit") {
-
             $this->getPageObject()->buildDom();
 
             $this->log->debug("ilPageObjectGUI, showPage() in edit mode.");
@@ -1314,7 +1313,7 @@ class ilPageObjectGUI
             $tpl->setVariable(
                 "WYSIWYG_ACTION",
                 $this->ctrl->getFormActionByClass("ilpageeditorgui", "", "", true)
-                );
+            );
 
             // determine media, html and javascript mode
             $sel_js_mode = (ilPageEditorGUI::_doJSEditing())
@@ -1366,7 +1365,7 @@ class ilPageObjectGUI
                         $tpl->setVariable(
                             "HREF_PREV",
                             $this->ctrl->getLinkTarget($this, "preview")
-                            );
+                        );
                         $tpl->parseCurrentBlock();
                     } else {
                         $tpl->setCurrentBlock("previous_rev_disabled");
@@ -1382,7 +1381,7 @@ class ilPageObjectGUI
                         $tpl->setVariable(
                             "HREF_NEXT",
                             $this->ctrl->getLinkTarget($this, "preview")
-                            );
+                        );
                         $tpl->parseCurrentBlock();
 
                         // latest revision
@@ -1392,7 +1391,7 @@ class ilPageObjectGUI
                         $tpl->setVariable(
                             "HREF_LATEST",
                             $this->ctrl->getLinkTarget($this, "preview")
-                            );
+                        );
                         $tpl->parseCurrentBlock();
                     }
 
@@ -1405,12 +1404,12 @@ class ilPageObjectGUI
                         $tpl->setVariable(
                             "HREF_ROLLBACK",
                             $this->ctrl->getLinkTarget($this, "rollbackConfirmation")
-                            );
+                        );
                         $this->ctrl->setParameter($this, "old_nr", "");
                         $tpl->setVariable(
                             "TXT_ROLLBACK",
                             $this->lng->txt("cont_rollback")
-                            );
+                        );
                         $tpl->parseCurrentBlock();
                     }
                 }
@@ -1420,11 +1419,11 @@ class ilPageObjectGUI
                 $tpl->setVariable(
                     "VAL_REVISION_DATE",
                     ilDatePresentation::formatDate(new ilDateTime($hist_info["current"]["hdate"], IL_CAL_DATETIME))
-                    );
+                );
                 $tpl->setVariable(
                     "VAL_REV_USER",
                     ilUserUtil::getNamePresentation($hist_info["current"]["user_id"])
-                    );
+                );
                 $tpl->parseCurrentBlock();
             }
         }
@@ -1441,7 +1440,7 @@ class ilPageObjectGUI
                 $this->obj->getParentType() . ":pg",
                 $this->obj->getId(),
                 $this->obj->getLanguage()
-                );
+            );
             $mob_links = array();
             foreach ($links as $link) {
                 if ($link["type"] == "mob") {
@@ -1458,7 +1457,7 @@ class ilPageObjectGUI
                 $tpl->setVariable(
                     "SEL_MED_LINKS",
                     ilUtil::formSelect(0, "mob_id", $mob_links, false, true)
-                    );
+                );
                 $tpl->setVariable("TXT_EDIT_MEDIA", $this->lng->txt("cont_edit_mob"));
                 $tpl->setVariable("TXT_COPY_TO_CLIPBOARD", $this->lng->txt("cont_copy_to_clipboard"));
                 //$this->tpl->setVariable("TXT_COPY_TO_POOL", $this->lng->txt("cont_copy_to_mediapool"));
@@ -1471,7 +1470,7 @@ class ilPageObjectGUI
             $snippets = ilPCContentInclude::collectContentIncludes(
                 $this->getPageObject(),
                 $this->getPageObject()->getDomDoc()
-                );
+            );
             if (count($snippets) > 0) {
                 foreach ($snippets as $s) {
                     include_once("./Modules/MediaPool/classes/class.ilMediaPoolPage.php");
@@ -1482,7 +1481,7 @@ class ilPageObjectGUI
                 $tpl->setVariable(
                     "SEL_SNIPPETS",
                     ilUtil::formSelect(0, "ci_id", $sn_arr, false, true)
-                    );
+                );
                 $tpl->setVariable("TXT_SHOW_INFO", $this->lng->txt("cont_show_info"));
                 $tpl->parseCurrentBlock();
             }
@@ -1500,8 +1499,8 @@ class ilPageObjectGUI
                             $this->getPageObject()->getActivationStart(),
                             IL_CAL_DATETIME
                         )
-                        )
-                    );
+                    )
+                );
                 $tpl->setVariable(
                     "SA_TO",
                     ilDatePresentation::formatDate(
@@ -1509,8 +1508,8 @@ class ilPageObjectGUI
                             $this->getPageObject()->getActivationEnd(),
                             IL_CAL_DATETIME
                         )
-                        )
-                    );
+                    )
+                );
                 $tpl->parseCurrentBlock();
             }
         }
@@ -1520,7 +1519,7 @@ class ilPageObjectGUI
             $tpl->setVariable(
                 "LINK_TREE",
                 $this->ctrl->getLinkTargetByClass("ilobjlearningmodulegui", "explorer", "", false, false)
-                );
+            );
             $tpl->parseCurrentBlock();
         }
         //		}
@@ -1616,7 +1615,7 @@ class ilPageObjectGUI
                     "</Paragraph></PageContent></PageObject></dummy>";
             } else {
                 $par = $this->obj->getParagraphForPCID($this->abstract_pcid);
-                $content = "<dummy><PageObject><PageContent><Paragraph Characteristic='".$par->getCharacteristic()."'>" .
+                $content = "<dummy><PageObject><PageContent><Paragraph Characteristic='" . $par->getCharacteristic() . "'>" .
                     $par->getText() . $link_xml .
                     "</Paragraph></PageContent></PageObject></dummy>";
             }
@@ -1805,7 +1804,7 @@ class ilPageObjectGUI
             } catch (Exception $e) {
                 $output = "";
                 if ($this->getOutputMode() == "edit") {
-                    $output = "<pre>".$e->getMessage()."<br>".htmlentities($content)."</pre>";
+                    $output = "<pre>" . $e->getMessage() . "<br>" . htmlentities($content) . "</pre>";
                     $is_error = true;
                 }
             }
@@ -2047,9 +2046,9 @@ class ilPageObjectGUI
         }
         $menu = [
             "cont_char_format" => [
-                ["text" => '<span class="ilc_text_inline_Strong">'.$str.'</span>', "action" => "selection.format", "data" => ["format" => "Strong"]],
-                ["text" => '<span class="ilc_text_inline_Emph">'.$emp.'</span>', "action" => "selection.format", "data" => ["format" => "Emph"]],
-                ["text" => '<span class="ilc_text_inline_Important">'.$imp.'</span>', "action" => "selection.format", "data" => ["format" => "Important"]],
+                ["text" => '<span class="ilc_text_inline_Strong">' . $str . '</span>', "action" => "selection.format", "data" => ["format" => "Strong"]],
+                ["text" => '<span class="ilc_text_inline_Emph">' . $emp . '</span>', "action" => "selection.format", "data" => ["format" => "Emph"]],
+                ["text" => '<span class="ilc_text_inline_Important">' . $imp . '</span>', "action" => "selection.format", "data" => ["format" => "Important"]],
                 ["text" => 'x<sup>2</sup>', "action" => "selection.format", "data" => ["format" => "Sup"]],
                 ["text" => 'x<sub>2</sub>', "action" => "selection.format", "data" => ["format" => "Sub"]],
                 ["text" => "<i>A</i>", "action" => $char_formats],
@@ -2067,7 +2066,7 @@ class ilPageObjectGUI
         $links = [];
         if ($a_wiki_links) {
             $links[] = ["text" => $lng->txt("obj_wiki"), "action" => "link.wikiSelection", "data" => []];
-            $links[] = ["text" => "[[".$lng->txt("obj_wiki")."]]", "action" => "link.wiki", "data" => []];
+            $links[] = ["text" => "[[" . $lng->txt("obj_wiki") . "]]", "action" => "link.wiki", "data" => []];
         }
         if ($a_int_links) {
             $links[] = ["text" => $lng->txt("cont_text_iln"), "action" => "link.internal", "data" => []];
@@ -2138,11 +2137,15 @@ class ilPageObjectGUI
 
         include_once("./Services/UIComponent/AdvancedSelectionList/classes/class.ilAdvancedSelectionListGUI.php");
 
-        $btpl->setVariable("SPLIT_BUTTON",
-            $ui_wrapper->getRenderedButton($lng->txt("save_return"), "par-action", "save.return"));
+        $btpl->setVariable(
+            "SPLIT_BUTTON",
+            $ui_wrapper->getRenderedButton($lng->txt("save_return"), "par-action", "save.return")
+        );
 
-        $btpl->setVariable("CANCEL_BUTTON",
-            $ui_wrapper->getRenderedButton($lng->txt("cancel"), "par-action", "component.cancel"));
+        $btpl->setVariable(
+            "CANCEL_BUTTON",
+            $ui_wrapper->getRenderedButton($lng->txt("cancel"), "par-action", "component.cancel")
+        );
 
         $btpl->setVariable("TXT_SAVING", $lng->txt("cont_saving"));
         
@@ -2535,6 +2538,19 @@ class ilPageObjectGUI
 
         $this->tool_context->current()->addAdditionalData(ilCOPageEditGSToolProvider::SHOW_EDITOR, true);
 
+
+
+        //global $DIC;
+        //$DIC->globalScreen()->tool()->context()->current()
+        $this->tool_context->current()
+    ->addAdditionalData('EDIT_MODE', true);
+
+        $lnk = $this->ctrl->getLinkTarget($this, "");
+        $this->tool_context->current()
+    ->addAdditionalData('EDIT_MODE_BACKLINK', $lnk);
+
+
+
         // not so nive workaround for container pages, bug #0015831
         $ptype = $this->getParentType();
         if ($ptype == "cont" && $_GET["ref_id"] > 0) {
@@ -2861,9 +2877,7 @@ class ilPageObjectGUI
         // back to upper context
         if (!$this->getEditPreview()) {
             $this->tabs_gui->addTarget("pg", $this->ctrl->getLinkTarget($this, "preview"), array("", "preview"));
-    
         } else {
-
             $this->tabs_gui->addTarget("cont_preview", $this->ctrl->getLinkTarget($this, "preview"), array("", "preview"));
         }
             
@@ -3252,7 +3266,7 @@ class ilPageObjectGUI
             ilUtil::stripSlashes($_POST["opened_content_ajax_type"]),
             ilUtil::stripSlashes($_POST["opened_content_ajax_id"]),
             ilUtil::stripSlashes($_POST["opened_content_ajax_target"])
-            );
+        );
         
         ilUtil::sendSuccess($this->lng->txt("msg_obj_modified"));
         $this->ctrl->redirect($this, "edit");
