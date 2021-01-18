@@ -4,10 +4,18 @@
   border-left: @il-mode-info-border;
   border-right: @il-mode-info-border;
   text-align: center;
-  height: @il-mode-info-height;
-  margin-bottom: -@il-mode-info-height;
-  z-index: 2;
-  position: static;
+  
+  /*
+    height: @il-mode-info-height;
+    margin-bottom: -@il-mode-info-height;
+  */
+
+  z-index: 10000;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+
 }
 
 .il-mode-info + div {
@@ -30,6 +38,8 @@
   -webkit-box-shadow: @il-mode-info-shadow;
   -moz-box-shadow: @il-mode-info-shadow;
   box-shadow: @il-mode-info-shadow;
+
+   pointer-events: all;
 }
 
 .il-mode-info span {
