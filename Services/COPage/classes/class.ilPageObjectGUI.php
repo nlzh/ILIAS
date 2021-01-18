@@ -1854,7 +1854,7 @@ class ilPageObjectGUI
             } catch (Exception $e) {
                 $output = "";
                 if ($this->getOutputMode() == "edit") {
-                    $output = "<pre>".$e->getMessage()."<br>".htmlentities($content)."</pre>";
+                    $output = "<pre>" . $e->getMessage() . "<br>" . htmlentities($content) . "</pre>";
                     $is_error = true;
                 }
             }
@@ -2901,6 +2901,11 @@ class ilPageObjectGUI
         }
 
         $this->tool_context->current()->addAdditionalData(ilCOPageEditGSToolProvider::SHOW_EDITOR, true);
+
+        global $DIC;
+        $DIC->globalScreen()->tool()->context()->current()
+    ->addAdditionalData('EDIT_MODE', true);
+        ;
 
         // not so nive workaround for container pages, bug #0015831
         $ptype = $this->getParentType();
