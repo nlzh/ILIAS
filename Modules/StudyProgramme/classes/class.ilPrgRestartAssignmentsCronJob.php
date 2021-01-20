@@ -4,11 +4,14 @@
 /* Copyright (c) 2019 Stefan Hecken <stefan.hecken@concepts-and-training.de> Extended GPL, see docs/LICENSE */
 
 declare(strict_types=1);
-
+/**
+ Re-assign users (according to restart-date).
+ This will result in a new/additional assignment
+ */
 class ilPrgRestartAssignmentsCronJob extends ilCronJob
 {
     /**
-     * @var ilStudyProgrammeUserAssignmentDB
+     * @var ilStudyProgrammeAssignmentDBRepository
      */
     protected $user_assignments_db;
 
@@ -27,8 +30,11 @@ class ilPrgRestartAssignmentsCronJob extends ilCronJob
         global $DIC;
 
         $this->user_assignments_db = ilStudyProgrammeDIC::dic()['ilStudyProgrammeUserAssignmentDB'];
+        $this->events = ilStudyProgrammeDIC::dic()['ilStudyProgrammeEvents'];
         $this->log = $DIC['ilLog'];
         $this->lng = $DIC['lng'];
+        /**ilStudyProgrammeAssignmentRepository*/
+        $this->assignment_repository = ilStudyProgrammeDIC::dic()['model.Assignment.ilStudyProgrammeAssignmentRepository'];
     }
 
     const ID = 'prg_restart_assignments_temporal_progress';
@@ -103,17 +109,24 @@ class ilPrgRestartAssignmentsCronJob extends ilCronJob
     }
         
     /**
-     * Run job
-     *
      * @return ilCronJobResult
      */
     public function run()
     {
         $result = new ilCronJobResult();
         $result->setStatus(ilCronJobResult::STATUS_OK);
+
         foreach ($this->user_assignments_db->getDueToRestartInstances() as $assignment) {
             try {
-                $assignment->restartAssignment();
+                $prg = ilObjStudyProgramme::getInstanceByObjId($assignment->getRootId());
+                $restarted = $prg->assignUser($assignment->getUserId());
+
+                //the old assingment is marked with the id of the new/resulting assignment.
+                //read: assignment X (old) caused Y (new).
+                $assignment = $assignment->withRestartedAssignmentId($restarted->getId());
+                $this->assignment_repository->update($assignment);
+
+                $this->events->userReAssigned($restarted);
             } catch (ilException $e) {
                 $this->log->write('an error occured: ' . $e->getMessage());
             }
