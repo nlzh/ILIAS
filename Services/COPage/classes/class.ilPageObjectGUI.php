@@ -2538,6 +2538,15 @@ class ilPageObjectGUI
 
         $this->tool_context->current()->addAdditionalData(ilCOPageEditGSToolProvider::SHOW_EDITOR, true);
 
+        $this->tool_context->current()->addAdditionalData(
+            ilCourseEditModeProvider::CRS_EDITMODE_BACKLINK,
+            $this->ctrl->getLinkTarget($this, "")
+        );
+        $this->tool_context->current()->addAdditionalData(
+            ilCourseEditModeProvider::CRS_EDITMODE_BACKLINK_LABEL,
+            $this->lng->txt('cont_finish_editing')
+        );
+
         // not so nive workaround for container pages, bug #0015831
         $ptype = $this->getParentType();
         if ($ptype == "cont" && $_GET["ref_id"] > 0) {

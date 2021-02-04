@@ -50,7 +50,6 @@ class ilCourseEditModeProvider extends AbstractModificationProvider implements M
         if (!$lnk) {
             return null;
         }
-        
         $uri = str_replace($_SERVER['REQUEST_URI'], $lnk, $_SERVER['HTTP_REFERER']);
         return new URI($uri);
     }
@@ -139,7 +138,6 @@ class ilCourseEditModeProvider extends AbstractModificationProvider implements M
                 function (PagePartProvider $parts) use ($label, $lnk) : Page {
                     $p = new StandardPageBuilder();
                     $f = $this->dic['ui.factory'];
-                    
                     $page = $p->build($parts);
                     $modeinfo = $f->mainControls()->modeInfo($label, $lnk);
                     return $page->withModeInfo($modeinfo);
