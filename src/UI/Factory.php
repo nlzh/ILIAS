@@ -316,7 +316,7 @@ interface Factory
      *     Clicking on an entry will get the user to the respective location.
      *
      * context:
-     *   - Suplemental navigation under the main menu
+     *   - Suplemental navigation above the page's content
      *   - Location hint in search results
      *   - Path to current location on info page
      *
