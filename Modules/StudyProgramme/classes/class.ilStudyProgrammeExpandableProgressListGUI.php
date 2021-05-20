@@ -145,7 +145,6 @@ class ilStudyProgrammeExpandableProgressListGUI extends ilStudyProgrammeProgress
     protected function shouldShowSubProgress(ilStudyProgrammeProgress $a_progress)
     {
         if ($a_progress->isRelevant()) {
-            //$prg = $a_progress->getStudyProgramme();
             $prg = ilObjStudyProgramme::getInstanceByObjId($a_progress->getNodeId());
 
             $can_read = $this->il_access->checkAccess("read", "", $prg->getRefId(), "prg", $prg->getId());

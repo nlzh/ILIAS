@@ -106,7 +106,6 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $this->setShowRowsSelector(false);
         $this->setFormAction($this->ctrl->getFormAction($parent_obj, "view"));
         $this->addColumn("", "", "1", true);
-        //$this->setSelectAllCheckbox("prgs_ids[]");
         $this->setSelectAllCheckbox($parent_obj::F_SELECTED_PROGRESS_IDS . '[]');
         $this->setEnableAllCommand(true);
         $this->addMultiCommands();
@@ -438,7 +437,6 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
                 $rec["status"]
             );
 
-            //$rec['points_current'] = number_format($rec['points_current']);
             $rec['points_current'] = number_format($progress->getCurrentAmountOfPoints());
 
             if ($rec["status"] == ilStudyProgrammeProgress::STATUS_COMPLETED) {

@@ -267,7 +267,6 @@ class ilStudyProgrammeChangeDeadlineGUI
                 $programme->changeProgressDeadline($progress_id, $acting_usr_id, $msg_collection, $deadline);
             }
 
-            //ilUtil::sendSuccess($this->lng->txt('update_deadline'), true);
             $this->messages->showMessages($msg_collection);
             $this->ctrl->redirectByClass('ilObjStudyProgrammeMembersGUI', 'view');
         }

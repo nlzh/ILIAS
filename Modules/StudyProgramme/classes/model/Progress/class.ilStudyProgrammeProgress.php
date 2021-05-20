@@ -544,7 +544,6 @@ class ilStudyProgrammeProgress
         return false;
     }
 
-    //TODO: actually, this is business-logic
     public function markAccredited(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
     {
         return $this
@@ -555,7 +554,6 @@ class ilStudyProgrammeProgress
             ->withLastChange($date);
     }
 
-    //TODO: actually, this is business-logic
     public function unmarkAccredited(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
     {
         return $this
@@ -566,7 +564,6 @@ class ilStudyProgrammeProgress
             ->withLastChange($date);
     }
 
-    //TODO: actually, this is business-logic
     public function markFailed(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
     {
         return $this
@@ -577,7 +574,6 @@ class ilStudyProgrammeProgress
             ->withLastChange($date);
     }
 
-    //TODO: actually, this is business-logic
     public function markNotFailed(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
     {
         return $this
@@ -588,7 +584,6 @@ class ilStudyProgrammeProgress
             ->withLastChange($date);
     }
 
-    //TODO: actually, this is business-logic
     public function succeed(DateTimeImmutable $date, int $triggering_obj_id) : ilStudyProgrammeProgress
     {
         return $this
@@ -599,7 +594,6 @@ class ilStudyProgrammeProgress
             ->withLastChange($date);
     }
 
-    //TODO: actually, this is business-logic
     public function markNotRelevant(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
     {
         return $this
@@ -611,7 +605,6 @@ class ilStudyProgrammeProgress
             ->withIndividualModifications(true);
     }
 
-    //TODO: actually, this is business-logic
     public function markRelevant(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
     {
         return $this

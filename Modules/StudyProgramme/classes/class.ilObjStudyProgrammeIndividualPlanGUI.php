@@ -46,7 +46,12 @@ class ilObjStudyProgrammeIndividualPlanGUI
     /**
      * @var ilStudyProgrammeProgressDB
      */
-    protected $sp_user_progress_db;
+    protected $progress_repository;
+
+    /**
+     * @var ilStudyProgrammeAssignmentRepository
+     */
+    protected $assignment_repository;
 
     /**
      * @var ilPRGMessages[]
@@ -59,8 +64,8 @@ class ilObjStudyProgrammeIndividualPlanGUI
         \ilLanguage $lng,
         \ilObjUser $ilUser,
         \ilAccess $ilAccess,
-        ilStudyProgrammeProgressRepository $sp_user_progress_db,
-        ilStudyProgrammeAssignmentDBRepository $sp_user_assignment_db,
+        ilStudyProgrammeProgressRepository $progress_repository,
+        ilStudyProgrammeAssignmentRepository $assignment_repository,
         ilPRGMessages $messages
     ) {
         $this->tpl = $tpl;
@@ -71,8 +76,8 @@ class ilObjStudyProgrammeIndividualPlanGUI
 
         $this->assignment_object = null;
 
-        $this->sp_user_progress_db = $sp_user_progress_db;
-        $this->sp_user_assignment_db = $sp_user_assignment_db;
+        $this->progress_repository = $progress_repository;
+        $this->assignment_repository = $assignment_repository;
         $this->messages = $messages;
 
         $this->object = null;
@@ -127,7 +132,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
     {
         if ($this->assignment_object === null) {
             $id = $this->getAssignmentId();
-            $this->assignment_object = $this->sp_user_assignment_db->getInstanceById((int) $id);
+            $this->assignment_object = $this->assignment_repository->getInstanceById((int) $id);
         }
         return $this->assignment_object;
     }
@@ -167,7 +172,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
         }
         $this->ctrl->setParameter($this, "ass_id", $ass->getId());
         $this->ctrl->setParameter($this, "cmd", "manage");
-        $table = new ilStudyProgrammeIndividualPlanTableGUI($this, $ass, $this->sp_user_progress_db);
+        $table = new ilStudyProgrammeIndividualPlanTableGUI($this, $ass, $this->progress_repository);
         $frame = $this->buildFrame("manage", $table->getHTML());
         $this->ctrl->setParameter($this, "ass_id", null);
         return $frame;
@@ -231,7 +236,6 @@ class ilObjStudyProgrammeIndividualPlanGUI
         $this->ctrl->redirect($this, "manage");
     }
 
-
     protected function updateStatus(array $progress_updates, ilPRGMessageCollector $msgs)
     {
         $programme = $this->parent_gui->getStudyProgramme();
@@ -241,7 +245,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
             switch ($target_status) {
                 case ilStudyProgrammeProgress::STATUS_IN_PROGRESS:
 
-                    $progress = $this->sp_user_progress_db->read($progress_id);
+                    $progress = $this->progress_repository->read($progress_id);
                     $cur_status = $progress->getStatus();
 
                     if ($cur_status == ilStudyProgrammeProgress::STATUS_ACCREDITED) {
@@ -281,7 +285,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
                 $deadline = DateTimeImmutable::createFromFormat('d.m.Y', $deadline);
             }
             
-            $progress = $this->sp_user_progress_db->read($progress_id);
+            $progress = $this->progress_repository->read($progress_id);
             $cur_deadline = $progress->getDeadline();
 
             if ($deadline != $cur_deadline) {
@@ -303,7 +307,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
                 continue;
             }
 
-            $progress = $this->sp_user_progress_db->read($progress_id);
+            $progress = $this->progress_repository->read($progress_id);
             $cur_points = $progress->getAmountOfPoints();
 
             if ($points != $cur_points) {

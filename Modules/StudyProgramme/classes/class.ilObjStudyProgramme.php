@@ -147,6 +147,8 @@ class ilObjStudyProgramme extends ilContainer
         $this->db = $DIC['ilDB'];
         $this->plugin_admin = $DIC['ilPluginAdmin'];
         $this->lng = $DIC['lng'];
+        $this->logger = ilLoggerFactory::getLogger($this->type);
+
 
         $this->object_factory = ilObjectFactoryWrapper::singleton();
         $this->ps = ilStudyProgrammeDIC::dic()['ilOrgUnitObjectTypePositionSetting'];
@@ -186,7 +188,6 @@ class ilObjStudyProgramme extends ilContainer
         $this->lp_children = null;
     }
 
-
     public static function getRefIdFor(int $obj_id) : int
     {
         $refs = ilObject::_getAllReferences($obj_id);
@@ -209,7 +210,6 @@ class ilObjStudyProgramme extends ilContainer
         return self::$study_programme_cache->getInstanceByRefId($a_ref_id);
     }
 
-
     protected function getProgressRepository() : ilStudyProgrammeProgressRepository
     {
         return $this->progress_repository;
@@ -222,7 +222,6 @@ class ilObjStudyProgramme extends ilContainer
     {
         return $this->settings_repository;
     }
-
 
     /**
      * Create an instance of ilObjStudyProgramme, put in cache.
@@ -262,8 +261,6 @@ class ilObjStudyProgramme extends ilContainer
         $this->getSettingsRepository()->delete($this->getId());
     }
 
-
-
     /**
      * Delete all assignments from the DB.
      *
@@ -298,18 +295,18 @@ class ilObjStudyProgramme extends ilContainer
     {
         parent::update();
 
+        $type_settings = $this->getSettings()->getTypeSettings();
         // Update selection for advanced meta data of the type
-        if ($this->getTypeSettings()->getTypeId()) {
+        if ($type_settings->getTypeId()) {
             ilAdvancedMDRecord::saveObjRecSelection(
                 $this->getId(),
                 'prg_type',
-                $this->type_repository->readAssignedAMDRecordIdsByType($this->getTypeSettings()->getTypeId())
+                $this->type_repository->readAssignedAMDRecordIdsByType($type_settings->getTypeId())
             );
         } else {
             // If no type is assigned, delete relations by passing an empty array
             ilAdvancedMDRecord::saveObjRecSelection($this->getId(), 'prg_type', array());
         }
-        //$this->updateSettings();
     }
 
     /**
@@ -341,7 +338,7 @@ class ilObjStudyProgramme extends ilContainer
 
     public function hasAdvancedMetadata() : bool
     {
-        $sub_type_id = $this->getTypeSettings()->getTypeId();
+        $sub_type_id = $this->getSettings()->getTypeSettings()->getTypeId();
         if ($sub_type_id) {
             $type = $this->type_repository->readType($sub_type_id);
         }
@@ -376,7 +373,8 @@ class ilObjStudyProgramme extends ilContainer
      */
     public function setPoints(int $a_points) : ilObjStudyProgramme
     {
-        $settings = $this->getAssessmentSettings()->withPoints($a_points);
+        $settings = $this->getSettings()->getAssessmentSettings()
+            ->withPoints($a_points);
         $this->setAssessmentSettings($settings);
         $this->updateLastChange();
         return $this;
@@ -416,7 +414,7 @@ class ilObjStudyProgramme extends ilContainer
 
     public function getStatus() : int
     {
-        return $this->getAssessmentSettings()->getStatus();
+        return $this->getSettings()->getAssessmentSettings()->getStatus();
     }
 
     /**
@@ -426,7 +424,8 @@ class ilObjStudyProgramme extends ilContainer
      */
     public function setStatus(int $a_status) : ilObjStudyProgramme
     {
-        $settings = $this->getAssessmentSettings()->withStatus($a_status);
+        $settings = $this->getSettings()->getAssessmentSettings()
+            ->withStatus($a_status);
         $this->setAssessmentSettings($settings);
         $this->updateLastChange();
         return $this;
@@ -444,58 +443,14 @@ class ilObjStudyProgramme extends ilContainer
      */
     public function getSubType()
     {
-        if (!in_array($this->getTypeSettings()->getTypeId(), array("-", "0"))) {
-            $subtype_id = $this->getTypeSettings()->getTypeId();
+        $type_settings = $this->getSettings()->getTypeSettings();
+        if (!in_array($type_settings->getTypeId(), array("-", "0"))) {
+            $subtype_id = $type_settings->getTypeId();
             return $this->type_repository->readType($subtype_id);
         }
 
         return null;
     }
-
-
-
-    /**
-     * @deprecated
-     */
-    public function getTypeSettings() : \ilStudyProgrammeTypeSettings
-    {
-        return $this->getSettings()->getTypeSettings();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getAssessmentSettings() : \ilStudyProgrammeAssessmentSettings
-    {
-        return $this->getSettings()->getAssessmentSettings();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function XXX_getDeadlineSettings() : \ilStudyProgrammeDeadlineSettings
-    {
-        return $this->getSettings()->getDeadlineSettings();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function XXX_getValidityOfQualificationSettings() : \ilStudyProgrammeValidityOfAchievedQualificationSettings
-    {
-        return $this->getSettings()->getValidityOfQualificationSettings();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function XXX_getAutoMailSettings() : \ilStudyProgrammeAutoMailSettings
-    {
-        return $this->getSettings()->getAutoMailSettings();
-    }
-
-
-
 
     public function getAccessControlByOrguPositionsGlobal() : bool
     {
@@ -1307,7 +1262,7 @@ class ilObjStudyProgramme extends ilContainer
     public function addMissingProgresses() : void
     {
         $progress_repository = $this->progress_repository;
-        $log = ilLoggerFactory::getLogger('prg');
+        $log = $this->logger;
 
         foreach ($this->getAssignments() as $ass) { /** ilStudyProgrammeAssignment[] */
             $id = $ass->getId();
@@ -1340,7 +1295,6 @@ class ilObjStudyProgramme extends ilContainer
      */
     public function getProgresses() : array
     {
-        //return $this->progress_db->getInstancesForProgram($this->getId());
         return $this->progress_repository->readByPrgId($this->getId());
     }
 
@@ -1390,9 +1344,6 @@ class ilObjStudyProgramme extends ilContainer
     {
         $returns = array();
         foreach ($this->getProgresses() as $progress) {
-            //TODO: this used to write - and shouldn't, i think
-            //$progress->recalculateFailedToDeadline();
-            //$progress = $this->maybeFailByDeadline($progress);
             if ($progress->isSuccessful() && !$progress->isSuccessfulExpired()) {
                 $returns[] = $progress->getUserId();
             }
@@ -1409,9 +1360,6 @@ class ilObjStudyProgramme extends ilContainer
     {
         $returns = array();
         foreach ($this->getProgresses() as $progress) {
-            //TODO: this used to write - and shouldn't, i think
-            //$progress->recalculateFailedToDeadline();
-            //$progress = $this->maybeFailByDeadline($progress);
             if ($progress->isFailed() || $progress->isSuccessfulExpired()) {
                 $returns[] = $progress->getUserId();
             }
@@ -1924,7 +1872,7 @@ class ilObjStudyProgramme extends ilContainer
     {
         global $DIC;
         $lng = $DIC['lng'];
-        $log = ilLoggerFactory::getLogger('prg');
+        $log = $this->logger;
         $lng->loadLanguageModule("prg");
         $lng->loadLanguageModule("mail");
 
@@ -2012,7 +1960,7 @@ class ilObjStudyProgramme extends ilContainer
         $lng = $this->lng;
         $lng->loadLanguageModule("prg");
         $lng->loadLanguageModule("mail");
-        $log = ilLoggerFactory::getLogger('prg');
+        $log = $this->logger;
 
         $assignment = $this->assignment_repository->getInstanceById($assignment_id);
         
@@ -2300,46 +2248,6 @@ class ilObjStudyProgramme extends ilContainer
         return $progress;
     }
 
-
-    /**
-     * @deprecated : this is "settings from programme" rather than a progress modification...
-     */
-    protected function maybeLimitProgressValidity(ilStudyProgrammeProgress $progress) : ilStudyProgrammeProgress
-    {
-        $progress_prg_settings = $this->getProgrammeSettingsForProgress($progress);
-        $qualification_valid_until = $progress_prg_settings->getQualificationDate();
-        $qualification_period = $progress_prg_settings->getQualificationPeriod();
-
-        if (is_null($qualification_valid_until) &&
-            $qualification_period !== ilStudyProgrammeSettings::NO_VALIDITY_OF_QUALIFICATION_PERIOD
-        ) {
-            $qualification_valid_until = $this->getNow()
-                ->add(new DateInterval('P' . $qualification_period . 'D'));
-        }
-
-        if (!is_null($qualification_valid_until)) {
-            $progress = $progress->withValidityOfQualification($qualification_valid_until);
-        }
-
-        return $progress;
-    }
-
-    protected function recalculateAssignmentStatus(
-        ilStudyProgrammeProgress $progress,
-        ilStudyProgrammeAssignment $assignment
-    ) : ilStudyProgrammeAssignment {
-
-        //TODO: restart assignment, used to be in maybeLimitProgressValidity
-        return $assignment;
-
-        $restart_period = $prg->getSettings()->getValidityOfQualificationSettings()->getRestartPeriod();
-        if (ilStudyProgrammeSettings::NO_RESTART !== $restart_period) {
-            $date->sub(new DateInterval('P' . $restart_period . 'D'));
-            $this->assignment_repository->update($assignment->withRestartDate($date));
-        }
-    }
-
-
     public function markAccredited(
         int $progress_id,
         int $acting_usr_id,
@@ -2585,8 +2493,6 @@ class ilObjStudyProgramme extends ilContainer
 //        $this->updateParentProgress($progress);
     }
 
-
-
     public function updateProgressFromSettings(
         int $progress_id,
         int $acting_usr_id,
@@ -2658,12 +2564,6 @@ class ilObjStudyProgramme extends ilContainer
         }
         return $progress->withDeadline($date);
     }
-
-
-
-
-
-
 
     public function canBeCompleted(ilStudyProgrammeProgress $progress) : bool
     {

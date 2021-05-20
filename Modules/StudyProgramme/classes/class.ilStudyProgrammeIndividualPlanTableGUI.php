@@ -202,10 +202,9 @@ class ilStudyProgrammeIndividualPlanTableGUI extends ilTable2GUI
         $options = [
             $parent::MANUAL_STATUS_NONE => '-',
             ilStudyProgrammeProgress::STATUS_IN_PROGRESS => $this->lng->txt("prg_status_in_progress"),
-            //ilStudyProgrammeProgress::STATUS_COMPLETED => $this->lng->txt("prg_status_completed"),
             ilStudyProgrammeProgress::STATUS_ACCREDITED => $this->lng->txt("prg_status_accredited"),
-            ilStudyProgrammeProgress::STATUS_NOT_RELEVANT => $this->lng->txt("prg_status_not_relevant"),
-            //ilStudyProgrammeProgress::STATUS_FAILED => $this->lng->txt("prg_status_failed")
+            ilStudyProgrammeProgress::STATUS_NOT_RELEVANT => $this->lng->txt("prg_status_not_relevant")
+            //COMPLETED/FAILED are not to be set manually.
         ];
 
         $allowed = ilStudyProgrammeProgress::getAllowedTargetStatusFor($a_status);
