@@ -310,17 +310,19 @@ class ilStudyProgrammeAssignmentDBRepository implements ilStudyProgrammeAssignme
         return (new ilStudyProgrammeAssignment((int) $row[self::FIELD_ID]))
             ->withRootId((int) $row[self::FIELD_ROOT_PRG_ID])
             ->withUserId((int) $row[self::FIELD_USR_ID])
-            ->withLastChangeBy((int) $row[self::FIELD_LAST_CHANGE_BY])
-            ->withLastChange(DateTimeImmutable::createFromFormat(
-                ilStudyProgrammeAssignment::DATE_TIME_FORMAT,
-                $row[self::FIELD_LAST_CHANGE]
-            ))
-            ->withRestartDate(
+            ->withLastChange(
+                (int) $row[self::FIELD_LAST_CHANGE_BY],
+                DateTimeImmutable::createFromFormat(
+                    ilStudyProgrammeAssignment::DATE_TIME_FORMAT,
+                    $row[self::FIELD_LAST_CHANGE]
+                )
+            )
+            ->withRestarted(
+                (int) $row[self::FIELD_RESTARTED_ASSIGNMENT_ID],
                 $row[self::FIELD_RESTART_DATE] ?
                     DateTimeImmutable::createFromFormat(ilStudyProgrammeAssignment::DATE_TIME_FORMAT, $row[self::FIELD_RESTART_DATE]) :
                     null
-            )
-            ->withRestartedAssignmentId((int) $row[self::FIELD_RESTARTED_ASSIGNMENT_ID]);
+            );
     }
 
     protected function loadByFilterDB(array $filter)

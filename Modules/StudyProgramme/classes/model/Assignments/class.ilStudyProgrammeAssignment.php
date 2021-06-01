@@ -97,33 +97,18 @@ class ilStudyProgrammeAssignment
         return $this->last_change_by;
     }
 
-    public function withLastChangeBy(int $last_change_by) : ilStudyProgrammeAssignment
+    public function getLastChange() : DateTimeImmutable
     {
+        return DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, $this->last_change);
+    }
+
+    public function withLastChange(
+        int $last_change_by,
+        DateTimeImmutable $last_change
+    ) : ilStudyProgrammeAssignment {
         $clone = clone $this;
         $clone->last_change_by = $last_change_by;
-        return $clone;
-    }
-
-    public function getLastChange() : DateTime //TODO: use DateTimeImmutable
-    {
-        $d = DateTime::createFromFormat(self::DATE_TIME_FORMAT, $this->last_change);
-        if (!$d) { //TODO: should not happen, better throw...
-            return new DateTime();
-        }
-        return $d;
-    }
-
-    public function withLastChange(DateTimeImmutable $last_change) : ilStudyProgrammeAssignment
-    {
-        $clone = clone $this;
         $clone->last_change = $last_change->format(self::DATE_TIME_FORMAT);
-        return $clone;
-    }
-
-    public function withRestartDate(DateTimeImmutable $date = null) : ilStudyProgrammeAssignment
-    {
-        $clone = clone $this;
-        $clone->restart_date = $date;
         return $clone;
     }
 
@@ -137,10 +122,13 @@ class ilStudyProgrammeAssignment
         return $this->restarted_asssignment_id;
     }
 
-    public function withRestartedAssignmentId(int $id) : ilStudyProgrammeAssignment
-    {
+    public function withRestarted(
+        int $restarted_asssignment_id,
+        DateTimeImmutable $restart_date = null
+    ) : ilStudyProgrammeAssignment {
         $clone = clone $this;
-        $clone->restarted_asssignment_id = $id;
+        $clone->restarted_asssignment_id = $restarted_asssignment_id;
+        $clone->restart_date = $restart_date;
         return $clone;
     }
 }
