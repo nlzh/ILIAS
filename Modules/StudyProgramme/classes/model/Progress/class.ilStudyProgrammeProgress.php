@@ -364,7 +364,7 @@ class ilStudyProgrammeProgress
         return $this->completion_by;
     }
     /**
-     * Get the id of the user who did the last change on this assignment.
+     * Get the id of the user/object who/which invoked the last change on this assignment.
      *
      * @return int
      */
@@ -372,17 +372,7 @@ class ilStudyProgrammeProgress
     {
         return $this->last_change_by;
     }
-    
-    /**
-     * Set the id of the user who did the last change on this progress.
-     */
-    public function withLastChangeBy(int $usr_id) : ilStudyProgrammeProgress
-    {
-        $clone = clone $this;
-        $clone->last_change_by = $usr_id;
-        return $clone;
-    }
-    
+   
     public function getLastChange() : ?DateTimeImmutable
     {
         if ($this->last_change) {
@@ -392,21 +382,24 @@ class ilStudyProgrammeProgress
     }
 
     /**
-     * @throws ilException if new date is earlier than the exiting one
+     * @throws ilException if new date is earlier than the existing one
      */
-    public function withLastChange(DateTimeImmutable $timestamp) : ilStudyProgrammeProgress
-    {
+    public function withLastChange(
+        int $last_change_by,
+        DateTimeImmutable $timestamp
+    ) : ilStudyProgrammeProgress {
         $new_date = $timestamp->format(self::DATE_TIME_FORMAT);
         if ($this->getLastChange() && $this->getLastChange()->format(self::DATE_TIME_FORMAT) > $new_date) {
             throw new ilException(
-                "Cannot set least change to an earlier date:"
+                "Cannot set last change to an earlier date:"
                 . "\ncurrent: " . $this->getLastChange()->format(self::DATE_TIME_FORMAT)
-                . "\new: " . $new_date,
+                . "\nnew: " . $new_date,
                 1
             );
         }
         $clone = clone $this;
         $clone->last_change = $new_date;
+        $clone->last_change_by = $last_change_by;
         return $clone;
     }
 
@@ -545,8 +538,7 @@ class ilStudyProgrammeProgress
             ->withStatus(self::STATUS_ACCREDITED)
             ->withCompletionDate($date)
             ->withCompletionBy($acting_usr_id)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($date);
+            ->withLastChange($acting_usr_id, $date);
     }
 
     public function unmarkAccredited(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
@@ -555,8 +547,7 @@ class ilStudyProgrammeProgress
             ->withStatus(self::STATUS_IN_PROGRESS)
             ->withCompletionDate(null)
             ->withCompletionBy(null)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($date);
+            ->withLastChange($acting_usr_id, $date);
     }
 
     public function markFailed(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
@@ -565,8 +556,7 @@ class ilStudyProgrammeProgress
             ->withStatus(self::STATUS_FAILED)
             ->withCompletionDate(null)
             ->withCompletionBy(null)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($date);
+            ->withLastChange($acting_usr_id, $date);
     }
 
     public function markNotFailed(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
@@ -575,8 +565,7 @@ class ilStudyProgrammeProgress
             ->withStatus(self::STATUS_IN_PROGRESS)
             ->withCompletionDate(null)
             ->withCompletionBy(null)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($date);
+            ->withLastChange($acting_usr_id, $date);
     }
 
     public function succeed(DateTimeImmutable $date, int $triggering_obj_id) : ilStudyProgrammeProgress
@@ -585,16 +574,14 @@ class ilStudyProgrammeProgress
             ->withStatus(self::STATUS_COMPLETED)
             ->withCompletionDate($date)
             ->withCompletionBy($triggering_obj_id)
-            ->withLastChangeBy($triggering_obj_id)
-            ->withLastChange($date);
+            ->withLastChange($triggering_obj_id, $date);
     }
 
     public function markNotRelevant(DateTimeImmutable $date, int $acting_usr_id) : ilStudyProgrammeProgress
     {
         return $this
             ->withStatus(self::STATUS_NOT_RELEVANT)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($date)
+            ->withLastChange($acting_usr_id, $date)
             ->withValidityOfQualification(null)
             ->withDeadline(null)
             ->withIndividualModifications(true);
@@ -605,8 +592,7 @@ class ilStudyProgrammeProgress
         return $this
             ->withStatus(self::STATUS_IN_PROGRESS)
             ->withCompletionBy(null)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($date)
+            ->withLastChange($acting_usr_id, $date)
             ->withIndividualModifications(true);
     }
 }

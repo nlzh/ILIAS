@@ -1623,6 +1623,7 @@ class ilObjStudyProgramme extends ilContainer
 
     public static function removeMemberFromProgrammes(string $src_type, int $src_id, int $usr_id) : void
     {
+        $now = new DateTimeImmutable();
         foreach (self::getProgrammesMonitoringMemberSource($src_type, $src_id) as $prg) {
             foreach ($prg->getProgressesOf($usr_id) as $progress) {
                 if ($progress->getStatus() !== ilStudyProgrammeProgress::STATUS_IN_PROGRESS) {
@@ -1635,7 +1636,7 @@ class ilObjStudyProgramme extends ilContainer
                     if (!is_null($next_membership_source)) {
                         $new_src_type = $next_membership_source->getSourceType();
                         $assigned_by = ilStudyProgrammeAutoMembershipSource::SOURCE_MAPPING[$new_src_type];
-                        $assignment = $assignment->withLastChangeBy($assigned_by);
+                        $assignment = $assignment->withLastChange($assigned_by, $now);
                         $prg->assignment_repository->update($assignment);
                         break;
                     } else {
@@ -2424,8 +2425,7 @@ class ilObjStudyProgramme extends ilContainer
 
         $progress = $progress
             ->withDeadline($deadline)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($this->getNow())
+            ->withLastChange($acting_usr_id, $this->getNow())
             ->withIndividualModifications(true);
 
         $progress = $this->applyProgressDeadline($progress, $acting_usr_id);
@@ -2451,8 +2451,7 @@ class ilObjStudyProgramme extends ilContainer
 
         $progress = $progress
             ->withValidityOfQualification($validity)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($this->getNow())
+            ->withLastChange($acting_usr_id, $this->getNow())
             ->withIndividualModifications(true);
 
         $this->getProgressRepository()->update($progress);
@@ -2482,8 +2481,7 @@ class ilObjStudyProgramme extends ilContainer
         
         $progress = $progress
             ->withAmountOfPoints($points)
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($this->getNow())
+            ->withLastChange($acting_usr_id, $this->getNow())
             ->withIndividualModifications(true);
 
         $this->getProgressRepository()->update($progress);
@@ -2511,8 +2509,7 @@ class ilObjStudyProgramme extends ilContainer
         $progress = $this->updateProgressDeadlineFromSettings($progress);
         $progress = $progress->withAmountOfPoints($this->getPoints());
         $progress = $progress
-            ->withLastChangeBy($acting_usr_id)
-            ->withLastChange($this->getNow())
+            ->withLastChange($acting_usr_id, $this->getNow())
             ->withIndividualModifications(false);
 
         $this->getProgressRepository()->update($progress);

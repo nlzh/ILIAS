@@ -399,6 +399,7 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
                     null
             )
             ->withLastChange(
+                (int) $row[self::FIELD_LAST_CHANGE_BY],
                 $row[self::FIELD_LAST_CHANGE] ?
                     DateTimeImmutable::createFromFormat(ilStudyProgrammeProgress::DATE_TIME_FORMAT, $row[self::FIELD_LAST_CHANGE]) :
                     null
@@ -414,10 +415,6 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
 
         if ((int) $row[self::FIELD_INVALIDATED] === 1) {
             $prgrs = $prgrs->invalidate();
-        }
-
-        if (!is_null($row[self::FIELD_LAST_CHANGE_BY])) {
-            $prgrs = $prgrs->withLastChangeBy((int) $row[self::FIELD_LAST_CHANGE_BY]);
         }
 
         return $prgrs;

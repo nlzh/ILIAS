@@ -105,23 +105,14 @@ class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends test_init_and_id
      */
-    public function test_last_change_by()
+    public function testWithLastChange() : void
     {
-        $spp = (new ilStudyProgrammeProgress(123))->withLastChangeBy(6);
-        $this->assertEquals($spp->getLastChangeBy(), 6);
-    }
-
-    /**
-     * @depends test_init_and_id
-     */
-    public function test_last_change_by_null()
-    {
-        try {
-            $spp = (new ilStudyProgrammeProgress(123))->withLastChangeBy();
-            $this->assertTrue(false);
-        } catch (\TypeError $e) {
-            $this->assertTrue(true);
-        }
+        $spa = (new ilStudyProgrammeProgress(123))->withLastChange(
+            6,
+            $dl = new DateTimeImmutable()
+        );
+        $this->assertEquals($spa->getLastChangeBy(), 6);
+        $this->assertEquals($spa->getLastChange()->format('Y-m-d H:i:s'), $dl->format('Y-m-d H:i:s'));
     }
 
     /**
