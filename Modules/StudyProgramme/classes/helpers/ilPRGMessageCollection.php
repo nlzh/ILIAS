@@ -4,26 +4,21 @@
  * Holds information about multi-actions,
  * mainly in context of member-assignemnts and status changes
  */
-class ilPRGMessageCollector
+class ilPRGMessageCollection
 {
     protected $success = [];
     protected $error = [];
     protected $description = '';
 
-    public function withNewTopic(string $description) : ilPRGMessageCollector
+    public function withNewTopic(string $description) : ilPRGMessageCollection
     {
         $clone = clone $this;
-        $clone->clear($description);
+        $clone->success = [];
+        $clone->error = [];
+        $clone->description = $description;
         return $clone;
     }
-
-    public function clear(string $description)
-    {
-        $this->description = $description;
-        $this->success = [];
-        $this->error = [];
-    }
-
+    
     /**
      * @return string[]
      */

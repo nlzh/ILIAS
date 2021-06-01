@@ -85,8 +85,8 @@ class ilStudyProgrammeDIC
         };
 
         $dic['PRGMessages'] = function ($dic) use ($DIC) {
-            $messages = new ilPRGMessageCollector();
-            return new ilPRGMessages(
+            $messages = new ilPRGMessageCollection();
+            return new ilPRGMessagePrinter(
                 $messages,
                 $DIC['lng']
             );

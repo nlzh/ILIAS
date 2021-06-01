@@ -1,12 +1,13 @@
 <?php declare(strict_types = 1);
 
 /**
- * Util around ilPRGMessageCollector for easier handling in different GUIs
-  */
-class ilPRGMessages
+ * Util around ilPRGMessageCollection 
+ * factors and output collections.
+ */
+class ilPRGMessagePrinter
 {
     /**
-     * @var ilPRGMessageCollector
+     * @var ilPRGMessageCollection
      */
     protected $collection;
     
@@ -16,19 +17,19 @@ class ilPRGMessages
     protected $lng;
 
     public function __construct(
-        ilPRGMessageCollector $collection,
+        ilPRGMessageCollection $collection,
         ilLanguage $lng
     ) {
         $this->collection = $collection;
         $this->lng = $lng;
     }
 
-    public function getMessageCollection(string $topic) : ilPRGMessageCollector
+    public function getMessageCollection(string $topic) : ilPRGMessageCollection
     {
         return $this->collection->withNewTopic($topic);
     }
 
-    public function showMessages(ilPRGMessageCollector $msg)
+    public function showMessages(ilPRGMessageCollection $msg)
     {
         if ($msg->hasSuccess()) {
             $out = sprintf(

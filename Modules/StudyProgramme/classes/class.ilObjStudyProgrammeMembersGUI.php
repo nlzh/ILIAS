@@ -98,7 +98,7 @@ class ilObjStudyProgrammeMembersGUI
         ilStudyProgrammeRepositorySearchGUI $repository_search_gui,
         ilObjStudyProgrammeIndividualPlanGUI $individual_plan_gui,
         ilStudyProgrammePositionBasedAccess $position_based_access,
-        ilPRGMessages $messages
+        ilPRGMessagePrinter $messages
     ) {
         $this->tpl = $tpl;
         $this->ctrl = $ilCtrl;
@@ -496,7 +496,7 @@ class ilObjStudyProgrammeMembersGUI
         $this->ctrl->redirect($this, "view");
     }
 
-    protected function markAccreditedByProgressId(int $prgrs_id, ilPRGMessageCollector $msgs) : void
+    protected function markAccreditedByProgressId(int $prgrs_id, ilPRGMessageCollection $msgs) : void
     {
         $prgrs = $this->getProgressObject($prgrs_id);
         $usr_id = $prgrs->getUserId();
@@ -528,7 +528,7 @@ class ilObjStudyProgrammeMembersGUI
         $this->ctrl->redirect($this, "view");
     }
 
-    protected function unmarkAccreditedByProgressId(int $prgrs_id, ilPRGMessageCollector $msgs) : void
+    protected function unmarkAccreditedByProgressId(int $prgrs_id, ilPRGMessageCollection $msgs) : void
     {
         $prgrs = $this->getProgressObject($prgrs_id);
         $usr_id = $prgrs->getUserId();
@@ -938,12 +938,12 @@ class ilObjStudyProgrammeMembersGUI
         return $actions;
     }
 
-    protected function getMessageCollection(string $topic) : ilPRGMessageCollector
+    protected function getMessageCollection(string $topic) : ilPRGMessageCollection
     {
         return $this->messages->getMessageCollection($topic);
     }
 
-    protected function showMessages(ilPRGMessageCollector $msg)
+    protected function showMessages(ilPRGMessageCollection $msg)
     {
         $this->messages->showMessages($msg);
     }

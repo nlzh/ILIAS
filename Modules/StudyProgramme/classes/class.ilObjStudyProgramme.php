@@ -2251,7 +2251,7 @@ class ilObjStudyProgramme extends ilContainer
     public function markAccredited(
         int $progress_id,
         int $acting_usr_id,
-        ilPRGMessageCollector $err_collection
+        ilPRGMessageCollection $err_collection
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
         $new_status = $progress::STATUS_ACCREDITED;
@@ -2284,7 +2284,7 @@ class ilObjStudyProgramme extends ilContainer
     public function unmarkAccredited(
         int $progress_id,
         int $acting_usr_id,
-        ilPRGMessageCollector $err_collection
+        ilPRGMessageCollection $err_collection
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
         $new_status = $progress::STATUS_IN_PROGRESS;
@@ -2335,7 +2335,7 @@ class ilObjStudyProgramme extends ilContainer
     public function markNotRelevant(
         int $progress_id,
         int $acting_usr_id,
-        ilPRGMessageCollector $err_collection
+        ilPRGMessageCollection $err_collection
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
         $new_status = $progress::STATUS_NOT_RELEVANT;
@@ -2361,7 +2361,7 @@ class ilObjStudyProgramme extends ilContainer
     public function markRelevant(
         int $progress_id,
         int $acting_usr_id,
-        ilPRGMessageCollector $err_collection
+        ilPRGMessageCollection $err_collection
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
         $new_status = $progress::STATUS_IN_PROGRESS;
@@ -2408,7 +2408,7 @@ class ilObjStudyProgramme extends ilContainer
     public function changeProgressDeadline(
         int $progress_id,
         int $acting_usr_id,
-        ilPRGMessageCollector $err_collection,
+        ilPRGMessageCollection $err_collection,
         ?DateTimeImmutable $deadline
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
@@ -2439,7 +2439,7 @@ class ilObjStudyProgramme extends ilContainer
     public function changeProgressValidityDate(
         int $progress_id,
         int $acting_usr_id,
-        ilPRGMessageCollector $err_collection,
+        ilPRGMessageCollection $err_collection,
         ?DateTimeImmutable $validity
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
@@ -2466,7 +2466,7 @@ class ilObjStudyProgramme extends ilContainer
     public function changeAmountOfPoints(
         int $progress_id,
         int $acting_usr_id,
-        ilPRGMessageCollector $err_collection,
+        ilPRGMessageCollection $err_collection,
         ?int $points
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
@@ -2496,7 +2496,7 @@ class ilObjStudyProgramme extends ilContainer
     public function updateProgressFromSettings(
         int $progress_id,
         int $acting_usr_id,
-        ilPRGMessageCollector $err_collection = null
+        ilPRGMessageCollection $err_collection = null
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
 

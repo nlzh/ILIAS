@@ -280,7 +280,7 @@ class ilStudyProgrammeProgressCalculationsTest extends \PHPUnit\Framework\TestCa
         $this->progress_repo = new ProgressRepoMock();
         $this->assignment_repo = new AssignmentRepoMock();
         $this->settings_repo = new SettingsRepoMock();
-        $this->messages = new ilPRGMessageCollector();
+        $this->messages = new ilPRGMessageCollection();
         
         /*
         └── 1

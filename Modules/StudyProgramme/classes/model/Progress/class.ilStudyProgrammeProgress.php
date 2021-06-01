@@ -501,21 +501,16 @@ class ilStudyProgrammeProgress
         return $this->getStatus() != self::STATUS_NOT_RELEVANT;
     }
 
-    //TODO: there is no gain in this.
     public function isFailed() : bool
     {
         return $this->getStatus() == self::STATUS_FAILED;
     }
-    //TODO: there is no gain in this.
+    
     public function isAccredited() : bool
     {
         return $this->getStatus() == self::STATUS_ACCREDITED;
     }
     
-    /**
-        TODO: why do we need this?!
-        is this more than a db-marker for queries?
-     */
     public function invalidate() : ilStudyProgrammeProgress
     {
         if (!$this->vq_date || $this->vq_date->format('Y-m-d') > date('Y-m-d')) {

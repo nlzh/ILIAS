@@ -66,7 +66,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
         \ilAccess $ilAccess,
         ilStudyProgrammeProgressRepository $progress_repository,
         ilStudyProgrammeAssignmentRepository $assignment_repository,
-        ilPRGMessages $messages
+        ilPRGMessagePrinter $messages
     ) {
         $this->tpl = $tpl;
         $this->ctrl = $ilCtrl;
@@ -236,7 +236,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
         $this->ctrl->redirect($this, "manage");
     }
 
-    protected function updateStatus(array $progress_updates, ilPRGMessageCollector $msgs)
+    protected function updateStatus(array $progress_updates, ilPRGMessageCollection $msgs)
     {
         $programme = $this->parent_gui->getStudyProgramme();
         $acting_user_id = (int) $this->user->getId();
@@ -273,7 +273,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
         }
     }
 
-    protected function updateDeadlines(array $deadlines, ilPRGMessageCollector $msgs)
+    protected function updateDeadlines(array $deadlines, ilPRGMessageCollection $msgs)
     {
         $programme = $this->parent_gui->getStudyProgramme();
         $acting_user_id = (int) $this->user->getId();
@@ -294,7 +294,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
         }
     }
 
-    protected function updateRequiredPoints(array $required_points, ilPRGMessageCollector $msgs)
+    protected function updateRequiredPoints(array $required_points, ilPRGMessageCollection $msgs)
     {
         $programme = $this->parent_gui->getStudyProgramme();
         $acting_user_id = (int) $this->user->getId();

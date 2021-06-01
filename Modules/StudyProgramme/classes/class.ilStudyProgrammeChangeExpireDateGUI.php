@@ -107,7 +107,7 @@ class ilStudyProgrammeChangeExpireDateGUI
         ServerRequest $request,
         \ILIAS\Refinery\Factory $refinery_factory,
         \ILIAS\Data\Factory $data_factory,
-        ilPRGMessages $messages
+        ilPRGMessagePrinter $messages
     ) {
         $this->ctrl = $ctrl;
         $this->tpl = $tpl;
