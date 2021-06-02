@@ -156,8 +156,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
     protected function getUserDateFormat() : string
     {
-        //TODO: use user's dateformat
-        return 'd.m.Y';
+        return ilCalendarUtil::getUserDateFormat(false, true);
     }
 
     protected function fillRow($a_set) : void
