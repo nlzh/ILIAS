@@ -346,23 +346,6 @@ class ilStudyProgrammeProgress
         return [];
     }
 
-
-    //TODO: why should usr_id be null?!
-    public function withCompletionBy(int $usr_id = null) : ilStudyProgrammeProgress
-    {
-        $clone = clone $this;
-        $clone->completion_by = $usr_id;
-        return $clone;
-    }
-
-    /**
-     * Get the id of object or user that lead to the successful completion
-     * of this node.
-     */
-    public function getCompletionBy() : ?int
-    {
-        return $this->completion_by;
-    }
     /**
      * Get the id of the user/object who/which invoked the last change on this assignment.
      *
@@ -420,9 +403,21 @@ class ilStudyProgrammeProgress
         return $this->completion_date;
     }
 
-    public function withCompletionDate(DateTimeImmutable $completion_date = null) : ilStudyProgrammeProgress
+    /**
+     * Get the id of object or user that lead to the successful completion
+     * of this node.
+     */
+    public function getCompletionBy() : ?int
     {
+        return $this->completion_by;
+    }
+
+    public function withCompletion(
+        int $usr_or_obj_id = null,
+        DateTimeImmutable $completion_date = null
+    ) : ilStudyProgrammeProgress {
         $clone = clone $this;
+        $clone->completion_by = $usr_or_obj_id;
         $clone->completion_date = $completion_date;
         return $clone;
     }
@@ -536,8 +531,7 @@ class ilStudyProgrammeProgress
     {
         return $this
             ->withStatus(self::STATUS_ACCREDITED)
-            ->withCompletionDate($date)
-            ->withCompletionBy($acting_usr_id)
+            ->withCompletion($acting_usr_id, $date)
             ->withLastChange($acting_usr_id, $date);
     }
 
@@ -545,8 +539,7 @@ class ilStudyProgrammeProgress
     {
         return $this
             ->withStatus(self::STATUS_IN_PROGRESS)
-            ->withCompletionDate(null)
-            ->withCompletionBy(null)
+            ->withCompletion(null, null)
             ->withLastChange($acting_usr_id, $date);
     }
 
@@ -554,8 +547,7 @@ class ilStudyProgrammeProgress
     {
         return $this
             ->withStatus(self::STATUS_FAILED)
-            ->withCompletionDate(null)
-            ->withCompletionBy(null)
+            ->withCompletion(null, null)
             ->withLastChange($acting_usr_id, $date);
     }
 
@@ -563,8 +555,7 @@ class ilStudyProgrammeProgress
     {
         return $this
             ->withStatus(self::STATUS_IN_PROGRESS)
-            ->withCompletionDate(null)
-            ->withCompletionBy(null)
+            ->withCompletion(null, null)
             ->withLastChange($acting_usr_id, $date);
     }
 
@@ -572,8 +563,7 @@ class ilStudyProgrammeProgress
     {
         return $this
             ->withStatus(self::STATUS_COMPLETED)
-            ->withCompletionDate($date)
-            ->withCompletionBy($triggering_obj_id)
+            ->withCompletion($triggering_obj_id, $date)
             ->withLastChange($triggering_obj_id, $date);
     }
 
@@ -591,7 +581,7 @@ class ilStudyProgrammeProgress
     {
         return $this
             ->withStatus(self::STATUS_IN_PROGRESS)
-            ->withCompletionBy(null)
+            ->withCompletion(null, null)
             ->withLastChange($acting_usr_id, $date)
             ->withIndividualModifications(true);
     }

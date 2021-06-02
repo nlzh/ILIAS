@@ -384,7 +384,6 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
             ->withStatus((int) $row[self::FIELD_STATUS])
             ->withAmountOfPoints((int) $row[self::FIELD_POINTS])
             ->withCurrentAmountOfPoints((int) $row[self::FIELD_POINTS_CUR])
-            ->withCompletionBy((int) $row[self::FIELD_COMPLETION_BY])
             ->withDeadline(
                 $row[self::FIELD_DEADLINE] ?
                     DateTimeImmutable::createFromFormat(ilStudyProgrammeProgress::DATE_FORMAT, $row[self::FIELD_DEADLINE]) :
@@ -393,7 +392,8 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
             ->withAssignmentDate(
                 DateTimeImmutable::createFromFormat(ilStudyProgrammeProgress::DATE_TIME_FORMAT, $row[self::FIELD_ASSIGNMENT_DATE])
             )
-            ->withCompletionDate(
+            ->withCompletion(
+                (int) $row[self::FIELD_COMPLETION_BY],
                 $row[self::FIELD_COMPLETION_DATE] ?
                     DateTimeImmutable::createFromFormat(ilStudyProgrammeProgress::DATE_TIME_FORMAT, $row[self::FIELD_COMPLETION_DATE]) :
                     null

@@ -93,14 +93,7 @@ class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
         $spp = (new ilStudyProgrammeProgress(123))->withStatus(321);
     }
 
-    /**
-     * @depends test_init_and_id
-     */
-    public function test_completion_by()
-    {
-        $spp = (new ilStudyProgrammeProgress(123))->withCompletionBy(321);
-        $this->assertEquals($spp->getCompletionBy(), 321);
-    }
+
 
     /**
      * @depends test_init_and_id
@@ -128,13 +121,17 @@ class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends test_init_and_id
      */
-    public function test_completion_date()
+    public function test_completion()
     {
+        $usr_id = 6;
         $cd = new DateTimeImmutable();
-        $spp = (new ilStudyProgrammeProgress(123))->withCompletionDate($cd);
-        $this->assertEquals($spp->getCompletionDate()->format('Y-m-d'), $cd->format('Y-m-d'));
-        $spp = (new ilStudyProgrammeProgress(123))->withCompletionDate(null);
+        $spp = (new ilStudyProgrammeProgress(123))->withCompletion($usr_id, $cd);
+        $this->assertEquals($cd->format('Y-m-d'), $spp->getCompletionDate()->format('Y-m-d'));
+        $this->assertEquals($usr_id, $spp->getCompletionBy());
+
+        $spp = (new ilStudyProgrammeProgress(123))->withCompletion(null, null);
         $this->assertNull($spp->getCompletionDate());
+        $this->assertNull($spp->getCompletionBy());
     }
 
     /**

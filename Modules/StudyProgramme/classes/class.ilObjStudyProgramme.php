@@ -2073,7 +2073,7 @@ class ilObjStudyProgramme extends ilContainer
 
     protected function getLoggedInUserId() : int
     {
-        return (int) $this->ilUser->getId(); //TODO: do not use global user, uugh
+        return (int) $this->ilUser->getId();
     }
 
     protected function getNow() : DateTimeImmutable
@@ -2202,7 +2202,7 @@ class ilObjStudyProgramme extends ilContainer
         if ($successful && !$progress->isSuccessful()) {
             $progress = $progress
                 ->withStatus(ilStudyProgrammeProgress::STATUS_COMPLETED)
-                ->withCompletionDate(new DateTimeImmutable());
+                ->withCompletion(null, new DateTimeImmutable());
           
             // there was a status change, so:
             $this->events->userSuccessful($progress);
@@ -2211,8 +2211,7 @@ class ilObjStudyProgramme extends ilContainer
         if (!$successful && $progress->isSuccessful()) {
             $progress = $progress
                 ->withStatus(ilStudyProgrammeProgress::STATUS_IN_PROGRESS)
-                ->withCompletionDate(null)
-                ->withCompletionBy(null)
+                ->withCompletion(null, null)
                 ->withValidityOfQualification(null);
         }
 
