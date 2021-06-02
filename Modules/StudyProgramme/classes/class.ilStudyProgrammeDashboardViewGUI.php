@@ -101,7 +101,6 @@ class ilStudyProgrammeDashboardViewGUI
 
             $current_status = $current_progress->getStatus();
             $deadline = $current_progress->getDeadline();
-            //TODO: use $current_progress->getValidityOfQualification();
             $validation_expires = $current_prg_settings->validationExpires();
 
             $restart_date = $current->getRestartDate();
