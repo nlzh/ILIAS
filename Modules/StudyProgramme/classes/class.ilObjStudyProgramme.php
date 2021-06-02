@@ -2456,9 +2456,8 @@ class ilObjStudyProgramme extends ilContainer
         $this->getProgressRepository()->update($progress);
         $err_collection->add(true, 'validity_updated', $this->getProgressIdString($progress));
 
-//        TODO: recalc success upwards?
-//        $this->refreshLPStatus($progress->getUserId());
-//        $this->updateParentProgress($progress);
+        //update LearningProgress, but this does not affect upper progresses
+        $this->refreshLPStatus($progress->getUserId());
     }
 
     public function changeAmountOfPoints(
@@ -2485,9 +2484,8 @@ class ilObjStudyProgramme extends ilContainer
 
         $this->getProgressRepository()->update($progress);
         $err_collection->add(true, 'required_points_updated', $this->getProgressIdString($progress));
-//        TODO: recalc success upwards?
-//        $this->refreshLPStatus($progress->getUserId());
-//        $this->updateParentProgress($progress);
+        $this->refreshLPStatus($progress->getUserId());
+        $this->updateParentProgress($progress);
     }
 
     public function updateProgressFromSettings(
@@ -2515,9 +2513,8 @@ class ilObjStudyProgramme extends ilContainer
         if ($err_collection) {
             $err_collection->add(true, 'updated_from_settings', $this->getProgressIdString($progress));
         }
-//        TODO: recalc success upwards?
-//        $this->refreshLPStatus($progress->getUserId());
-//        $this->updateParentProgress($progress);
+        $this->refreshLPStatus($progress->getUserId());
+        $this->updateParentProgress($progress);
     }
 
     protected function updateProgressValidityFromSettings($progress) : ilStudyProgrammeProgress
