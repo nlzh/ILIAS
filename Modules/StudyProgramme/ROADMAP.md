@@ -17,3 +17,7 @@ re-implementing isCompleted/isInProgress
 # ilStudyProgrammeIndividualPlanTableGUI
 * fetchData passes a _reference_ to $plan into applyToSubTreeNodes; this
 is quite implicit and might be amended by a catamorphic "requestFromSubTreeNodes"?!
+
+# Construction of ilStudyProgrammeAssignment and ilStudyProgrammeProgress
+* "Correctness by Construction": The properies should go in the constructor of
+the classes; maybe we can also get rid of one or the other mutator?
