@@ -757,7 +757,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
      */
     protected function fillInfoScreen($a_info_screen)
     {
-        if (!$this->object->getTypeSettings()->getTypeId() ||
+        if (!$this->object->getSettings()->getTypeSettings()->getTypeId() ||
             !ilStudyProgrammeDIC::dic()['model.Type.ilStudyProgrammeTypeRepository']
                 ->readType($this->object->getTypeSettings()->getTypeId())
         ) {

@@ -901,15 +901,19 @@ class ilObjStudyProgrammeMembersGUI
 
     protected function mayCurrentUserEditProgress(int $progress_id) : bool
     {
-        $usr_id = $this->getProgressObject($progress_id)->getUserId();
-        if (
-            $this->object->getAccessControlByOrguPositionsGlobal() &&
-            !in_array($usr_id, $this->editIndividualPlan()) &&
-            !$this->mayManageMembers()
-        ) {
-            return false;
-        }
-        return true;
+        return
+        (
+            //under OrgU control and current user has authority over the user the progress belongs to
+            $this->object->getPositionSettingsIsActiveForPrg()
+            && in_array(
+                $this->getProgressObject($progress_id)->getUserId(),
+                $this->editIndividualPlan()
+            )
+        ) || (
+            //not under OrgU control and current user may manage members
+            !$this->object->getAccessControlByOrguPositionsGlobal()
+            && $this->mayManageMembers()
+        );
     }
 
     /**
