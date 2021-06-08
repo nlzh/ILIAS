@@ -258,7 +258,7 @@ class ilObjStudyProgramme extends ilContainer
 
     protected function deleteSettings() : void
     {
-        $this->getSettingsRepository()->delete($this->getId());
+        $this->getSettingsRepository()->delete($this->getSettings());
     }
 
     /**
