@@ -113,6 +113,11 @@ class ilObjStudyProgramme extends ilContainer
     protected $members_cache;
 
     /**
+     * @var\ilObjectCustomIconFactory
+     */
+    protected $custom_icon_factory;
+
+    /**
      * ATTENTION: After using the constructor the object won't be in the cache.
      * This could lead to unexpected behaviour when using the tree navigation.
      */
@@ -149,9 +154,10 @@ class ilObjStudyProgramme extends ilContainer
         $this->lng = $DIC['lng'];
         $this->logger = ilLoggerFactory::getLogger($this->type);
 
-
         $this->object_factory = ilObjectFactoryWrapper::singleton();
         $this->ps = ilStudyProgrammeDIC::dic()['ilOrgUnitObjectTypePositionSetting'];
+
+        $this->custom_icon_factory = $DIC['object.customicons.factory'];
 
         self::initStudyProgrammeCache();
     }
@@ -1786,27 +1792,17 @@ class ilObjStudyProgramme extends ilContainer
     }
 
 
-    /**
-     * updates the selected custom icon in container folder by type
-     *
-     */
     public function updateCustomIcon() : void
     {
-        global $DIC;
-
-        /** @var \ilObjectCustomIconFactory $customIconFactory */
-        $customIconFactory = $DIC['object.customicons.factory'];
-        $customIcon = $customIconFactory->getByObjId($this->getId(), $this->getType());
-
+        $customIcon = $this->custom_icon_factory->getByObjId($this->getId(), $this->getType());
         $subtype = $this->getSubType();
 
-        if ($subtype) {
-            if ($this->webdir->has($subtype->getIconPath(true))) {
-                $icon = $subtype->getIconPath(true);
-                $customIcon->saveFromSourceFile($icon);
-            } else {
-                $customIcon->remove();
-            }
+        if ($subtype
+                && $this->webdir->has($subtype->getIconPath(true))
+                && $subtype->getIconPath(true) != $subtype->getIconPath(false)
+        ) {
+            $icon = $subtype->getIconPath(true);
+            $customIcon->saveFromSourceFile($icon);
         } else {
             $customIcon->remove();
         }
