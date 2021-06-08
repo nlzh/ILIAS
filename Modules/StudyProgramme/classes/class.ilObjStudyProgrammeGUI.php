@@ -472,7 +472,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
             'prg',
             $this->object->getId(),
             'prg_type',
-            $this->object->getTypeSettings()->getTypeId()
+            $this->object->getSettings()->getTypeSettings()->getTypeId()
         );
         $gui->setPropertyForm($form);
         $gui->parse();
@@ -495,7 +495,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
             'prg',
             $this->object->getId(),
             'prg_type',
-            $this->object->getTypeSettings()->getTypeId()
+            $this->object->getSettings()->getTypeSettings()->getTypeId()
         );
         $gui->setPropertyForm($form);
         $form->checkInput();
@@ -759,7 +759,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
     {
         if (!$this->object->getSettings()->getTypeSettings()->getTypeId() ||
             !ilStudyProgrammeDIC::dic()['model.Type.ilStudyProgrammeTypeRepository']
-                ->readType($this->object->getTypeSettings()->getTypeId())
+                ->readType($this->object->getSettings()->getTypeSettings()->getTypeId())
         ) {
             return;
         }
@@ -768,7 +768,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
             'prg',
             $this->object->getId(),
             'prg_type',
-            $this->object->getTypeSettings()->getTypeId()
+            $this->object->getSettings()->getTypeSettings()->getTypeId()
         );
         $record_gui->setInfoObject($a_info_screen);
         $record_gui->parse();
