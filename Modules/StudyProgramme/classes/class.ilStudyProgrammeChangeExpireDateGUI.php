@@ -190,7 +190,6 @@ class ilStudyProgrammeChangeExpireDateGUI
         $format = $this->data_factory->dateFormat()->germanShort();
         $vq_date_sub_form = $ff
             ->dateTime('', $txt('validity_qualification_date_desc'))
-            ->withMinValue(new DateTimeImmutable())
             ->withFormat($format);
         $date = $prg->getSettings()->getValidityOfQualificationSettings()->getQualificationDate();
         if ($date !== null) {

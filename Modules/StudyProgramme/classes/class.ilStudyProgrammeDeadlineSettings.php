@@ -89,7 +89,6 @@ class ilStudyProgrammeDeadlineSettings
                     $lng->txt('prg_deadline_date_desc')
                 )
                 ->withFormat($format)
-                ->withMinValue(new DateTimeImmutable())
                 ->withValue($this->getDeadlineDate() !== null ? $this->getDeadlineDate()->format('d.m.Y') : '')
                 ->withRequired(true)
             ],
