@@ -192,7 +192,6 @@ class ilStudyProgrammeChangeDeadlineGUI
         $deadline_date_sub_form = $ff
             ->dateTime('', $txt('prg_deadline_date_desc'))
             ->withFormat($format)
-            ->withMinValue(new DateTimeImmutable())
         ;
 
         if ($deadline_date !== null) {
