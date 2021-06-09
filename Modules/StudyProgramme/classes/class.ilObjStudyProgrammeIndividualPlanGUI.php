@@ -335,7 +335,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
             $tabs[] = 'manage';
         }
 
-        if ($this->parent_gui->getStudyProgramme()->getAccessControlByOrguPositionsGlobal()) {
+        if ($this->parent_gui->getStudyProgramme()->getPositionSettingsIsActiveForPrg()) {
             if (in_array($user_id, $this->parent_gui->viewIndividualPlan())) {
                 $tabs[] = 'view';
             }
