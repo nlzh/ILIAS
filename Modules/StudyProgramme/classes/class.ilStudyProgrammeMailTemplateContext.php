@@ -22,6 +22,8 @@ class ilStudyProgrammeMailTemplateContext extends ilMailTemplateContext
     const EXPIRE_DATE = "prg_expiry_date";
     const VALIDITY = "prg_validity";
 
+    const DATE_FORMAT = 'd-m-Y H:i:s';
+
     /**
      * @var ilLanguage
      */
@@ -304,12 +306,11 @@ class ilStudyProgrammeMailTemplateContext extends ilMailTemplateContext
         throw new ilException("Unknown status: '$status'");
     }
 
-    protected function date2String(DateTime $date_time = null) : string
+    protected function date2String(DateTimeImmutable $date_time = null) : string
     {
         if (is_null($date_time)) {
             return '';
         }
-
-        return $date_time->format('d-m-Y H:i:s');
+        return $date_time->format(self::DATE_FORMAT);
     }
 }
