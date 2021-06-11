@@ -24,7 +24,9 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
     const FIELD_DEADLINE = 'deadline';
     const FIELD_VQ_DATE = 'vq_date';
     const FIELD_INVALIDATED = 'invalidated';
-    const FIELD_MAIL_SEND = 'risky_to_fail_mail_send';
+    const FIELD_MAIL_SENT_RISKYTOFAIL = 'risky_to_fail_mail_send';
+    //const FIELD_MAIL_SENT_RISKYTOFAIL = 'sent_risky_to_fail_mail';
+    //const FIELD_MAIL_SENT_WILLEXPIRE = 'sent_expire_mail';
     const FIELD_IS_INDIVIDUAL = 'individual';
 
     public function __construct(ilDBInterface $db)
@@ -288,7 +290,7 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
         ];
 
         $values = [
-            self::FIELD_MAIL_SEND => [
+            self::FIELD_MAIL_SENT_RISKYTOFAIL => [
                 'timestamp',
                 date('Y-m-d H:i:s')
             ]
@@ -502,7 +504,7 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
                 (new DateTimeImmutable())->format(ilStudyProgrammeProgress::DATE_FORMAT),
                 'text'
             )
-            . '    AND ' . self::FIELD_MAIL_SEND . ' IS NULL'
+            . '    AND ' . self::FIELD_MAIL_SENT_RISKYTOFAIL . ' IS NULL'
         ;
         $res = $this->db->query($q);
         while ($rec = $this->db->fetchAssoc($res)) {
@@ -531,6 +533,65 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
             . ' FROM ' . self::TABLE;
     }
 
+    /**
+     * @param array <int, DateTimeImmutable>    $programmes_and_due
+     * @return ilStudyProgrammeProgress[]
+     */
+    public function getRiskyToFail(array $programmes_and_due) : array
+    {
+        $ret = [];
+        if (count($programmes_and_due) == 0) {
+            return $ret;
+        }
+
+        $where = [];
+        foreach ($programmes_and_due as $programme_obj_id => $due) {
+            $due = $due->format(ilStudyProgrammeProgress::DATE_FORMAT);
+            $where[] = '('
+                . self::FIELD_PRG_ID . '=' . $programme_obj_id
+                . ' AND ' . self::FIELD_DEADLINE . '<=' . $this->db->quote($due, 'text')
+                . ' AND ' . self::FIELD_MAIL_SENT_RISKYTOFAIL . ' IS NULL'
+                . ')';
+        }
+        $query = $this->getSQLHeader() . ' WHERE ' . implode(' OR ', $where);
+        
+        $res = $this->db->query($query);
+        while ($rec = $this->db->fetchAssoc($res)) {
+            $ret[] = $this->buildByRow($rec);
+        }
+        return $ret;
+    }
+
+    /**
+     * @param array <int, DateTimeImmutable>    $programmes_and_due
+     * @return ilStudyProgrammeProgress[]
+     */
+    public function getAboutToExpire(array $programmes_and_due) : array
+    {
+        $ret = [];
+        if (count($programmes_and_due) == 0) {
+            return $ret;
+        }
+
+        $where = [];
+        foreach ($programmes_and_due as $programme_obj_id => $due) {
+            $due = $due->format(ilStudyProgrammeProgress::DATE_FORMAT);
+            $where[] = '('
+                . self::FIELD_PRG_ID . '=' . $programme_obj_id
+                . ' AND ' . self::FIELD_VQ_DATE . '<=' . $this->db->quote($due, 'text')
+//                . ' AND ' . self::FIELD_MAIL_SENT_WILLEXPIRE . ' IS NULL'
+                . ')';
+        }
+
+        $query = $this->getSQLHeader() . ' WHERE ' . implode(' OR ', $where);
+        
+        $res = $this->db->query($query);
+        while ($rec = $this->db->fetchAssoc($res)) {
+            $ret[] = $this->buildByRow($rec);
+        }
+        return $ret;
+    }
+        
     protected function nextId() : int
     {
         return (int) $this->db->nextId(self::TABLE);

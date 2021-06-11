@@ -6,7 +6,8 @@ declare(strict_types=1);
 
 
 /**
- This will set progresses to FAILED,  if they are past the deadline (and not successful, yet)
+ This will set progresses to FAILED,
+ if they are past the deadline (and not successful, yet)
  */
 class ilPrgUpdateProgressCronJob extends ilCronJob
 {
@@ -78,13 +79,11 @@ class ilPrgUpdateProgressCronJob extends ilCronJob
         $result = new ilCronJobResult();
         foreach ($this->user_progress_db->readPassedDeadline() as $progress) {
             if ($progress->getStatus() === ilStudyProgrammeProgress::STATUS_IN_PROGRESS) {
-                //TODO: this is a detour...
                 $programme = ilObjStudyProgramme::getInstanceByObjId($progress->getNodeId());
                 $programme->markFailed($progress->getId(), self::CRON_USER_ID);
             }
         }
         $result->setStatus(ilCronJobResult::STATUS_OK);
-
         return $result;
     }
 }

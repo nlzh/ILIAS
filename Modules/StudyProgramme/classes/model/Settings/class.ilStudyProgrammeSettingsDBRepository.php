@@ -338,7 +338,7 @@ class ilStudyProgrammeSettingsDBRepository implements ilStudyProgrammeSettingsRe
                 DateTime::createFromFormat(
                     ilStudyProgrammeSettings::DATE_TIME_FORMAT,
                     $row[self::FIELD_VALIDITY_QUALIFICATION_DATE]
-            )
+                )
             );
         } else {
             $qualification_period = (int) $row[self::FIELD_VALIDITY_QUALIFICATION_PERIOD];
@@ -501,5 +501,50 @@ class ilStudyProgrammeSettingsDBRepository implements ilStudyProgrammeSettingsRe
     public static function clearCache()
     {
         self::$cache = [];
+    }
+
+    /**
+     * Programme must be active
+     * and have a setting to send mails if the user is at risk to fail
+     * completing the progress due to a deadline.
+     * @return array <int id, int days_offset>
+     */
+    public function getProgrammeIdsWithRiskyToFailSettings() : array
+    {
+        $query = 'SELECT '
+            . self::FIELD_OBJ_ID . ', '
+            . self::FIELD_PROC_ENDS_NOT_SUCCESSFUL
+            . ' FROM ' . self::TABLE . PHP_EOL
+            . ' WHERE ' . self::FIELD_STATUS . ' = ' . ilStudyProgrammeSettings::STATUS_ACTIVE
+            . ' AND ' . self::FIELD_PROC_ENDS_NOT_SUCCESSFUL . ' IS NOT NULL';
+
+        $return = [];
+        $res = $this->db->query($query);
+        while ($rec = $this->db->fetchAssoc($res)) {
+            $return[$rec[self::FIELD_OBJ_ID]] = $rec[self::FIELD_PROC_ENDS_NOT_SUCCESSFUL];
+        }
+        return $return;
+    }
+
+    /**
+     * Programme must be active
+     * and have a setting to send mails for qualifications about to expire
+     * @return array <int id, int days_offset>
+     */
+    public function getProgrammeIdsWithMailsForExpiringValidity() : array
+    {
+        $query = 'SELECT '
+            . self::FIELD_OBJ_ID . ', '
+            . self::FIELD_RM_NOT_RESTARTED_BY_USER_DAY
+            . ' FROM ' . self::TABLE . PHP_EOL
+            . ' WHERE ' . self::FIELD_STATUS . ' = ' . ilStudyProgrammeSettings::STATUS_ACTIVE
+            . ' AND ' . self::FIELD_RM_NOT_RESTARTED_BY_USER_DAY . ' IS NOT NULL';
+
+        $return = [];
+        $res = $this->db->query($query);
+        while ($rec = $this->db->fetchAssoc($res)) {
+            $return[$rec[self::FIELD_OBJ_ID]] = $rec[self::FIELD_RM_NOT_RESTARTED_BY_USER_DAY];
+        }
+        return $return;
     }
 }

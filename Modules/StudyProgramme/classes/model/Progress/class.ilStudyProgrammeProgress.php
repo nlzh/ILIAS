@@ -77,8 +77,8 @@ class ilStudyProgrammeProgress
      *
      * @var int
      */
-
     protected $usr_id;
+
     /**
      * Amount of points the user needs to achieve in the subnodes to be successful
      * on this node. Also the amount of points a user gets by being successful on this

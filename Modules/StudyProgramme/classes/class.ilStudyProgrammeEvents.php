@@ -93,28 +93,24 @@ class ilStudyProgrammeEvents
         );
     }
 
-    /**
-     * @throws ilException
-     */
-    public function informUserByMailToRestart(ilStudyProgrammeAssignment $assignment) : void
+    public function informUserByMailToRestart(ilStudyProgrammeProgress $progress) : void
     {
         $this->raise(
             'informUserToRestart',
             [
-                "usr_id" => (int) $assignment->getUserId(),
-                "ass_id" => (int) $assignment->getId()
+                "usr_id" => (int) $progress->getUserId(),
+                "ass_id" => (int) $progress->getAssignmentId()
             ]
         );
     }
 
-    public function userRiskyToFail(ilStudyProgrammeProgress $a_progress) : void
+    public function userRiskyToFail(ilStudyProgrammeProgress $progress) : void
     {
-        $ass = $this->assignment_repo->read($a_progress->getAssignmentId());
         $this->raise(
             "userRiskyToFail",
             [
-                "progress_id" => $a_progress->getId(),
-                "usr_id" => $ass->getUserId()
+                "progress_id" => $progress->getId(),
+                "usr_id" => $progress->getUserId()
             ]
         );
     }
