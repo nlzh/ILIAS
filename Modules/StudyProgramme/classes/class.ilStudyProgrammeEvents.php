@@ -99,6 +99,7 @@ class ilStudyProgrammeEvents
             'informUserToRestart',
             [
                 "usr_id" => (int) $progress->getUserId(),
+                "progress_id" => (int) $progress->getId(),
                 "ass_id" => (int) $progress->getAssignmentId()
             ]
         );

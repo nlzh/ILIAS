@@ -304,15 +304,14 @@ class ilStudyProgrammeAppEventListener
         ilObjStudyProgramme::sendReAssignedMail($ref_id, $usr_id);
     }
 
-    /**
-     * @throws ilException
-     */
     private static function sendInformToReAssignMail(array $params) : void
     {
         $usr_id = $params['usr_id'];
-        $assignment_id = $params['ass_id'];
+        //$assignment_id = $params['ass_id'];
+        $progress_id = $params['progress_id'];
 
-        ilObjStudyProgramme::sendInformToReAssignMail($assignment_id, $usr_id);
+        //ilObjStudyProgramme::sendInformToReAssignMail($assignment_id, $usr_id);
+        ilObjStudyProgramme::sendInformToReAssignMail($progress_id, $usr_id);
     }
 
     /**
