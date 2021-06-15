@@ -24,9 +24,8 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
     const FIELD_DEADLINE = 'deadline';
     const FIELD_VQ_DATE = 'vq_date';
     const FIELD_INVALIDATED = 'invalidated';
-    const FIELD_MAIL_SENT_RISKYTOFAIL = 'risky_to_fail_mail_send';
-    //const FIELD_MAIL_SENT_RISKYTOFAIL = 'sent_risky_to_fail_mail';
-    //const FIELD_MAIL_SENT_WILLEXPIRE = 'sent_expire_mail';
+    const FIELD_MAIL_SENT_RISKYTOFAIL = 'sent_mail_risky_to_fail';
+    const FIELD_MAIL_SENT_WILLEXPIRE = 'sent_mail_expires';
     const FIELD_IS_INDIVIDUAL = 'individual';
 
     public function __construct(ilDBInterface $db)
@@ -579,7 +578,7 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
             $where[] = '('
                 . self::FIELD_PRG_ID . '=' . $programme_obj_id
                 . ' AND ' . self::FIELD_VQ_DATE . '<=' . $this->db->quote($due, 'text')
-//                . ' AND ' . self::FIELD_MAIL_SENT_WILLEXPIRE . ' IS NULL'
+                . ' AND ' . self::FIELD_MAIL_SENT_WILLEXPIRE . ' IS NULL'
                 . ')';
         }
 

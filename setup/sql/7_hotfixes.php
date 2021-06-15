@@ -953,4 +953,23 @@ if (!$ilDB->tableColumnExists("prg_usr_progress", "individual")) {
 
     $ilDB->manipulate("UPDATE prg_usr_progress SET individual = 1 WHERE last_change_by IS NOT NULL");
 }
+
+<#50>
+<?php
+$old = "risky_to_fail_mail_send";
+$new = "sent_mail_risky_to_fail";
+$table = "prg_usr_progress";
+if ($ilDB->tableColumnExists($table, $old) && !$ilDB->tableColumnExists($table, $new)) {
+    $ilDB->renameTableColumn($table, $old, $new);
+}
+?>
+
+<#51>
+<?php
+if (!$ilDB->tableColumnExists("prg_usr_progress", "sent_mail_expires")) {
+    $ilDB->addTableColumn("prg_usr_progress", "sent_mail_expires", [
+            "type" => "timestamp",
+            "notnull" => false
+    ]);
+}
 ?>
