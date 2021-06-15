@@ -1949,26 +1949,37 @@ class ilObjStudyProgramme extends ilContainer
     // REFAC - to be properly sorted/resolved
     ////////////////////////////////////
    
-    /**
-     * @throws ilException
-     */
-    public static function sendInformToReAssignMail(int $assignment_id, int $usr_id) : void
+    //public static function sendInformToReAssignMail(int $assignment_id, int $usr_id) : void
+    public static function sendInformToReAssignMail(int $progress_id, int $usr_id) : void
     {
-        $lng = $this->lng;
+        global $DIC;
+        $lng = $DIC['lng'];
+        $log = $DIC['ilLog'];
         $lng->loadLanguageModule("prg");
         $lng->loadLanguageModule("mail");
-        $log = $this->logger;
 
-        $assignment = $this->assignment_repository->getInstanceById($assignment_id);
-        
-        $prg = $this->getRoot();
+        $usr_progress_db = ilStudyProgrammeDIC::dic()['ilStudyProgrammeUserProgressDB'];
+        $usr_progress = $usr_progress_db->read($progress_id);
+        $prg = ilObjStudyProgramme::getInstanceByObjId($usr_progress->getNodeId());
         $prg_should_send_mail = $prg->getSettings()->getAutoMailSettings()
             ->getReminderNotRestartedByUserDays() > 0;
+
         if (!$prg_should_send_mail) {
             $log->write("Send info to re assign mail is deactivated in study programme settings");
             return;
         }
 
+        /*
+                $assignment = $this->assignment_repository->getInstanceById($assignment_id);
+
+                $prg = $this->getRoot();
+                $prg_should_send_mail = $prg->getSettings()->getAutoMailSettings()
+                    ->getReminderNotRestartedByUserDays() > 0;
+                if (!$prg_should_send_mail) {
+                    $log->write("Send info to re assign mail is deactivated in study programme settings");
+                    return;
+                }
+        */
         $subject = $lng->txt("info_to_re_assign_mail_subject");
         $gender = ilObjUser::_lookupGender($usr_id);
         $name = ilObjUser::_lookupFullname($usr_id);
@@ -1995,7 +2006,8 @@ class ilObjStudyProgramme extends ilContainer
         }
 
         if ($send) {
-            $this->assignment_repository->reminderSendFor($assignment->getId());
+//            $this->assignment_repository->reminderSendFor($assignment->getId());
+            $usr_progress_db->sentExpiryInfoFor($usr_progress->getId());
         }
     }
 
@@ -2047,7 +2059,7 @@ class ilObjStudyProgramme extends ilContainer
         }
 
         if ($send) {
-            $usr_progress_db->reminderSendFor($usr_progress->getId());
+            $usr_progress_db->sentRiskyToFailFor($usr_progress->getId());
         }
     }
 

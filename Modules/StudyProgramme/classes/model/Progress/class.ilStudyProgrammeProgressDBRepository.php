@@ -279,7 +279,8 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
         $this->db->manipulate($query);
     }
 
-    public function reminderSendFor(int $progress_id) : void
+    //public function reminderSendFor(int $progress_id) : void
+    public function sentRiskyToFailFor(int $progress_id) : void
     {
         $where = [
             self::FIELD_ID => [
@@ -297,6 +298,27 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
 
         $this->db->update(self::TABLE, $values, $where);
     }
+
+    public function sentExpiryInfoFor(int $progress_id) : void
+    {
+        $where = [
+            self::FIELD_ID => [
+                'integer',
+                $progress_id
+            ]
+        ];
+
+        $values = [
+            self::FIELD_MAIL_SENT_WILLEXPIRE => [
+                'timestamp',
+                date('Y-m-d H:i:s')
+            ]
+        ];
+
+        $this->db->update(self::TABLE, $values, $where);
+    }
+
+
 
     protected function updateRowDB(array $data)
     {
