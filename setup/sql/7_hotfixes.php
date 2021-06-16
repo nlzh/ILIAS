@@ -953,6 +953,7 @@ if (!$ilDB->tableColumnExists("prg_usr_progress", "individual")) {
 
     $ilDB->manipulate("UPDATE prg_usr_progress SET individual = 1 WHERE last_change_by IS NOT NULL");
 }
+?>
 
 <#50>
 <?php
