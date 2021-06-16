@@ -261,6 +261,10 @@ class ilStudyProgrammeDIC
             return ilLoggerFactory::getLogger('prg');
         };
 
+        $dic['current_user'] = function ($dic) use ($DIC) {
+            return $DIC['ilUser'];
+        };
+        
         return $dic;
     }
 }

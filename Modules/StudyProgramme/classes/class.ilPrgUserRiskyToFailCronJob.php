@@ -118,7 +118,7 @@ class ilPrgUserRiskyToFailCronJob extends ilCronJob
     public function run()
     {
         $result = new ilCronJobResult();
-        $result->setStatus(ilCronJobResult::STATUS_OK);
+        $result->setStatus(ilCronJobResult::STATUS_NO_ACTION);
 
         $programmes_to_send = $this->getSettingsRepository()
             ->getProgrammeIdsWithRiskyToFailSettings();
@@ -154,6 +154,7 @@ class ilPrgUserRiskyToFailCronJob extends ilCronJob
             );
             $events->userRiskyToFail($progress);
         }
+        $result->setStatus(ilCronJobResult::STATUS_OK);
         return $result;
     }
 

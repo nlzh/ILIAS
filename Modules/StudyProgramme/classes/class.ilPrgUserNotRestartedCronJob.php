@@ -125,7 +125,7 @@ class ilPrgUserNotRestartedCronJob extends ilCronJob
     public function run()
     {
         $result = new ilCronJobResult();
-        $result->setStatus(ilCronJobResult::STATUS_OK);
+        $result->setStatus(ilCronJobResult::STATUS_NO_ACTION);
 
         $programmes_to_send = $this->getSettingsRepository()
             ->getProgrammeIdsWithMailsForExpiringValidity();
@@ -163,6 +163,7 @@ class ilPrgUserNotRestartedCronJob extends ilCronJob
 
             $events->informUserByMailToRestart($progress);
         }
+        $result->setStatus(ilCronJobResult::STATUS_OK);
         return $result;
     }
 
