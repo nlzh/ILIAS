@@ -1056,7 +1056,7 @@ class ilObjStudyProgramme extends ilContainer
      *
      * @throws ilException
      */
-    public function assignUser(int $a_usr_id, int $a_assigning_usr_id = null) : ilStudyProgrammeAssignment
+    public function assignUser(int $usr_id, int $acting_usr_id = null) : ilStudyProgrammeAssignment
     {
         $this->members_cache = null;
 
@@ -1067,23 +1067,28 @@ class ilObjStudyProgramme extends ilContainer
             );
         }
 
-        if ($a_assigning_usr_id === null) {
-            $a_assigning_usr_id = $this->ilUser->getId();
+        if (is_null($acting_usr_id)) {
+            $acting_usr_id = $this->getLoggedInUserId();
         }
 
-        $ass = $this->assignment_repository->createFor($this->getId(), $a_usr_id, $a_assigning_usr_id);
+        $ass = $this->assignment_repository->createFor($this->getId(), $usr_id, $acting_usr_id);
 
         $this->applyToSubTreeNodes(
-            function (ilObjStudyProgramme $node) use ($ass, $a_assigning_usr_id) {
-                $progress = $node->createProgressForAssignment($ass, $a_assigning_usr_id);
-                if ($node->getStatus() != ilStudyProgrammeSettings::STATUS_ACTIVE) {
+            function (ilObjStudyProgramme $node) use ($ass, $acting_usr_id) {
+                $progress = $node->createProgressForAssignment($ass, $acting_usr_id);
+                $progress = $this->updateProgressValidityFromSettings($progress);
+                $progress = $this->updateProgressDeadlineFromSettings($progress);
+                $progress = $progress->withAmountOfPoints($node->getPoints());
+                $progress = $progress
+                    ->withLastChange($acting_usr_id, $this->getNow())
+                    ->withIndividualModifications(false);
+                
+                if ($node->getStatus() !== ilStudyProgrammeSettings::STATUS_ACTIVE) {
                     $progress = $progress->withStatus(ilStudyProgrammeProgress::STATUS_NOT_RELEVANT);
                     $this->progress_repository->update($progress);
-                } else {
-                    $progress_id = $progress->getId();
-                    $acting_usr_id = (int) $a_assigning_usr_id;
-                    $progress = $node->updateProgressFromSettings($progress_id, $acting_usr_id);
                 }
+    
+                $this->getProgressRepository()->update($progress);
             },
             true
         );
