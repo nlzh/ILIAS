@@ -645,11 +645,11 @@ interface Factory
      * ---
      * description:
      *   purpose: >
-     *      Link fields are used to enter URLs in conjunction with further information, such as a label.
+     *      Link fields are used to enter URLs in conjunction with further a label.
      *   composition: >
      *      Link fields are groups of Text and Url fields.
      *   effect: >
-     *      Two text inputs are rendered, of which the first will accept all kind of text
+     *      Two Text inputs are rendered, of which the first one will accept all kinds of text
      *      while the second one will be restricted to URLs.
      *   rivals:
      *      Url field: use a Url field input if users should input a URL only (without a label or similar)
@@ -659,7 +659,8 @@ interface Factory
      *
      * rules:
      *   usage:
-     *      1: The URL input field MUST be used if a URL is to be entered with interrelated information
+     *      1: >
+     *        The URL input field MUST be used if a URL is to be entered with an assigned label
      *
      * ---
      * @param string $label

@@ -49,14 +49,15 @@ class UrlInputTest extends ILIAS_UI_TestBase
         $renderer = $this->getDefaultRenderer();
         $label = "Test Label";
         $byline = "Test Byline";
+        $id = "id_1";
         $name = "name_0";
         $url = $factory->url($label, $byline)->withNameFrom($this->name_source);
         $html = $this->normalizeHTML($renderer->render($url));
 
         $expected = "<div class=\"form-group row\">
-                        <label for=\"$name\" class=\"control-label col-sm-3\">$label</label>
+                        <label for=\"$id\" class=\"control-label col-sm-3\">$label</label>
                         <div class=\"col-sm-9\">
-                            <input type=\"url\" name=\"$name\" class=\"form-control form-control-sm\" />
+                            <input id=\"$id\" type=\"url\" name=\"$name\" class=\"form-control form-control-sm\" />
                             <div class=\"help-block\">$byline</div>
                         </div>
                     </div>";
@@ -72,6 +73,7 @@ class UrlInputTest extends ILIAS_UI_TestBase
         $renderer = $this->getDefaultRenderer();
         $label = "Test Label";
         $byline = "Test Byline";
+        $id = "id_1";
         $name = "name_0";
         $error = "test_error";
         $url = $factory->url($label, $byline)->withNameFrom($this->name_source)
@@ -79,13 +81,14 @@ class UrlInputTest extends ILIAS_UI_TestBase
         $html = $this->normalizeHTML($renderer->render($url));
 
         $expected = "<div class=\"form-group row\">
-                        <label for=\"$name\" class=\"control-label col-sm-3\">$label</label>
+                        <label for=\"$id\" class=\"control-label col-sm-3\">$label</label>
                         <div class=\"col-sm-9\">
-                            <input type=\"url\" name=\"$name\" class=\"form-control form-control-sm\" />
+                            <div class=\"help-block alert alert-danger\" role=\"alert\">$error</div>
+                            <input id=\"$id\" type=\"url\" name=\"$name\" class=\"form-control form-control-sm\" />
                             <div class=\"help-block\">$byline</div>
-                            <div class=\"help-block alert alert-danger\" role=\"alert\"><img border=\"0\" src=\"./templates/default/images/icon_alert.svg\" alt=\"alert\" />$error</div>
                         </div>
                     </div>";
+
         $this->assertEquals(
             $this->brutallyTrimHTML($expected),
             $this->brutallyTrimHTML($html)
@@ -97,14 +100,15 @@ class UrlInputTest extends ILIAS_UI_TestBase
         $factory = $this->buildFactory();
         $renderer = $this->getDefaultRenderer();
         $label = "Test Label";
+        $id = "id_1";
         $name = "name_0";
         $url = $factory->url($label)->withNameFrom($this->name_source);
         $html = $this->normalizeHTML($renderer->render($url));
 
         $expected = "<div class=\"form-group row\">
-                        <label for=\"$name\" class=\"control-label col-sm-3\">$label</label>
+                        <label for=\"$id\" class=\"control-label col-sm-3\">$label</label>
                         <div class=\"col-sm-9\">
-                            <input type=\"url\" name=\"$name\" class=\"form-control form-control-sm\" />
+                            <input id=\"$id\" type=\"url\" name=\"$name\" class=\"form-control form-control-sm\" />
                         </div>
                     </div>";
         $this->assertEquals(
@@ -119,15 +123,16 @@ class UrlInputTest extends ILIAS_UI_TestBase
         $renderer = $this->getDefaultRenderer();
         $label = "Test Label";
         $value = "https://www.ilias.de/";
+        $id = "id_1";
         $name = "name_0";
         $url = $factory->url($label)->withValue($value)
             ->withNameFrom($this->name_source);
         $html = $this->normalizeHTML($renderer->render($url));
 
         $expected = "<div class=\"form-group row\">
-                        <label for=\"$name\" class=\"control-label col-sm-3\">$label</label>
+                        <label for=\"$id\" class=\"control-label col-sm-3\">$label</label>
                         <div class=\"col-sm-9\">
-                           <input type=\"url\" value=\"$value\" name=\"$name\" class=\"form-control form-control-sm\" />
+                           <input id=\"$id\" type=\"url\" value=\"$value\" name=\"$name\" class=\"form-control form-control-sm\" />
                         </div>
                      </div>";
         $this->assertEquals(
@@ -141,15 +146,16 @@ class UrlInputTest extends ILIAS_UI_TestBase
         $factory = $this->buildFactory();
         $renderer = $this->getDefaultRenderer();
         $label = "Test Label";
+        $id = "id_1";
         $name = "name_0";
         $url = $factory->url($label)->withNameFrom($this->name_source)
             ->withRequired(true);
         $html = $this->normalizeHTML($renderer->render($url));
 
         $expected = "<div class=\"form-group row\">
-                        <label for=\"$name\" class=\"control-label col-sm-3\">$label<span class=\"asterisk\">*</span></label>
+                        <label for=\"$id\" class=\"control-label col-sm-3\">$label<span class=\"asterisk\">*</span></label>
                         <div class=\"col-sm-9\">
-                            <input type=\"url\" name=\"$name\" class=\"form-control form-control-sm\" />
+                            <input id=\"$id\" type=\"url\" name=\"$name\" class=\"form-control form-control-sm\" />
                         </div>
                     </div>";
         $this->assertEquals(
@@ -163,15 +169,16 @@ class UrlInputTest extends ILIAS_UI_TestBase
         $factory = $this->buildFactory();
         $renderer = $this->getDefaultRenderer();
         $label = "Test Label";
+        $id = "id_1";
         $name = "name_0";
         $url = $factory->url($label)->withNameFrom($this->name_source)
             ->withDisabled(true);
         $html = $this->normalizeHTML($renderer->render($url));
 
         $expected = "<div class=\"form-group row\">
-                        <label for=\"$name\" class=\"control-label col-sm-3\">$label</label>
+                        <label for=\"$id\" class=\"control-label col-sm-3\">$label</label>
                         <div class=\"col-sm-9\">
-                            <input type=\"url\" name=\"$name\" disabled=\"disabled\" class=\"form-control form-control-sm\" />
+                            <input id=\"$id\" type=\"url\" name=\"$name\" disabled=\"disabled\" class=\"form-control form-control-sm\" />
                         </div>
                     </div>";
 

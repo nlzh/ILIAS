@@ -23,12 +23,13 @@ class Link extends Group implements C\Input\Field\Link
         string $byline
     ) {
         $inputs = [
-            $field_factory->text('label'),
-            $field_factory->url('url')
+            $field_factory->text($lng->txt('ui_link_label')),
+            $field_factory->url($lng->txt('ui_link_url'))
         ];
 
         parent::__construct($data_factory, $refinery, $lng, $inputs, $label, $byline);
         $this->addValidation();
+        $this->addTransformation();
     }
 
     protected function addValidation()
@@ -52,6 +53,17 @@ class Link extends Group implements C\Input\Field\Link
 
         $label_is_set_for_url = $this->refinery->custom()->constraint($is_ok, $error);
         $this->setAdditionalTransformation($label_is_set_for_url);
+    }
+
+
+    protected function addTransformation()
+    {
+        $trafo = $this->refinery->custom()->transformation(function ($v) {
+            list($label, $url) = $v;
+            return $this->data_factory->link($label, $url);
+        });
+
+        $this->setAdditionalTransformation($trafo);
     }
 
     /**
