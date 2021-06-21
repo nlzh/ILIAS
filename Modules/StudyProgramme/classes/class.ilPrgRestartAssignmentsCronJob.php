@@ -4,6 +4,7 @@
 /* Copyright (c) 2019 Stefan Hecken <stefan.hecken@concepts-and-training.de> Extended GPL, see docs/LICENSE */
 
 declare(strict_types=1);
+
 /**
  Re-assign users (according to restart-date).
  This will result in a new/additional assignment
@@ -114,7 +115,7 @@ class ilPrgRestartAssignmentsCronJob extends ilCronJob
     public function run()
     {
         $result = new ilCronJobResult();
-        $result->setStatus(ilCronJobResult::STATUS_OK);
+        $result->setStatus(ilCronJobResult::STATUS_NO_ACTION);
 
         foreach ($this->user_assignments_db->getDueToRestartInstances() as $assignment) {
             try {
@@ -129,8 +130,10 @@ class ilPrgRestartAssignmentsCronJob extends ilCronJob
                 $this->events->userReAssigned($restarted);
             } catch (ilException $e) {
                 $this->log->write('an error occured: ' . $e->getMessage());
+                $result->setStatus(ilCronJobResult::STATUS_CRASHED);
             }
         }
+        $result->setStatus(ilCronJobResult::STATUS_OK);
         return $result;
     }
 }

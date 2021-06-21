@@ -14,6 +14,7 @@
  *
  * @author: Richard Klees <richard.klees@concepts-and-training.de>
  * @author: Denis Klöpfer <richard.klees@concepts-and-training.de>
+ * @author: Nils Haagen <nils.haagen@concepts-and-training.de>
  */
 
 class ilStudyProgrammeProgress
@@ -136,7 +137,7 @@ class ilStudyProgrammeProgress
     protected $assignment_date;
 
     /**
-     * Date of asssignment
+     * Date of completion
      *
      * @var \DateTimeImmutable
      */

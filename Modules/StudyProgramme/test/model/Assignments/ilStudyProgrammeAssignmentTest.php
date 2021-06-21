@@ -38,10 +38,10 @@ class ilStudyProgrammeAssignmentTest extends \PHPUnit\Framework\TestCase
     {
         $spa = (new ilStudyProgrammeAssignment(123))->withLastChange(
             6,
-            $dl = new DateTimeImmutable()
+            $now = new DateTimeImmutable()
         );
         $this->assertEquals($spa->getLastChangeBy(), 6);
-        $this->assertEquals($spa->getLastChange()->format('Y-m-d H:i:s'), $dl->format('Y-m-d H:i:s'));
+        $this->assertEquals($spa->getLastChange()->format('Y-m-d H:i:s'), $now->format('Y-m-d H:i:s'));
     }
 
 

@@ -2264,12 +2264,16 @@ class ilObjStudyProgramme extends ilContainer
         $progress = $this->getProgressRepository()->read($progress_id);
         $new_status = $progress::STATUS_ACCREDITED;
 
-        if (!$progress->isTransitionAllowedTo($new_status)) {
-            $err_collection->add(false, 'status_transition_not_allowed', $this->getProgressIdString($progress));
-            return;
-        }
         if (!$progress->isRelevant()) {
             $err_collection->add(false, 'will_not_modify_irrelevant_progress', $this->getProgressIdString($progress));
+            return;
+        }
+        if ($progress->getStatus() === $new_status) {
+            $err_collection->add(false, 'status_unchanged', $this->getProgressIdString($progress));
+            return;
+        }
+        if (!$progress->isTransitionAllowedTo($new_status)) {
+            $err_collection->add(false, 'status_transition_not_allowed', $this->getProgressIdString($progress));
             return;
         }
 
@@ -2297,12 +2301,16 @@ class ilObjStudyProgramme extends ilContainer
         $progress = $this->getProgressRepository()->read($progress_id);
         $new_status = $progress::STATUS_IN_PROGRESS;
 
-        if (!$progress->isTransitionAllowedTo($new_status)) {
-            $err_collection->add(false, 'status_transition_not_allowed', $this->getProgressIdString($progress));
-            return;
-        }
         if (!$progress->isRelevant()) {
             $err_collection->add(false, 'will_not_modify_irrelevant_progress', $this->getProgressIdString($progress));
+            return;
+        }
+        if ($progress->getStatus() === $new_status) {
+            $err_collection->add(false, 'status_unchanged', $this->getProgressIdString($progress));
+            return;
+        }
+        if (!$progress->isTransitionAllowedTo($new_status)) {
+            $err_collection->add(false, 'status_transition_not_allowed', $this->getProgressIdString($progress));
             return;
         }
 
@@ -2322,6 +2330,9 @@ class ilObjStudyProgramme extends ilContainer
 
     public function markFailed(int $progress_id, int $acting_usr_id) : void
     {
+        if (!$progress->isRelevant()) {
+            return;
+        }
         $progress = $this->getProgressRepository()->read($progress_id)
             ->markFailed($this->getNow(), $acting_usr_id);
 
@@ -2332,6 +2343,9 @@ class ilObjStudyProgramme extends ilContainer
 
     public function markNotFailed(int $progress_id, int $acting_usr_id) : void
     {
+        if (!$progress->isRelevant()) {
+            return;
+        }
         $progress = $this->getProgressRepository()->read($progress_id)
             ->markNotFailed($this->getNow(), $acting_usr_id);
 
@@ -2346,12 +2360,6 @@ class ilObjStudyProgramme extends ilContainer
         ilPRGMessageCollection $err_collection
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
-        $new_status = $progress::STATUS_NOT_RELEVANT;
-
-        if (!$progress->isTransitionAllowedTo($new_status)) {
-            $err_collection->add(false, 'status_transition_not_allowed', $this->getProgressIdString($progress));
-            return;
-        }
         if (!$progress->isRelevant()) {
             $err_collection->add(false, 'will_not_modify_irrelevant_progress', $this->getProgressIdString($progress));
             return;
@@ -2363,7 +2371,7 @@ class ilObjStudyProgramme extends ilContainer
         $this->getProgressRepository()->update($progress);
         $this->refreshLPStatus($progress->getUserId());
         $this->updateParentProgress($progress);
-        $err_collection->add(true, 'status_changed', $this->getProgressIdString($progress));
+        $err_collection->add(true, 'set_to_irrelevant', $this->getProgressIdString($progress));
     }
 
     public function markRelevant(
@@ -2372,10 +2380,8 @@ class ilObjStudyProgramme extends ilContainer
         ilPRGMessageCollection $err_collection
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
-        $new_status = $progress::STATUS_IN_PROGRESS;
-        
-        if (!$progress->isTransitionAllowedTo($new_status)) {
-            $err_collection->add(false, 'status_transition_not_allowed', $this->getProgressIdString($progress));
+        if ($progress->isRelevant()) {
+            $err_collection->add(false, 'will_not_modify_relevant_progress', $this->getProgressIdString($progress));
             return;
         }
 
@@ -2387,7 +2393,7 @@ class ilObjStudyProgramme extends ilContainer
         $this->getProgressRepository()->update($progress);
         $this->refreshLPStatus($progress->getUserId());
         $this->updateParentProgress($progress);
-        $err_collection->add(true, 'status_changed', $this->getProgressIdString($progress));
+        $err_collection->add(true, 'set_to_relevant', $this->getProgressIdString($progress));
     }
 
     public function invalidate(int $progress_id) : void

@@ -38,22 +38,22 @@ class ilStudyProgrammeAssignment
     protected $root_prg_id;
 
     /**
-     * @var int
+     * @var DateTimeImmutable | null
      */
     protected $last_change;
 
     /**
-     * @var int
+     * @var int | null
      */
     protected $last_change_by;
 
     /**
-     * @var DateTime | null
+     * @var DateTimeImmutable | null
      */
     protected $restart_date;
 
     /**
-     * @var int
+     * @var int | null
      */
     protected $restarted_asssignment_id = self::NO_RESTARTED_ASSIGNMENT;
 
@@ -97,18 +97,33 @@ class ilStudyProgrammeAssignment
         return $this->last_change_by;
     }
 
-    public function getLastChange() : DateTimeImmutable
+    public function getLastChange() : ?DateTimeImmutable
     {
-        return DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, $this->last_change);
+        if ($this->last_change) {
+            return DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, $this->last_change);
+        }
+        return $this->last_change;
     }
 
+    /**
+     * @throws ilException if new date is earlier than the existing one
+     */
     public function withLastChange(
         int $last_change_by,
-        DateTimeImmutable $last_change
+        DateTimeImmutable $timestamp
     ) : ilStudyProgrammeAssignment {
+        $new_date = $timestamp->format(self::DATE_TIME_FORMAT);
+        if ($this->getLastChange() && $this->getLastChange()->format(self::DATE_TIME_FORMAT) > $new_date) {
+            throw new ilException(
+                "Cannot set last change to an earlier date:"
+                . "\ncurrent: " . $this->getLastChange()->format(self::DATE_TIME_FORMAT)
+                . "\nnew: " . $new_date,
+                1
+            );
+        }
         $clone = clone $this;
+        $clone->last_change = $new_date;
         $clone->last_change_by = $last_change_by;
-        $clone->last_change = $last_change->format(self::DATE_TIME_FORMAT);
         return $clone;
     }
 

@@ -21,3 +21,13 @@ is quite implicit and might be amended by a catamorphic "requestFromSubTreeNodes
 # Construction of ilStudyProgrammeAssignment and ilStudyProgrammeProgress
 * "Correctness by Construction": The properies should go in the constructor of
 the classes; maybe we can also get rid of one or the other mutator?
+
+# Assignment/Progress
+There are properties on assignment/progress, that look like misconceptions and should move.
+Careful: This also means migrating!
+* Deadline and validity or qualification both belong to Assignment (not Progress)
+* Relevant/Irrelevant is not a status, but a separate flag.
+* "Completion of Assignment/Qualification" means: progress at root-ode is successful.
+* "Individual" rather belongs to Assignemnt and says: there are modifications to progresses
+in terms of points or relevance. This is not a static flag but a result of querying progresses.
+

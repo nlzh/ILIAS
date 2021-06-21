@@ -89,9 +89,9 @@ class ilStudyProgrammeCronAboutToExpireTest extends \PHPUnit\Framework\TestCase
         $progress_3 = (new ilStudyProgrammeProgress(3))->withUserId(33)->withNodeId(71)->withAssignmentId(63);
   
         $expected_events = [
-            ['informUserToRestart', ["usr_id" => 11, "ass_id" => 61]],
-            ['informUserToRestart', ["usr_id" => 22, "ass_id" => 62]],
-            ['informUserToRestart', ["usr_id" => 33, "ass_id" => 63]]
+            ['informUserToRestart', ["usr_id" => 11, "ass_id" => 61, 'progress_id' => 1]],
+            ['informUserToRestart', ["usr_id" => 22, "ass_id" => 62, 'progress_id' => 2]],
+            ['informUserToRestart', ["usr_id" => 33, "ass_id" => 63, 'progress_id' => 3]]
         ];
   
         $this->progress_repo

@@ -2,6 +2,11 @@
 
 class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
 {
+    protected function getUserIdAndNow() : array
+    {
+        return [6, new DateTimeImmutable()];
+    }
+
     public function test_init_and_id()
     {
         $spp = new ilStudyProgrammeProgress(123);
@@ -66,7 +71,7 @@ class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
     public function status()
     {
         return [
-            //status, successful
+            //status, count as 'successful'
             [ilStudyProgrammeProgress::STATUS_IN_PROGRESS, false],
             [ilStudyProgrammeProgress::STATUS_COMPLETED, true],
             [ilStudyProgrammeProgress::STATUS_ACCREDITED, true],
@@ -93,19 +98,15 @@ class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
         $spp = (new ilStudyProgrammeProgress(123))->withStatus(321);
     }
 
-
-
     /**
      * @depends test_init_and_id
      */
     public function testWithLastChange() : void
     {
-        $spa = (new ilStudyProgrammeProgress(123))->withLastChange(
-            6,
-            $dl = new DateTimeImmutable()
-        );
-        $this->assertEquals($spa->getLastChangeBy(), 6);
-        $this->assertEquals($spa->getLastChange()->format('Y-m-d H:i:s'), $dl->format('Y-m-d H:i:s'));
+        list($acting_usr, $now) = $this->getUserIdAndNow();
+        $spp = (new ilStudyProgrammeProgress(123))->withLastChange($acting_usr, $now);
+        $this->assertEquals($spp->getLastChangeBy(), $acting_usr);
+        $this->assertEquals($spp->getLastChange()->format('Y-m-d H:i:s'), $now->format('Y-m-d H:i:s'));
     }
 
     /**
@@ -123,10 +124,10 @@ class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
      */
     public function test_completion()
     {
-        $usr_id = 6;
-        $cd = new DateTimeImmutable();
-        $spp = (new ilStudyProgrammeProgress(123))->withCompletion($usr_id, $cd);
-        $this->assertEquals($cd->format('Y-m-d'), $spp->getCompletionDate()->format('Y-m-d'));
+        list($acting_usr, $now) = $this->getUserIdAndNow();
+
+        $spp = (new ilStudyProgrammeProgress(123))->withCompletion($usr_id, $now);
+        $this->assertEquals($now->format('Y-m-d'), $spp->getCompletionDate()->format('Y-m-d'));
         $this->assertEquals($usr_id, $spp->getCompletionBy());
 
         $spp = (new ilStudyProgrammeProgress(123))->withCompletion(null, null);
@@ -287,8 +288,7 @@ class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
 
     public function testMarkNotFailed()
     {
-        $usr = 6;
-        $now = new DateTimeImmutable();
+        list($usr, $now) = $this->getUserIdAndNow();
         $spp = (new ilStudyProgrammeProgress(123))
             ->markNotFailed($now, $usr);
 
@@ -345,7 +345,6 @@ class ilStudyProgrammeProgressTest extends \PHPUnit\Framework\TestCase
             $spp->getStatus()
         );
     }
-
 
     public function testSucceed()
     {
