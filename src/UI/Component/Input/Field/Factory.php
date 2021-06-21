@@ -645,7 +645,7 @@ interface Factory
      * ---
      * description:
      *   purpose: >
-     *      Link fields are used to enter URLs in conjunction with further a label.
+     *      Link fields are used to enter URLs in conjunction with a label.
      *   composition: >
      *      Link fields are groups of Text and Url fields.
      *   effect: >
