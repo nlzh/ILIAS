@@ -518,6 +518,9 @@ class ilObjStudyProgramme extends ilContainer
         return $ret;
     }
 
+
+
+
     /**
      * Get all ilObjStudyProgrammes that are direct children of this
      * object.
@@ -1085,7 +1088,6 @@ class ilObjStudyProgramme extends ilContainer
                 
                 if ($node->getStatus() !== ilStudyProgrammeSettings::STATUS_ACTIVE) {
                     $progress = $progress->withStatus(ilStudyProgrammeProgress::STATUS_NOT_RELEVANT);
-                    $this->progress_repository->update($progress);
                 }
     
                 $this->getProgressRepository()->update($progress);
@@ -1260,9 +1262,9 @@ class ilObjStudyProgramme extends ilContainer
         return $this->progress_repository->readByPrgIdAndUserId($this->getId(), $a_user_id);
     }
 
-    public function getProgressForAssignment(int $a_assignment_id) : ?ilStudyProgrammeProgress
+    public function getProgressForAssignment(int $assignment_id) : ?ilStudyProgrammeProgress
     {
-        return $this->progress_repository->readByPrgIdAndAssignmentId($this->getId(), $a_assignment_id);
+        return $this->progress_repository->readByPrgIdAndAssignmentId($this->getId(), $assignment_id);
     }
 
     /**
@@ -2104,16 +2106,33 @@ class ilObjStudyProgramme extends ilContainer
         return $this->settings_repository->read($progress->getNodeId());
     }
 
+
+    protected function getObjIdsOfChildren(int $node_obj_id) : array
+    {
+        //TODO: optionally include references
+        $node_ref_id = self::getRefIdFor($node_obj_id);
+        $node_data = $this->tree->getChildsByType($node_ref_id, "prg");
+        return array_map(
+            function ($nd) {
+                return (int) $nd['obj_id'];
+            },
+            $node_data
+        );
+    }
+
     /**
      * @return ilStudyProgrammeProgress[]
      */
     public function getChildrenProgress($progress) : array
     {
-        //TODO: references ?
+        $children = $this->getObjIdsOfChildren($progress->getNodeId());
         $ass_id = $progress->getAssignmentId();
-        return array_map(function ($child) use ($ass_id) {
-            return $child->getProgressForAssignment($ass_id);
-        }, $this->getChildren(true));
+
+        $ret = [];
+        foreach ($children as $child_obj_id) {
+            $ret[] = $this->getProgressRepository()->readByPrgIdAndAssignmentId($child_obj_id, $ass_id);
+        }
+        return $ret;
     }
     
     protected function getParentProgress(ilStudyProgrammeProgress $progress) : ?ilStudyProgrammeProgress
@@ -2133,6 +2152,7 @@ class ilObjStudyProgramme extends ilContainer
         return $parent_progress;
     }
 
+
     public function getPossiblePointsOfRelevantChildren(ilStudyProgrammeProgress $progress) : int
     {
         $sum = 0;
@@ -2147,7 +2167,8 @@ class ilObjStudyProgramme extends ilContainer
     public function getAchievedPointsOfChildren(ilStudyProgrammeProgress $progress) : int
     {
         $sum = 0;
-        foreach ($this->getChildrenProgress($progress) as $child_progress) {
+        $children = $this->getChildrenProgress($progress);
+        foreach ($children as $child_progress) {
             if (!is_null($child_progress) && $child_progress->isSuccessful()) {
                 $sum += $child_progress->getAmountOfPoints();
             }
@@ -2175,15 +2196,13 @@ class ilObjStudyProgramme extends ilContainer
 
     protected function updateParentProgress(ilStudyProgrammeProgress $progress) : ilStudyProgrammeProgress
     {
-        if ($parent_progress = $this->getParentProgress($progress)) {
-            $this->getProgressRepository()->update(
-                $this->recalculateProgressStatus($parent_progress)
-            );
-
-            return $this->updateParentProgress($parent_progress); //recurse
-        } else {
-            return $progress; //this is root
+        $parent_progress = $this->getParentProgress($progress);
+        if (is_null($parent_progress)) {
+            return $progress;
         }
+        $parent_progress = $this->recalculateProgressStatus($parent_progress);
+        $this->getProgressRepository()->update($parent_progress);
+        return $this->updateParentProgress($parent_progress); //recurse
     }
 
     protected function recalculateProgressStatus(ilStudyProgrammeProgress $progress) : ilStudyProgrammeProgress
@@ -2200,18 +2219,19 @@ class ilObjStudyProgramme extends ilContainer
         if ($completion_mode === ilStudyProgrammeSettings::MODE_LP_COMPLETED) {
             return $progress;
         }
+
         //from here: $completion_mode === ilStudyProgrammeSettings::MODE_POINTS
 
         $possible_points = $this->getPossiblePointsOfRelevantChildren($progress);
         $achieved_points = $this->getAchievedPointsOfChildren($progress);
-        $all_children_successful = $this->getAreAllChildrenSuccessfull($progress);
+        
+        $progress = $progress->withCurrentAmountOfPoints($achieved_points);
+
         $successful = (
             $achieved_points >= $possible_points
             || $achieved_points >= $progress->getAmountOfPoints()
-            || $all_children_successful
+            || $this->getAreAllChildrenSuccessfull($progress)
         );
-
-        $progress = $progress->withCurrentAmountOfPoints($achieved_points);
         if ($successful && !$progress->isSuccessful()) {
             $progress = $progress
                 ->withStatus(ilStudyProgrammeProgress::STATUS_COMPLETED)
@@ -2227,7 +2247,6 @@ class ilObjStudyProgramme extends ilContainer
                 ->withCompletion(null, null)
                 ->withValidityOfQualification(null);
         }
-
         return $progress;
     }
 
@@ -2418,8 +2437,8 @@ class ilObjStudyProgramme extends ilContainer
                 
         $achieved_points = $progress->getAmountOfPoints();
         $progress = $progress->withCurrentAmountOfPoints($achieved_points);
-
         $this->getProgressRepository()->update($progress);
+
         $this->refreshLPStatus($progress->getUserId());
         $this->updateParentProgress($progress);
     }
