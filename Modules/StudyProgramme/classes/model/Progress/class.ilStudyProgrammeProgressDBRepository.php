@@ -113,6 +113,21 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
         }
     }
 
+    public function readRootProgressOf(ilStudyProgrammeAssignment $assignment) : ilStudyProgrammeProgress
+    {
+        $rows = $this->loadByFilter(
+            [
+                self::FIELD_PRG_ID => $assignment->getRootId(),
+                self::FIELD_ASSIGNMENT_ID => $assignment->getId(),
+                self::FIELD_USR_ID => $assignment->getUserId()
+            ]
+        );
+
+        foreach ($rows as $row) {
+            return $this->buildByRow($row);
+        }
+    }
+
     /**
      * @inheritdoc
      *

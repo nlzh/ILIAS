@@ -472,7 +472,7 @@ class ilStudyProgrammeProgress
     
     /**
      * There may be no qualification at all (since the PRG is not passed),
-     * or the qualifivation is valid or invalid due to a date.
+     * or the qualification is valid or invalid due to a date.
      */
     public function hasValidQualification(DateTimeImmutable $now) : ?bool
     {
@@ -499,7 +499,12 @@ class ilStudyProgrammeProgress
     {
         return $this->getStatus() == self::STATUS_ACCREDITED;
     }
+    public function isInProgress() : bool
+    {
+        return $this->getStatus() == self::STATUS_IN_PROGRESS;
+    }
     
+
     public function invalidate() : ilStudyProgrammeProgress
     {
         if (!$this->vq_date || $this->vq_date->format('Y-m-d') > date('Y-m-d')) {
