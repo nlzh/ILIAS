@@ -317,7 +317,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
         $edit_individual_plan = $parent->isOperationAllowedForUser(
             $usr_id,
-            ilOrgUnitOperation::OP_VIEW_INDIVIDUAL_PLAN
+            ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN
         );
 
 
@@ -330,7 +330,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
                     }
                     break;
                 case ilObjStudyProgrammeMembersGUI::ACTION_SHOW_INDIVIDUAL_PLAN:
-                    if (!$view_individual_plan) {
+                    if (!$view_individual_plan && !$edit_individual_plan) {
                         continue 2;
                     }
                     break;
@@ -617,6 +617,9 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
             $perms['markAccreditedMulti'] = $this->lng->txt('prg_multi_mark_accredited');
             $perms['unmarkAccreditedMulti'] = $this->lng->txt('prg_multi_unmark_accredited');
         }
+
+        //TODO: manage_members is always false?
+        //$manage_members = true;
 
         if ($manage_members) {
             $perms['removeUserMulti'] = $this->lng->txt('prg_multi_remove_user');
