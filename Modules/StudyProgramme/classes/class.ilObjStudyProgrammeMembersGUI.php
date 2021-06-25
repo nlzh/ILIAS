@@ -580,8 +580,14 @@ class ilObjStudyProgrammeMembersGUI
             $prgrs = $this->getProgressObject((int) $prgrs_id);
             $ass = $this->sp_user_assignment_db->read($prgrs->getAssignmentId());
             $prg_ref_id = ilObjStudyProgramme::getRefIdFor($ass->getRootId());
+            
             if ($prg_ref_id != $this->ref_id) {
                 $msgs->add(false, 'progress_does_not_belong_to_prg', (string) $prgrs_id);
+                continue;
+            }
+            
+            if (!$this->mayCurrentUserEditProgress($prgrs_id)) {
+                $msgs->add(false, 'no_permission_to_update_plan_of_user', (string) $prgrs_id);
                 continue;
             }
             

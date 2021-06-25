@@ -603,37 +603,36 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
      */
     protected function getMultiCommands() : array
     {
-        $access_by_position = $this->isPermissionControlledByOrguPosition();
-        if ($access_by_position) {
+        $edit_individual_plan = false;
+        $manage_members = $this->parent_obj->mayManageMembers();
+
+        if ($this->isPermissionControlledByOrguPosition()) {
             $edit_individual_plan = count($this->getParentObject()->editIndividualPlan()) > 0;
             $manage_members = count($this->getParentObject()->manageMembers()) > 0;
-        } else {
-            $edit_individual_plan = true;
-            $manage_members = true;
         }
+
+        $permissions_for_edit_individual_plan = [
+            'updateFromCurrentPlanMulti' => $this->lng->txt('prg_multi_update_from_current_plan'),
+            'markRelevantMulti' => $this->lng->txt('prg_multi_mark_relevant'),
+            'markNotRelevantMulti' => $this->lng->txt('prg_multi_unmark_relevant'),
+            'changeDeadlineMulti' => $this->lng->txt('prg_multi_change_deadline'),
+            'changeExpireDateMulti' => $this->lng->txt('prg_multi_change_expire_date')
+        ];
+        
+        $permissions_for_manage = [
+            'removeUserMulti' => $this->lng->txt('prg_multi_remove_user'),
+            'markAccreditedMulti' => $this->lng->txt('prg_multi_mark_accredited'),
+            'unmarkAccreditedMulti' => $this->lng->txt('prg_multi_unmark_accredited')
+        ];
 
         $perms = [];
-        if ($edit_individual_plan) {
-            $perms['markAccreditedMulti'] = $this->lng->txt('prg_multi_mark_accredited');
-            $perms['unmarkAccreditedMulti'] = $this->lng->txt('prg_multi_unmark_accredited');
+        if ($edit_individual_plan || $manage_members) {
+            $perms = array_merge($perms, $permissions_for_edit_individual_plan);
         }
-
-        //TODO: manage_members is always false?
-        //$manage_members = true;
 
         if ($manage_members) {
-            $perms['removeUserMulti'] = $this->lng->txt('prg_multi_remove_user');
+            $perms = array_merge($perms, $permissions_for_manage);
         }
-        $perms = array_merge(
-            $perms,
-            [
-                'markRelevantMulti' => $this->lng->txt('prg_multi_mark_relevant'),
-                'markNotRelevantMulti' => $this->lng->txt('prg_multi_unmark_relevant'),
-                'updateFromCurrentPlanMulti' => $this->lng->txt('prg_multi_update_from_current_plan'),
-                'changeDeadlineMulti' => $this->lng->txt('prg_multi_change_deadline'),
-                'changeExpireDateMulti' => $this->lng->txt('prg_multi_change_expire_date')
-            ]
-        );
 
         return $perms;
     }
@@ -746,11 +745,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
     protected function isPermissionControlledByOrguPosition()
     {
-        return (
-            $this->prg->getAccessControlByOrguPositionsGlobal()
-            ||
-            $this->prg->getPositionSettingsIsActiveForPrg()
-        );
+        return $this->prg->getPositionSettingsIsActiveForPrg();
     }
 
     protected function getOrguValidUsersFilter() : string
