@@ -617,9 +617,10 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $edit_individual_plan = false;
         $manage_members = $this->parent_obj->mayManageMembers();
 
+
         if ($this->isPermissionControlledByOrguPosition()) {
             $edit_individual_plan = count($this->getParentObject()->editIndividualPlan()) > 0;
-            $manage_members = count($this->getParentObject()->manageMembers()) > 0;
+            $manage_members = $manage_members || count($this->getParentObject()->manageMembers()) > 0;
         }
 
         $permissions_for_edit_individual_plan = [
