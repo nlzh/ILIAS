@@ -761,7 +761,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
         $valid_user_ids = $this->position_based_access->getUsersInPrgAccessibleForOperation(
             $this->getParentObject()->object,
-            ilOrgUnitOperation::OP_MANAGE_MEMBERS
+            ilOrgUnitOperation::OP_VIEW_MEMBERS
         );
         if (count($valid_user_ids) < 1) {
             return ' AND false';
