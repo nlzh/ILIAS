@@ -305,20 +305,28 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         int $ass_id,
         int $usr_id
     ) : string {
+        $parent = $this->getParentObject();
         $l = new ilAdvancedSelectionListGUI();
 
-        $access_by_position = $this->isPermissionControlledByOrguPosition();
-        $parent = $this->getParentObject();
+        $view_individual_plan = false;
+        $edit_individual_plan = false;
+        
+        if ($parent->mayManageMembers()) {
+            $view_individual_plan = true;
+            $edit_individual_plan = true;
+        }
 
-        $view_individual_plan = $parent->isOperationAllowedForUser(
-            $usr_id,
-            ilOrgUnitOperation::OP_VIEW_INDIVIDUAL_PLAN
-        );
+        if ($this->isPermissionControlledByOrguPosition()) {
+            $view_individual_plan = $parent->isOperationAllowedForUser(
+                $usr_id,
+                ilOrgUnitOperation::OP_VIEW_INDIVIDUAL_PLAN
+            );
 
-        $edit_individual_plan = $parent->isOperationAllowedForUser(
-            $usr_id,
-            ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN
-        );
+            $edit_individual_plan = $parent->isOperationAllowedForUser(
+                $usr_id,
+                ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN
+            );
+        }
 
 
         foreach ($actions as $action) {
@@ -337,6 +345,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
                 case ilObjStudyProgrammeMembersGUI::ACTION_REMOVE_USER:
                     $manage_members =
+                        $parent->mayManageMembers() ||
                         $parent->isOperationAllowedForUser($usr_id, ilOrgUnitOperation::OP_MANAGE_MEMBERS)
                         && in_array($usr_id, $this->getParentObject()->getLocalMembers());
 
@@ -345,6 +354,8 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
                     }
                     break;
             }
+
+
             $target = $this->getLinkTargetForAction($action, $prgrs_id, $ass_id);
             $l->addItem($this->lng->txt("prg_$action"), $action, $target);
         }
