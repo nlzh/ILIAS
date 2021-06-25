@@ -618,9 +618,6 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
             $perms['unmarkAccreditedMulti'] = $this->lng->txt('prg_multi_unmark_accredited');
         }
 
-        //TODO: manage_members is always false?
-        //$manage_members = true;
-
         if ($manage_members) {
             $perms['removeUserMulti'] = $this->lng->txt('prg_multi_remove_user');
         }

@@ -394,7 +394,7 @@ class ilObjStudyProgrammeMembersGUI
             return $users;
         }
 
-        if ($this->getStudyProgramme()->getAccessControlByOrguPositionsGlobal()) {
+        if ($this->getStudyProgramme()->getPositionSettingsIsActiveForPrg()) {
             $to_add = $this->position_based_access->filterUsersAccessibleForOperation(
                 $this->getStudyProgramme(),
                 ilOrgUnitOperation::OP_MANAGE_MEMBERS,
