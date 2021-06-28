@@ -814,9 +814,6 @@ class ilObjStudyProgramme extends ilContainer
      */
     public function getCompletedCourses(int $a_user_id) : array
     {
-        require_once("Services/ContainerReference/classes/class.ilContainerReference.php");
-        require_once("Services/Tracking/classes/class.ilLPStatus.php");
-
         $node_data = $this->tree->getNodeData($this->getRefId());
         $crsrs = $this->tree->getSubTree($node_data, true, "crsr");
 
@@ -828,7 +825,7 @@ class ilObjStudyProgramme extends ilContainer
                 , "prg_ref_id" => $ref["parent"]
                 , "crsr_ref_id" => $ref["child"]
                 , "crsr_id" => $ref["obj_id"]
-                , "title" => ilContainerReference::_lookupTargetTitle($ref["obj_id"])
+                , "title" => ilContainerReference::_lookupTitle($ref["obj_id"])
                 );
             }
         }
