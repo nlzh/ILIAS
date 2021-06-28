@@ -255,7 +255,7 @@ class ilStudyProgrammeChangeDeadlineGUI
                     'd.m.Y',
                     array_shift($deadline_data[1])
                 );
-                //TODO: better validate (not empty...)
+
                 if (!$deadline) {
                     ilUtil::sendFailure($this->lng->txt('error_updating_deadline'), true);
                     $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_DEADLINE_CONFIG);

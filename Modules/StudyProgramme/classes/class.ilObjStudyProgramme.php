@@ -2451,12 +2451,12 @@ class ilObjStudyProgramme extends ilContainer
     ) : void {
         $progress = $this->getProgressRepository()->read($progress_id);
 
-        if ($progress->isSuccessful()) {
-            $err_collection->add(false, 'will_not_modify_deadline_on_successful_progress', $this->getProgressIdString($progress));
-            return;
-        }
         if (!$progress->isRelevant()) {
             $err_collection->add(false, 'will_not_modify_irrelevant_progress', $this->getProgressIdString($progress));
+            return;
+        }
+        if ($progress->isSuccessful()) {
+            $err_collection->add(false, 'will_not_modify_deadline_on_successful_progress', $this->getProgressIdString($progress));
             return;
         }
 
@@ -2483,6 +2483,10 @@ class ilObjStudyProgramme extends ilContainer
 
         if (!$progress->isRelevant()) {
             $err_collection->add(false, 'will_not_modify_irrelevant_progress', $this->getProgressIdString($progress));
+            return;
+        }
+        if (!$progress->isSuccessful()) {
+            $err_collection->add(false, 'will_not_modify_validity_on_non_successful_progress', $this->getProgressIdString($progress));
             return;
         }
 

@@ -245,7 +245,6 @@ class ilStudyProgrammeChangeExpireDateGUI
             $validity = null;
             if ($vq_type === ilObjStudyProgrammeSettingsGUI::OPT_VALIDITY_OF_QUALIFICATION_DATE) {
                 $validity = DateTimeImmutable::createFromFormat('d.m.Y', array_shift($vq_data[1]));
-                //TODO: better validate (not empty...)
                 if (!$validity) {
                     ilUtil::sendFailure($this->lng->txt('error_updating_expire_date'), true);
                     $this->ctrl->redirectByClass(self::class, self::CMD_SHOW_EXPIRE_DATE_CONFIG);

@@ -475,6 +475,32 @@ class ilStudyProgrammeProgressCalculationsTest extends \PHPUnit\Framework\TestCa
         );
     }
 
+    public function testChangingValidity()
+    {
+        $future = (new DateTimeImmutable())->add(new DateInterval('P1D'));
+        $this->progress_repo->update(
+            $this->progress_repo->read(1)
+                ->withStatus(ilStudyProgrammeProgress::STATUS_COMPLETED)
+        );
+
+        $this->getRootPrg()->changeProgressValidityDate(1, 6, $this->messages, $future);
+        $this->assertEquals(
+            $future,
+            $this->progress_repo->read(1)->getValidityOfQualification()
+        );
+    }
+
+    public function testDontChangeValidityForIncomplete()
+    {
+        $future = (new DateTimeImmutable())->add(new DateInterval('P1D'));
+        $this->progress_repo->update(
+            $this->progress_repo->read(1)
+                ->withStatus(ilStudyProgrammeProgress::STATUS_IN_PROGRESS)
+        );
+        $this->getRootPrg()->changeProgressValidityDate(1, 6, $this->messages, $future);
+        $this->assertNull($this->progress_repo->read(1)->getValidityOfQualification());
+    }
+
     public function testMarkAsIndividual()
     {
         $this->assertFalse($this->progress_repo->read(11)->hasIndividualModifications());
@@ -488,7 +514,7 @@ class ilStudyProgrammeProgressCalculationsTest extends \PHPUnit\Framework\TestCa
         $this->assertTrue($this->progress_repo->read(12)->hasIndividualModifications());
         
         $this->getRootPrg()->changeProgressValidityDate(13, 6, $this->messages, $future);
-        $this->assertTrue($this->progress_repo->read(13)->hasIndividualModifications());
+        $this->assertFalse($this->progress_repo->read(13)->hasIndividualModifications());
     }
 
     public function testUpdateFromSettingsResetsIndividual()
