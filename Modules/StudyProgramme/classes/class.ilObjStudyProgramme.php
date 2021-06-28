@@ -2434,6 +2434,8 @@ class ilObjStudyProgramme extends ilContainer
                 
         $achieved_points = $progress->getAmountOfPoints();
         $progress = $progress->withCurrentAmountOfPoints($achieved_points);
+        $progress = $this->updateProgressValidityFromSettings($progress);
+
         $this->getProgressRepository()->update($progress);
 
         $this->refreshLPStatus($progress->getUserId());
