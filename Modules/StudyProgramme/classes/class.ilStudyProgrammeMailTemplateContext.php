@@ -240,14 +240,13 @@ class ilStudyProgrammeMailTemplateContext extends ilMailTemplateContext
                 $string = $this->date2String($progress->getDeadline());
                 break;
             case self::VALIDITY:
-                $string = $this->lng->txt('prg_quali_not_valid');
-                $now = (new DateTime())->format('Y-m-d H:i:s');
-                $val_of_qual = $progress->getValidityOfQualification();
+                $now = new DateTimeImmutable();
 
-                if (!is_null($val_of_qual)) {
-                    $vq_date = $val_of_qual->format('Y-m-d H:i:s');
-                    if ($vq_date > $now) {
-                        $string = $this->lng->txt('prg_quali_still_valid');
+                $string = '-';
+                if (!is_null($progress->hasValidQualification($now))) {
+                    $string = $this->lng->txt('prg_not_valid');
+                    if ($progress->hasValidQualification($now)) {
+                        $string = $this->lng->txt('prg_still_valid');
                     }
                 }
                 break;
