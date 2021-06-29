@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 class ilPrgRestartAssignmentsCronJob extends ilCronJob
 {
+    const ACTING_USR_ID = -1;
+
     /**
      * @var ilStudyProgrammeAssignmentDBRepository
      */
@@ -29,13 +31,11 @@ class ilPrgRestartAssignmentsCronJob extends ilCronJob
     public function __construct()
     {
         global $DIC;
-
-        $this->user_assignments_db = ilStudyProgrammeDIC::dic()['ilStudyProgrammeUserAssignmentDB'];
-        $this->events = ilStudyProgrammeDIC::dic()['ilStudyProgrammeEvents'];
         $this->log = $DIC['ilLog'];
         $this->lng = $DIC['lng'];
-        /**ilStudyProgrammeAssignmentRepository*/
-        $this->assignment_repository = ilStudyProgrammeDIC::dic()['model.Assignment.ilStudyProgrammeAssignmentRepository'];
+        $this->lng->loadLanguageModule('prg');
+
+        $this->dic = ilStudyProgrammeDIC::dic();
     }
 
     const ID = 'prg_restart_assignments_temporal_progress';
@@ -117,23 +117,97 @@ class ilPrgRestartAssignmentsCronJob extends ilCronJob
         $result = new ilCronJobResult();
         $result->setStatus(ilCronJobResult::STATUS_NO_ACTION);
 
-        foreach ($this->user_assignments_db->getDueToRestartInstances() as $assignment) {
-            try {
-                $prg = ilObjStudyProgramme::getInstanceByObjId($assignment->getRootId());
-                $restarted = $prg->assignUser($assignment->getUserId());
 
-                //the old assingment is marked with the id of the new/resulting assignment.
-                //read: assignment X (old) caused Y (new).
-                $assignment = $assignment->withRestartedAssignmentId($restarted->getId());
-                $this->assignment_repository->update($assignment);
+        $programmes_to_reassign = $this->getSettingsRepository()
+            ->getProgrammeIdsWithReassignmentForExpiringValidity();
 
-                $this->events->userReAssigned($restarted);
-            } catch (ilException $e) {
-                $this->log->write('an error occured: ' . $e->getMessage());
-                $result->setStatus(ilCronJobResult::STATUS_CRASHED);
+        if (count($programmes_to_reassign) == 0) {
+            return $result;
+        }
+
+        $today = $this->getNow();
+        $programmes_and_due = [];
+
+        foreach ($programmes_to_reassign as $programme_obj_id => $days_offset) {
+            $interval = new DateInterval('P' . $days_offset . 'D');
+            $due = $today->add($interval);
+            $programmes_and_due[$programme_obj_id] = $due;
+        }
+
+        //TODO: expire for assignment, not progress!!!
+        $progresses = $this->getProgressRepository()
+            ->getAboutToExpire($programmes_and_due, false);
+
+        if (count($progresses) == 0) {
+            return $result;
+        }
+    
+        $events = $this->getEvents();
+        $assignment_repo = $this->getAssignmentRepository();
+        foreach ($progresses as $progress) {
+            $ass = $assignment_repo->read($progress->getAssignmentId());
+            if ($ass->getRestartedAssignmentId() < 0) {
+                if ($ass->getRootId() != $progress->getNodeId()) {
+                    $this->log(
+                        sprintf(
+                            'PRG, RestartAssignments: progress %s is not root of assignment %s. skipping.',
+                            $progress->getId(),
+                            $ass->getId()
+                        )
+                    );
+                    continue;
+                }
+
+                $this->log(
+                    sprintf(
+                        'PRG, RestartAssignments: user %s\'s assignment %s is being restarted (Programme %s)',
+                        $progress->getUserId(),
+                        $ass->getId(),
+                        $progress->getNodeId()
+                    )
+                );
+            
+                $prg = ilObjStudyProgramme::getInstanceByObjId($ass->getRootId());
+                $restarted = $prg->assignUser($ass->getUserId(), self::ACTING_USR_ID);
+                $ass = $ass->withRestarted($restarted->getId(), $today);
+               
+                $assignment_repo->update($ass);
+
+                $events->userReAssigned($restarted);
+                $result->setStatus(ilCronJobResult::STATUS_OK);
             }
         }
-        $result->setStatus(ilCronJobResult::STATUS_OK);
+
         return $result;
+    }
+
+    protected function getNow() : \DateTimeImmutable
+    {
+        return new DateTimeImmutable();
+    }
+
+    protected function getSettingsRepository() : ilStudyProgrammeSettingsDBRepository
+    {
+        return $this->dic['model.Settings.ilStudyProgrammeSettingsRepository'];
+    }
+
+    protected function getProgressRepository() : ilStudyProgrammeProgressDBRepository
+    {
+        return $this->dic['ilStudyProgrammeUserProgressDB'];
+    }
+
+    protected function getAssignmentRepository() : ilStudyProgrammeAssignmentDBRepository
+    {
+        return $this->dic['ilStudyProgrammeUserAssignmentDB'];
+    }
+
+    protected function getEvents()
+    {
+        return $this->dic['ilStudyProgrammeEvents'];
+    }
+
+    protected function log(string $msg) : void
+    {
+        $this->log->write($msg);
     }
 }

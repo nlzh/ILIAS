@@ -602,8 +602,10 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
      * @param array <int, DateTimeImmutable>    $programmes_and_due
      * @return ilStudyProgrammeProgress[]
      */
-    public function getAboutToExpire(array $programmes_and_due) : array
-    {
+    public function getAboutToExpire(
+        array $programmes_and_due,
+        bool $discard_formerly_notified = true
+    ) : array {
         $ret = [];
         if (count($programmes_and_due) == 0) {
             return $ret;
@@ -612,11 +614,16 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
         $where = [];
         foreach ($programmes_and_due as $programme_obj_id => $due) {
             $due = $due->format(ilStudyProgrammeProgress::DATE_FORMAT);
-            $where[] = '('
+            $where_clause = '('
                 . self::FIELD_PRG_ID . '=' . $programme_obj_id
-                . ' AND ' . self::FIELD_VQ_DATE . '<=' . $this->db->quote($due, 'text')
-                . ' AND ' . self::FIELD_MAIL_SENT_WILLEXPIRE . ' IS NULL'
-                . ')';
+                . ' AND ' . self::FIELD_VQ_DATE . '<=' . $this->db->quote($due, 'text');
+
+            if ($discard_formerly_notified) {
+                $where_clause .= ' AND ' . self::FIELD_MAIL_SENT_WILLEXPIRE . ' IS NULL';
+            }
+            
+            $where_clause .= ')';
+            $where[] = $where_clause;
         }
 
         $query = $this->getSQLHeader() . ' WHERE ' . implode(' OR ', $where);

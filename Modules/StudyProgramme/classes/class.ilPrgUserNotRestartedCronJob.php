@@ -142,8 +142,10 @@ class ilPrgUserNotRestartedCronJob extends ilCronJob
             $programmes_and_due[$programme_obj_id] = $due;
         }
 
+        //TODO: expire for assignment, not progress!!!
         $progresses = $this->getProgressRepository()
-            ->getAboutToExpire($programmes_and_due);
+            ->getAboutToExpire($programmes_and_due, true);
+
         //TODO: without there being another assignment for this user (already restarted) ?!
         
         if (count($progresses) == 0) {
@@ -182,6 +184,11 @@ class ilPrgUserNotRestartedCronJob extends ilCronJob
         return $this->dic['ilStudyProgrammeUserProgressDB'];
     }
 
+    protected function getAssignmentRepository() : ilStudyProgrammeAssignmentDBRepository
+    {
+        return $this->dic['ilStudyProgrammeUserAssignmentDB'];
+    }
+    
     protected function getEvents()
     {
         return $this->dic['ilStudyProgrammeEvents'];

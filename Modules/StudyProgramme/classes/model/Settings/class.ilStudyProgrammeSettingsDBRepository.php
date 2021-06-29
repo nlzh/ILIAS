@@ -547,4 +547,26 @@ class ilStudyProgrammeSettingsDBRepository implements ilStudyProgrammeSettingsRe
         }
         return $return;
     }
+
+    /**
+     * Programme must be active
+     * and have a setting to reassign users when validity expires
+     * @return array <int id, int days_offset>
+     */
+    public function getProgrammeIdsWithReassignmentForExpiringValidity() : array
+    {
+        $query = 'SELECT '
+            . self::FIELD_OBJ_ID . ', '
+            . self::FIELD_VQ_RESTART_PERIOD
+            . ' FROM ' . self::TABLE . PHP_EOL
+            . ' WHERE ' . self::FIELD_STATUS . ' = ' . ilStudyProgrammeSettings::STATUS_ACTIVE
+            . ' AND ' . self::FIELD_VQ_RESTART_PERIOD . ' > 0';
+
+        $return = [];
+        $res = $this->db->query($query);
+        while ($rec = $this->db->fetchAssoc($res)) {
+            $return[$rec[self::FIELD_OBJ_ID]] = $rec[self::FIELD_VQ_RESTART_PERIOD];
+        }
+        return $return;
+    }
 }

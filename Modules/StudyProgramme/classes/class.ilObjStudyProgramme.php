@@ -1874,9 +1874,9 @@ class ilObjStudyProgramme extends ilContainer
     {
         global $DIC;
         $lng = $DIC['lng'];
-        $log = $this->logger;
         $lng->loadLanguageModule("prg");
         $lng->loadLanguageModule("mail");
+        $log = $DIC['ilLog'];
 
         $prg = ilObjStudyProgramme::getInstanceByRefId($ref_id);
         $prg_should_send_mail = $prg->getSettings()->getAutoMailSettings()->getSendReAssignedMail();
