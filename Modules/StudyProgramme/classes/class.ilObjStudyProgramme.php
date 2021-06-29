@@ -1576,14 +1576,15 @@ class ilObjStudyProgramme extends ilContainer
      * Enable a membership source.
      * @throws ilException
      */
-    public function enableAutomaticMembershipSource(string $type, int $src_id) : void
+    public function enableAutomaticMembershipSource(string $type, int $src_id, $assign_now = false) : void
     {
-        $assigned_by = ilStudyProgrammeAutoMembershipSource::SOURCE_MAPPING[$type];
-        $member_ids = $this->getMembersOfMembershipSource($type, $src_id);
-
-        foreach ($member_ids as $usr_id) {
-            if (!$this->getAssignmentsOfSingleProgramForUser($usr_id)) {
-                $this->assignUser($usr_id, $assigned_by);
+        if ($assign_now) {
+            $assigned_by = ilStudyProgrammeAutoMembershipSource::SOURCE_MAPPING[$type];
+            $member_ids = $this->getMembersOfMembershipSource($type, $src_id);
+            foreach ($member_ids as $usr_id) {
+                if (!$this->getAssignmentsOfSingleProgramForUser($usr_id)) {
+                    $this->assignUser($usr_id, $assigned_by);
+                }
             }
         }
         $ams = $this->auto_memberships_repository->create($this->getId(), $type, $src_id, true);
