@@ -16099,7 +16099,7 @@ prg#:#sp_certificate_progress_expires_at#:#Date of expiry of qualification
 prg#:#prg_completion_date#:#Completion date
 prg#:#prg_expiry_date#:#Expiry date
 prg#:#prg_validity#:#Validity
-prg#:#prg_still_valid#:#still valid
+prg#:#prg_still_valid#:#valid
 prg#:#prg_not_valid#:#not valid
 prg#:#prg_restart_assignments_temporal_progress_title#:#Restart Studyprogramme assignments
 prg#:#prg_restart_assignments_temporal_progress_desc#:#Restart Studyprogramme assignments with progresses about to expire

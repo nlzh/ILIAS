@@ -922,32 +922,6 @@ class ilObjStudyProgrammeMembersGUI
         );
     }
 
-    /**
-     * Get a list with possible actions on a progress record.
-     *
-     * @return string[]
-     */
-    public function getPossibleActions(
-        int $node_id,
-        int $root_prg_id,
-        int $status
-    ) : array {
-        $actions = array();
-
-        if ($node_id == $root_prg_id) {
-            $actions[] = self::ACTION_SHOW_INDIVIDUAL_PLAN;
-            $actions[] = self::ACTION_REMOVE_USER;
-        }
-
-        if ($status == ilStudyProgrammeProgress::STATUS_ACCREDITED) {
-            $actions[] = self::ACTION_UNMARK_ACCREDITED;
-        } elseif ($status == ilStudyProgrammeProgress::STATUS_IN_PROGRESS) {
-            $actions[] = self::ACTION_MARK_ACCREDITED;
-        }
-
-        return $actions;
-    }
-
     protected function getMessageCollection(string $topic) : ilPRGMessageCollection
     {
         return $this->messages->getMessageCollection($topic);

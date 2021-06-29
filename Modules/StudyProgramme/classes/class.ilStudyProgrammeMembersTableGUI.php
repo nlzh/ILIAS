@@ -441,7 +441,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
             $progress_id = (int) $rec['prgrs_id'];
             $progress = $this->sp_user_progress_db->read($progress_id);
 
-            $rec["actions"] = $this->parent_obj->getPossibleActions(
+            $rec["actions"] = $this->getPossibleActions(
                 $prg_id,
                 $rec["root_prg_id"],
                 $rec["status"]
@@ -502,7 +502,6 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
             $rec['vq_date'] = '';
             if (!is_null($progress->getValidityOfQualification())
-                && $progress->hasValidQualification($now)
             ) {
                 $rec['vq_date'] = $progress->getValidityOfQualification()->format($this->getUserDateFormat());
             }
@@ -648,6 +647,36 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
         return $perms;
     }
+
+    /**
+      * Get a list with possible actions on a progress record.
+      *
+      * @return string[]
+      */
+    protected function getPossibleActions(
+        int $node_id,
+        int $root_prg_id,
+        int $status
+    ) : array {
+        $actions = array();
+
+        if ($node_id == $root_prg_id) {
+            $actions[] = ilObjStudyProgrammeMembersGUI::ACTION_SHOW_INDIVIDUAL_PLAN;
+            $actions[] = ilObjStudyProgrammeMembersGUI::ACTION_REMOVE_USER;
+        }
+
+        if ($status == ilStudyProgrammeProgress::STATUS_ACCREDITED) {
+            $actions[] = ilObjStudyProgrammeMembersGUI::ACTION_UNMARK_ACCREDITED;
+        }
+        if ($status == ilStudyProgrammeProgress::STATUS_IN_PROGRESS) {
+            $actions[] = ilObjStudyProgrammeMembersGUI::ACTION_MARK_ACCREDITED;
+        }
+
+        return $actions;
+    }
+
+
+
 
     /**
      * Get options of filter "validity".
