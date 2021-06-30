@@ -111,6 +111,8 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $this->setSelectAllCheckbox($parent_obj::F_SELECTED_PROGRESS_IDS . '[]');
         $this->setEnableAllCommand(true);
         $this->addMultiCommands();
+        $this->setDefaultOrderField(self::COLUMNS[0][0]);
+        $this->setDefaultOrderDirection('ASC');
 
         $selected = $this->getSelectedColumns();
         foreach (self::COLUMNS as $column) {
@@ -189,6 +191,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         if (!$direction) {
             $direction = $this->getDefaultOrderDirection();
         }
+
         return $this->data_factory->order($field, strtoupper($direction));
     }
 
