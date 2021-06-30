@@ -111,7 +111,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $this->setSelectAllCheckbox($parent_obj::F_SELECTED_PROGRESS_IDS . '[]');
         $this->setEnableAllCommand(true);
         $this->addMultiCommands();
-        $this->setDefaultOrderField(self::COLUMNS[0][0]);
+        $this->setDefaultOrderField('prgrs_id');
         $this->setDefaultOrderDirection('ASC');
 
         $selected = $this->getSelectedColumns();
@@ -162,12 +162,27 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         );
     }
 
+
+    const ORDER_MAPPING = [
+        'prg_status' => 'status',
+        'prg_custom_plan' => 'custom_plan',
+        'prg_belongs_to' => 'belongs_to',
+        'prg_expiry_date' => 'vq_date',
+        'prg_orgus' => 'orgus',
+        'prg_completion_by' => 'completion_by',
+        'prg_completion_date' => 'completion_date',
+    ];
+
     protected function postOrder(array $list, \ILIAS\Data\Order $order) : array
     {
         list($aspect, $direction) = $order->join('', function ($i, $k, $v) {
             return  [$k, $v];
         });
-
+        
+        if (array_key_exists($aspect, self::ORDER_MAPPING)) {
+            $aspect = self::ORDER_MAPPING[$aspect];
+        }
+        
         usort($list, function ($a, $b) use ($aspect) {
             if (is_numeric($a[$aspect])) {
                 return $a[$aspect] > $b[$aspect];
