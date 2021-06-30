@@ -106,7 +106,8 @@ class ilStudyProgrammeDIC
                 $dic['ilStudyProgrammeRepositorySearchGUI'],
                 $dic['ilObjStudyProgrammeIndividualPlanGUI'],
                 $dic['ilStudyProgrammePositionBasedAccess'],
-                $dic['PRGMessages']
+                $dic['PRGMessages'],
+                $dic['DataFactory']
             );
         };
         $dic['ilObjStudyProgrammeAutoMembershipsGUI'] = function ($dic) use ($DIC) {

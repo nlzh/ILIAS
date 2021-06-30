@@ -85,6 +85,11 @@ class ilObjStudyProgrammeMembersGUI
      */
     protected $messages;
 
+    /**
+     * @var \ILIAS\Data\Factory
+     */
+    protected $data_factory;
+
     public function __construct(
         \ilGlobalTemplateInterface $tpl,
         \ilCtrl $ilCtrl,
@@ -98,7 +103,8 @@ class ilObjStudyProgrammeMembersGUI
         ilStudyProgrammeRepositorySearchGUI $repository_search_gui,
         ilObjStudyProgrammeIndividualPlanGUI $individual_plan_gui,
         ilStudyProgrammePositionBasedAccess $position_based_access,
-        ilPRGMessagePrinter $messages
+        ilPRGMessagePrinter $messages,
+        \ILIAS\Data\Factory $data_factory
     ) {
         $this->tpl = $tpl;
         $this->ctrl = $ilCtrl;
@@ -110,6 +116,7 @@ class ilObjStudyProgrammeMembersGUI
         $this->sp_user_assignment_db = $sp_user_assignment_db;
         $this->sp_user_progress_db = $sp_user_progress_db;
         $this->messages = $messages;
+        $this->data_factory = $data_factory;
 
         $this->repository_search_gui = $repository_search_gui;
         $this->individual_plan_gui = $individual_plan_gui;
@@ -248,7 +255,8 @@ class ilObjStudyProgrammeMembersGUI
             "view",
             "",
             $this->sp_user_progress_db,
-            $this->position_based_access
+            $this->position_based_access,
+            $this->data_factory
         );
         return $table;
     }

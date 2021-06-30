@@ -79,7 +79,8 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         string $parent_cmd = '',
         string $template_context = '',
         ilStudyProgrammeProgressRepository $sp_user_progress_db,
-        ilStudyProgrammePositionBasedAccess $position_based_access
+        ilStudyProgrammePositionBasedAccess $position_based_access,
+        \ILIAS\Data\Factory $data_factory
     ) {
         $this->setId("sp_member_list");
         parent::__construct($parent_obj, $parent_cmd, $template_context);
@@ -87,6 +88,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $this->prg_obj_id = $prg_obj_id;
         $this->prg_ref_id = $prg_ref_id;
         $this->position_based_access = $position_based_access;
+        $this->data_factory = $data_factory;
 
         $this->prg = ilObjStudyProgramme::getInstanceByRefId($prg_ref_id);
         $this->prg_has_lp_children = $parent_obj->getStudyProgramme()->hasLPChildren();
@@ -100,7 +102,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $this->setTopCommands(false);
         $this->setEnableHeader(true);
         // TODO: switch this to internal sorting/segmentation
-        $this->setExternalSorting(false);
+        $this->setExternalSorting(true);
         $this->setExternalSegmentation(true);
         $this->setRowTemplate("tpl.members_table_row.html", "Modules/StudyProgramme");
         $this->setShowRowsSelector(false);
@@ -130,12 +132,11 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $this->determineOffsetAndOrder();
         $this->determineLimit();
 
+
         $members_list = $this->fetchData(
             $prg_obj_id,
             $this->getLimit(),
             $this->getOffset(),
-            $this->getOrderField(),
-            $this->getOrderDirection(),
             $filter_values
         );
 
@@ -151,7 +152,44 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         );
 
         $this->setMaxCount($this->countFetchData($prg_obj_id, $filter_values));
-        $this->setData($members_list);
+        $this->setData(
+            $this->postOrder(
+                $members_list,
+                $this->getOrdering()
+            )
+        );
+    }
+
+    protected function postOrder(array $list, \ILIAS\Data\Order $order) : array
+    {
+        list($aspect, $direction) = $order->join('', function ($i, $k, $v) {
+            return  [$k, $v];
+        });
+
+        usort($list, function ($a, $b) use ($aspect) {
+            if (is_numeric($a[$aspect])) {
+                return $a[$aspect] > $b[$aspect];
+            }
+            return strcmp($a[$aspect], $b[$aspect]);
+        });
+
+        if ($direction === $order::DESC) {
+            $list = array_reverse($list);
+        }
+        return $list;
+    }
+
+    protected function getOrdering() : \ILIAS\Data\Order
+    {
+        $field = $this->getOrderField();
+        if (!$field) {
+            $field = $this->getDefaultOrderField();
+        }
+        $direction = $this->getOrderDirection();
+        if (!$direction) {
+            $direction = $this->getDefaultOrderDirection();
+        }
+        return $this->data_factory->order($field, strtoupper($direction));
     }
 
     protected function getUserDateFormat() : string
@@ -378,8 +416,6 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         int $prg_id,
         int $limit = null,
         int $offset = null,
-        string $order_column = null,
-        string $order_direction = null,
         array $filter = []
     ) : array {
         // TODO: Reimplement this in terms of ActiveRecord when innerjoin
@@ -432,7 +468,6 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $res = $this->db->query($sql);
         $now = new DateTimeImmutable();
         $members_list = array();
-
 
         while ($rec = $this->db->fetchAssoc($res)) {
 
