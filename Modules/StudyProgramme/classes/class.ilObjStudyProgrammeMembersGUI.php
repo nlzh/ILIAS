@@ -104,7 +104,8 @@ class ilObjStudyProgrammeMembersGUI
         ilObjStudyProgrammeIndividualPlanGUI $individual_plan_gui,
         ilStudyProgrammePositionBasedAccess $position_based_access,
         ilPRGMessagePrinter $messages,
-        \ILIAS\Data\Factory $data_factory
+        \ILIAS\Data\Factory $data_factory,
+        ilConfirmationGUI $confirmation_gui
     ) {
         $this->tpl = $tpl;
         $this->ctrl = $ilCtrl;
@@ -117,6 +118,7 @@ class ilObjStudyProgrammeMembersGUI
         $this->sp_user_progress_db = $sp_user_progress_db;
         $this->messages = $messages;
         $this->data_factory = $data_factory;
+        $this->confirmation_gui = $confirmation_gui;
 
         $this->repository_search_gui = $repository_search_gui;
         $this->individual_plan_gui = $individual_plan_gui;
@@ -218,6 +220,9 @@ class ilObjStudyProgrammeMembersGUI
                     case "changeExpireDateMulti":
                         $cont = $this->$cmd();
                         $this->tpl->setContent($cont);
+                        break;
+                    case "confirmedRemoveUsers":
+                        $this->confirmedRemoveUsers();
                         break;
                     default:
                         throw new ilException("ilObjStudyProgrammeMembersGUI: " .
@@ -650,21 +655,19 @@ class ilObjStudyProgrammeMembersGUI
         $this->ctrl->redirectToURL($link);
     }
 
-    /**
-     * Remove single user from SP
-     */
-    public function removeUser() : void
+    public function removeUser() : string
     {
         $prgrs_id = $this->getPrgrsId();
-        $this->remove($prgrs_id);
-        $this->showSuccessMessage("remove_user_success");
-        $this->ctrl->redirect($this, "view");
+        return $this->confirmRemoveUsers([$prgrs_id]);
     }
 
-    /**
-     * Remove user from SP
-     */
-    protected function removeUserMulti() : void
+    protected function removeUserMulti() : string
+    {
+        $prgrs_ids = $this->getPostPrgsIds();
+        return $this->confirmRemoveUsers($prgrs_ids);
+    }
+
+    protected function confirmedRemoveUsers() : void
     {
         $prgrs_ids = $this->getPostPrgsIds();
         $not_removed = array();
@@ -678,11 +681,32 @@ class ilObjStudyProgrammeMembersGUI
         if (count($not_removed) == count($prgrs_ids)) {
             $this->showInfoMessage("remove_users_not_possible");
         } elseif (count($not_removed) > 0) {
-            $this->showSuccessMessage("remove_users_partitial_success");
+            $this->showSuccessMessage("remove_users_partial_success");
         } else {
             $this->showSuccessMessage("remove_users_success");
         }
         $this->ctrl->redirect($this, "view");
+    }
+
+    protected function confirmRemoveUsers(array $progress_ids) : string
+    {
+        $this->confirmation_gui->setFormAction($this->ctrl->getFormAction($this));
+        $this->confirmation_gui->setHeaderText($this->lng->txt('confirm_to_remove_selected_assignments'));
+        $this->confirmation_gui->setConfirm($this->lng->txt('delete'), 'confirmedRemoveUsers');
+        $this->confirmation_gui->setCancel($this->lng->txt('cancel'), 'view');
+
+        foreach ($progress_ids as $progress_id) {
+            $progress = $this->getProgressObject($progress_id);
+            $user = ilObjUser::_lookupFullname($progress->getUserId());
+            $name = $user . ' (' . $progress->getId() . ')';
+            
+            $this->confirmation_gui->addItem(
+                self::F_SELECTED_PROGRESS_IDS . '[]',
+                $progress_id,
+                $name
+            );
+        }
+        return $this->confirmation_gui->getHTML();
     }
 
     /**
