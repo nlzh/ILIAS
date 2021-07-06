@@ -273,7 +273,10 @@ class ilObjStudyProgrammeMembersGUI
      */
     protected function view() : string
     {
-        if ($this->getStudyProgramme()->isActive()) {
+        if (
+            $this->getStudyProgramme()->isActive()
+            && $this->mayManageMembers()
+        ) {
             $this->initSearchGUI();
             $this->initMailToMemberButton($this->toolbar, true);
         }
@@ -923,7 +926,9 @@ class ilObjStudyProgrammeMembersGUI
             'manage_members',
             '',
             $this->object->getRefId()
-        );
+        )
+        ||
+        count($this->manageMembers()) > 0;
     }
 
     public function getLocalMembers() : array
