@@ -206,7 +206,7 @@ class ilStudyProgrammeMailTemplateContext extends ilMailTemplateContext
                 $string = ilObjUser::lookupOrgUnitsRepresentation($recipient->getId());
                 break;
             case self::STATUS:
-                $string = $obj->statusToRepr($progress->getStatus());
+                $string = $this->statusToRepr($progress->getStatus(), $recipient->getLanguage());
                 break;
             case self::COMPLETION_DATE:
                 $string = $this->date2String($progress->getCompletionDate());
@@ -244,9 +244,9 @@ class ilStudyProgrammeMailTemplateContext extends ilMailTemplateContext
 
                 $string = '-';
                 if (!is_null($progress->hasValidQualification($now))) {
-                    $string = $this->lng->txt('prg_not_valid');
+                    $string = $this->lng->txtlng('prg', 'prg_not_valid', $recipient->getLanguage());
                     if ($progress->hasValidQualification($now)) {
-                        $string = $this->lng->txt('prg_still_valid');
+                        $string = $this->lng->txtlng('prg', 'prg_still_valid', $recipient->getLanguage());
                     }
                 }
                 break;
@@ -285,23 +285,24 @@ class ilStudyProgrammeMailTemplateContext extends ilMailTemplateContext
         return array_shift($successfully_progress);
     }
 
-    protected function statusToRepr(int $status) : string
+    protected function statusToRepr(int $status, string $lang) : string
     {
         if ($status == ilStudyProgrammeProgress::STATUS_IN_PROGRESS) {
-            return $this->lng->txt("prg_status_in_progress");
+            return $this->lng->txtlng('prg', 'prg_status_in_progress', $lang);
         }
         if ($status == ilStudyProgrammeProgress::STATUS_COMPLETED) {
-            return $this->lng->txt("prg_status_completed");
+            return $this->lng->txtlng('prg', 'prg_status_completed', $lang);
         }
         if ($status == ilStudyProgrammeProgress::STATUS_ACCREDITED) {
-            return $this->lng->txt("prg_status_accredited");
+            return $this->lng->txtlng('prg', 'prg_status_accredited', $lang);
         }
         if ($status == ilStudyProgrammeProgress::STATUS_NOT_RELEVANT) {
-            return $this->lng->txt("prg_status_not_relevant");
+            return $this->lng->txtlng('prg', 'prg_status_not_relevant', $lang);
         }
         if ($status == ilStudyProgrammeProgress::STATUS_FAILED) {
-            return $this->lng->txt("prg_status_failed");
+            return $this->lng->txtlng('prg', 'prg_status_failed', $lang);
         }
+            
         throw new ilException("Unknown status: '$status'");
     }
 
