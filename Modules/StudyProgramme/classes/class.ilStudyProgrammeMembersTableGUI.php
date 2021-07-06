@@ -488,7 +488,6 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $members_list = array();
 
         while ($rec = $this->db->fetchAssoc($res)) {
-
             //TODO: use progress throughout instead of records.
 
             $progress_id = (int) $rec['prgrs_id'];
@@ -852,9 +851,12 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
             $this->getParentObject()->object,
             ilOrgUnitOperation::OP_VIEW_MEMBERS
         );
+        
         if (count($valid_user_ids) < 1) {
             return ' AND false';
         }
+
+        $valid_user_ids[] = $this->getParentObject()->user->getid();
         return ' AND pcp.usr_id in ('
             . implode(',', $valid_user_ids)
             . ')';

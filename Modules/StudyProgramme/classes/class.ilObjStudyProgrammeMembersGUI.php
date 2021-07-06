@@ -871,7 +871,8 @@ class ilObjStudyProgrammeMembersGUI
                         $this->object,
                         ilOrgUnitOperation::OP_READ_LEARNING_PROGRESS
                     ),
-                    $this->viewIndividualPlan()
+                    $this->viewIndividualPlan(),
+                    [$this->user->getId()]
                 ));
         }
         return $this->read_learning_progress;
