@@ -41,8 +41,8 @@ class Link extends Group implements C\Input\Field\Link
         $is_ok = function ($v) {
             list($label, $url) = $v;
             $ok = (
-                is_null($label)
-                && is_null($url)
+                (is_null($label) || $label === '') &&
+                is_null($url)
             ) || (
                 !is_null($label) && !is_null($url)
                 && strlen($label) > 0
