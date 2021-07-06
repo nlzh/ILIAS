@@ -117,8 +117,8 @@ class ilStudyProgrammePlaceholderValues implements ilCertificatePlaceholderValue
         $placeholders['PRG_DESCRIPTION'] = ilUtil::prepareFormOutput($object->getDescription());
         $placeholders['PRG_TYPE'] = ilUtil::prepareFormOutput($type ? $type->getTitle() : '');
         $placeholders['PRG_POINTS'] = ilUtil::prepareFormOutput($object->getPoints());
-        $placeholders['PRG_COMPLETION_DATE'] = ilUtil::prepareFormOutput($latest_progress->getCompletionDate() instanceof \DateTime ? $latest_progress->getCompletionDate()->format('d.m.Y') : '');
-        $placeholders['PRG_EXPIRES_AT'] = ilUtil::prepareFormOutput($latest_progress->getValidityOfQualification() instanceof \DateTime ? $latest_progress->getValidityOfQualification()->format('d.m.Y') : '');
+        $placeholders['PRG_COMPLETION_DATE'] = ilUtil::prepareFormOutput($latest_progress->getCompletionDate() instanceof \DateTimeImmutable ? $latest_progress->getCompletionDate()->format('d.m.Y') : '');
+        $placeholders['PRG_EXPIRES_AT'] = ilUtil::prepareFormOutput($latest_progress->getValidityOfQualification() instanceof \DateTimeImmutable ? $latest_progress->getValidityOfQualification()->format('d.m.Y') : '');
         return $placeholders;
     }
 
