@@ -843,6 +843,8 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
     {
         global $DIC;
 
+        $this->lng->loadLanguageModule('cert');
+
         $user_id = (int) $this->user->getId();
         $obj_id = (int) $this->object->getId();
 

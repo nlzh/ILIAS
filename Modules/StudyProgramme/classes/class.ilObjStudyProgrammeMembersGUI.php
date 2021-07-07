@@ -695,7 +695,7 @@ class ilObjStudyProgrammeMembersGUI
     {
         $this->confirmation_gui->setFormAction($this->ctrl->getFormAction($this));
         $this->confirmation_gui->setHeaderText($this->lng->txt('confirm_to_remove_selected_assignments'));
-        $this->confirmation_gui->setConfirm($this->lng->txt('delete'), 'confirmedRemoveUsers');
+        $this->confirmation_gui->setConfirm($this->lng->txt('prg_remove_user'), 'confirmedRemoveUsers');
         $this->confirmation_gui->setCancel($this->lng->txt('cancel'), 'view');
 
         foreach ($progress_ids as $progress_id) {
