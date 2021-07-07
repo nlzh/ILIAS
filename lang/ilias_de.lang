@@ -16582,3 +16582,4 @@ prg#:#msg_update_individual_plan#:#Erfolgreich aktualisert (%s).
 prg#:#msg_update_individual_plan_failed#:#Fehler beim Aktualisieren:
 prg#:#msg_points_must_be_positive#:#Nur positive Punkte erlaubt.
 prg#:#msg_impossible_target_status#:#Ungültiger Status.
+prg#:#confirm_to_remove_selected_assignments#:#Benutzerzuweisung(en) wirklich entfernen?
