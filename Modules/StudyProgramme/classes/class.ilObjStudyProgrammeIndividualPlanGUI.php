@@ -142,10 +142,11 @@ class ilObjStudyProgrammeIndividualPlanGUI
         $ass = $this->getAssignmentObject();
         $prg = ilObjStudyProgramme::getInstanceByObjId($ass->getRootId());
         $progress = $prg->getProgressForAssignment($ass->getId());
-        if (
-            $this->parent_gui->getStudyProgramme()->getAccessControlByOrguPositionsGlobal()
-            && !in_array($progress->getUserId(), $this->parent_gui->viewIndividualPlan())
-        ) {
+        if (!(
+            in_array($progress->getUserId(), $this->parent_gui->viewIndividualPlan())
+            ||
+            $this->ilAccess->checkAccess("manage_members", "", $this->ref_id)
+        )) {
             throw new ilStudyProgrammePositionBasedAccessViolationException(
                 "may not access individual plan of user"
             );
@@ -162,14 +163,17 @@ class ilObjStudyProgrammeIndividualPlanGUI
     protected function manage()
     {
         $ass = $this->getAssignmentObject();
-        if (
-            $this->parent_gui->getStudyProgramme()->getAccessControlByOrguPositionsGlobal()
-            && !in_array($ass->getUserId(), $this->parent_gui->editIndividualPlan())
-        ) {
+        if (!(
+            in_array($ass->getUserId(), $this->parent_gui->editIndividualPlan())
+            ||
+            $this->ilAccess->checkAccess("manage_members", "", $this->ref_id)
+        )) {
             throw new ilStudyProgrammePositionBasedAccessViolationException(
                 "may not access individual plan of user"
             );
         }
+
+
         $this->ctrl->setParameter($this, "ass_id", $ass->getId());
         $this->ctrl->setParameter($this, "cmd", "manage");
         $table = new ilStudyProgrammeIndividualPlanTableGUI($this, $ass, $this->progress_repository);
@@ -182,14 +186,17 @@ class ilObjStudyProgrammeIndividualPlanGUI
     {
         $ass = $this->getAssignmentObject();
         $prg = $this->parent_gui->getStudyProgramme();
-        if (
-            $prg->getAccessControlByOrguPositionsGlobal()
-            && !in_array($ass->getUserId(), $this->parent_gui->editIndividualPlan())
-        ) {
+
+        if (!(
+            in_array($ass->getUserId(), $this->parent_gui->editIndividualPlan())
+            ||
+            $this->ilAccess->checkAccess("manage_members", "", $this->ref_id)
+        )) {
             throw new ilStudyProgrammePositionBasedAccessViolationException(
                 "may not access individual plan of user"
             );
         }
+
         $progress = $prg->getProgressForAssignment($ass->getId());
         $prg->updateProgressFromSettings(
             $progress->getId(),
