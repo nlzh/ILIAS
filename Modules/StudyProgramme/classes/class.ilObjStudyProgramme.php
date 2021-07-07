@@ -2531,6 +2531,8 @@ class ilObjStudyProgramme extends ilContainer
             ->withLastChange($acting_usr_id, $this->getNow())
             ->withIndividualModifications(true);
 
+        $progress = $this->recalculateProgressStatus($progress);
+
         $this->getProgressRepository()->update($progress);
         $err_collection->add(true, 'required_points_updated', $this->getProgressIdString($progress));
         $this->refreshLPStatus($progress->getUserId());
