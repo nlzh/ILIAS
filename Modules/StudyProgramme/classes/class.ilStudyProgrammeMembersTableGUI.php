@@ -856,7 +856,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
             return ' AND false';
         }
 
-        $valid_user_ids[] = $this->getParentObject()->user->getid();
+        $valid_user_ids[] = $this->getParentObject()->user->getId();
         return ' AND pcp.usr_id in ('
             . implode(',', $valid_user_ids)
             . ')';

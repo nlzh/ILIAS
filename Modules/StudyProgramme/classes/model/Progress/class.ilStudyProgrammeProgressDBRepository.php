@@ -285,16 +285,27 @@ class ilStudyProgrammeProgressDBRepository implements ilStudyProgrammeProgressRe
         );
     }
 
-    public function deleteForAssignmentId(int $assignment_id) : void
+    /**
+     * @return int[] node_ids the user had progresses on
+     */
+    public function deleteForAssignmentId(int $assignment_id) : array
     {
+        $progresses = $this->readByAssignmentId($assignment_id);
+
         $query = 'DELETE FROM ' . self::TABLE . PHP_EOL
             . ' WHERE ' . self::FIELD_ASSIGNMENT_ID . ' = '
             . $this->db->quote($assignment_id, 'integer');
 
         $this->db->manipulate($query);
+
+        return array_map(
+            function ($progress) {
+                return $progress->getNodeId();
+            },
+            $progresses
+        );
     }
 
-    //public function reminderSendFor(int $progress_id) : void
     public function sentRiskyToFailFor(int $progress_id) : void
     {
         $where = [

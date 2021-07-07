@@ -946,18 +946,11 @@ class ilObjStudyProgrammeMembersGUI
     protected function mayCurrentUserEditProgress(int $progress_id) : bool
     {
         return
-        (
-            //under OrgU control and current user has authority over the user the progress belongs to
-            $this->object->getPositionSettingsIsActiveForPrg()
-            && in_array(
+            $this->mayManageMembers()
+            || in_array(
                 $this->getProgressObject($progress_id)->getUserId(),
                 $this->editIndividualPlan()
-            )
-        ) || (
-            //not under OrgU control and current user may manage members
-            !$this->object->getAccessControlByOrguPositionsGlobal()
-            && $this->mayManageMembers()
-        );
+            );
     }
 
     protected function getMessageCollection(string $topic) : ilPRGMessageCollection

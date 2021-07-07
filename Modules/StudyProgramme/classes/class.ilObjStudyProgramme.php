@@ -1114,10 +1114,14 @@ class ilObjStudyProgramme extends ilContainer
             );
         }
 
-        $this->events->userDeassigned($assignment);
-
         $this->assignment_repository->delete($assignment);
-        $this->progress_repository->deleteForAssignmentId($assignment->getId());
+
+        $affected_node_ids = $this->progress_repository->deleteForAssignmentId($assignment->getId());
+        foreach ($affected_node_ids as $node_obj_id) {
+            $this->refreshLPStatus($assignment->getUserId(), $node_obj_id);
+        }
+
+        $this->events->userDeassigned($assignment);
         return $this;
     }
 
@@ -2184,12 +2188,15 @@ class ilObjStudyProgramme extends ilContainer
         return true;
     }
 
-    protected function refreshLPStatus(int $usr_id) : void
+    protected function refreshLPStatus(int $usr_id, int $node_obj_id = null) : void
     {
+        if (is_null($node_obj_id)) {
+            $node_obj_id = $this->getId();
+        }
         // thanks to some caching within ilLPStatusWrapper
         // the status may not be read properly otherwise ...
-        ilLPStatusWrapper::_resetInfoCaches($this->getId());
-        ilLPStatusWrapper::_refreshStatus($this->getId(), [$usr_id]);
+        ilLPStatusWrapper::_resetInfoCaches($node_obj_id);
+        ilLPStatusWrapper::_refreshStatus($node_obj_id, [$usr_id]);
     }
 
     protected function updateParentProgress(ilStudyProgrammeProgress $progress) : ilStudyProgrammeProgress
