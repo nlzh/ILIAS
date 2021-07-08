@@ -30,7 +30,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
     const OPTION_ALL = -1;
     const VALIDITY_OPTION_VALID = 1;
-    const VALIDITY_OPTION_RENEWAL_REQUIRED = 3;
+    const VALIDITY_OPTION_INVALID = 3;
 
     /**
      * @var int
@@ -220,7 +220,8 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $usr_id = (int) $a_set['usr_id'];
 
         $may_read_learning_progress =
-            !$this->prg->getAccessControlByOrguPositionsGlobal() ||
+            //!$this->prg->getAccessControlByOrguPositionsGlobal() ||
+            $this->getParentObject()->mayManageMembers() ||
             in_array($usr_id, $this->getParentObject()->readLearningProgress())
         ;
 
@@ -737,7 +738,7 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
     {
         return [
             self::VALIDITY_OPTION_VALID => $this->lng->txt("prg_still_valid"),
-            self::VALIDITY_OPTION_RENEWAL_REQUIRED => $this->lng->txt("prg_not_valid")
+            self::VALIDITY_OPTION_INVALID => $this->lng->txt("prg_not_valid")
         ];
     }
 
@@ -809,25 +810,43 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         if ($filter['prg_status'] && (int) $filter['prg_status'] !== self::OPTION_ALL) {
             $buf[] = 'AND prgrs.status = ' . $this->db->quote($filter['prg_status'], "integer");
         }
+        
+        $filter_success = 'prgrs.status IN ('
+            . ilStudyProgrammeProgress::STATUS_COMPLETED
+            . ','
+            . ilStudyProgrammeProgress::STATUS_ACCREDITED
+        . ') ';
 
         if ($filter['prg_validity'] && (int) $filter['prg_validity'] !== self::OPTION_ALL) {
-            $operator = '<='; //self::VALIDITY_OPTION_RENEWAL_REQUIRED
             if ((int) $filter['prg_validity'] === self::VALIDITY_OPTION_VALID) {
-                $operator = '>';
+                $filter_validity = 'AND (prgrs.vq_date >= NOW() OR prgrs.vq_date IS NULL)';
             }
-            $buf[] = 'AND prgrs.vq_date ' . $operator . ' NOW()';
+            if ((int) $filter['prg_validity'] === self::VALIDITY_OPTION_INVALID) {
+                $filter_validity = 'AND prgrs.vq_date < NOW()';
+            }
+
+            $buf[] = 'AND ('
+                . $filter_success
+                . $filter_validity
+            . ')';
         }
 
         $exp_from = $filter['prg_expiry_date']['from'];
         if (!is_null($exp_from)) {
             $dat = $exp_from->get(IL_CAL_DATE);
-            $buf[] = 'AND prgrs.vq_date >= \'' . $dat . ' 00:00:00\'';
+            $buf[] = 'AND ('
+                . $filter_success
+                . 'AND prgrs.vq_date >= \'' . $dat . ' 00:00:00\''
+            . ')';
         }
 
         $exp_to = $filter['prg_expiry_date']['to'];
         if (!is_null($exp_to)) {
             $dat = $exp_to->get(IL_CAL_DATE);
-            $buf[] = 'AND prgrs.vq_date <= \'' . $dat . ' 23:59:59\'';
+            $buf[] = 'AND ('
+                . $filter_success
+                . 'AND prgrs.vq_date <= \'' . $dat . ' 23:59:59\''
+            . ')';
         }
 
         $conditions = implode(PHP_EOL, $buf);

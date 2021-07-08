@@ -499,12 +499,12 @@ class ilStudyProgrammeProgress
     {
         return $this->getStatus() == self::STATUS_ACCREDITED;
     }
+
     public function isInProgress() : bool
     {
         return $this->getStatus() == self::STATUS_IN_PROGRESS;
     }
     
-
     public function invalidate() : ilStudyProgrammeProgress
     {
         if (!$this->vq_date || $this->vq_date->format('Y-m-d') > date('Y-m-d')) {
@@ -514,6 +514,7 @@ class ilStudyProgrammeProgress
         $clone->invalidated = true;
         return $clone;
     }
+    
     public function isInvalidated() : bool
     {
         return $this->invalidated;
