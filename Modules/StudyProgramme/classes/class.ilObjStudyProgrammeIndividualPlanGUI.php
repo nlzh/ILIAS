@@ -58,12 +58,16 @@ class ilObjStudyProgrammeIndividualPlanGUI
      */
     protected $messages;
 
+    /**
+     * @var ilPRGPermissionsHelper
+     */
+    protected $permissions;
+
     public function __construct(
         \ilGlobalTemplateInterface $tpl,
         \ilCtrl $ilCtrl,
         \ilLanguage $lng,
         \ilObjUser $ilUser,
-        \ilAccess $ilAccess,
         ilStudyProgrammeProgressRepository $progress_repository,
         ilStudyProgrammeAssignmentRepository $assignment_repository,
         ilPRGMessagePrinter $messages
@@ -71,7 +75,6 @@ class ilObjStudyProgrammeIndividualPlanGUI
         $this->tpl = $tpl;
         $this->ctrl = $ilCtrl;
         $this->lng = $lng;
-        $this->ilAccess = $ilAccess;
         $this->user = $ilUser;
 
         $this->assignment_object = null;
@@ -81,6 +84,7 @@ class ilObjStudyProgrammeIndividualPlanGUI
         $this->messages = $messages;
 
         $this->object = null;
+        $this->permissions = null;
 
         $lng->loadLanguageModule("prg");
 
@@ -92,9 +96,11 @@ class ilObjStudyProgrammeIndividualPlanGUI
         $this->parent_gui = $a_parent_gui;
     }
 
-    public function setRefId($a_ref_id)
+    public function setRefId(int $ref_id) : void
     {
         $this->ref_id = $a_ref_id;
+        $this->object = \ilObjStudyProgramme::getInstanceByRefId($ref_id);
+        $this->permissions = ilStudyProgrammeDIC::specificDicFor($this->object)['permissionhelper'];
     }
 
     public function executeCommand()
@@ -140,17 +146,18 @@ class ilObjStudyProgrammeIndividualPlanGUI
     protected function view()
     {
         $ass = $this->getAssignmentObject();
-        $prg = ilObjStudyProgramme::getInstanceByObjId($ass->getRootId());
-        $progress = $prg->getProgressForAssignment($ass->getId());
-        if (!(
-            in_array($progress->getUserId(), $this->parent_gui->viewIndividualPlan())
-            ||
-            $this->ilAccess->checkAccess("manage_members", "", $this->ref_id)
+
+        if (!in_array(
+            $ass->getUserId(),
+            $this->permissions->getUserIdsSuscepibleTo(ilOrgUnitOperation::OP_VIEW_INDIVIDUAL_PLAN)
         )) {
             throw new ilStudyProgrammePositionBasedAccessViolationException(
                 "may not access individual plan of user"
             );
         }
+        $prg = ilObjStudyProgramme::getInstanceByObjId($ass->getRootId());
+        $progress = $prg->getProgressForAssignment($ass->getId());
+        
         $gui = new ilStudyProgrammeIndividualPlanProgressListGUI($progress);
         $gui->setOnlyRelevant(true);
         // Wrap a frame around the original gui element to correct rendering.
@@ -163,10 +170,10 @@ class ilObjStudyProgrammeIndividualPlanGUI
     protected function manage()
     {
         $ass = $this->getAssignmentObject();
-        if (!(
-            in_array($ass->getUserId(), $this->parent_gui->editIndividualPlan())
-            ||
-            $this->ilAccess->checkAccess("manage_members", "", $this->ref_id)
+
+        if (!in_array(
+            $ass->getUserId(),
+            $this->permissions->getUserIdsSuscepibleTo(ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN)
         )) {
             throw new ilStudyProgrammePositionBasedAccessViolationException(
                 "may not access individual plan of user"
@@ -185,18 +192,17 @@ class ilObjStudyProgrammeIndividualPlanGUI
     protected function updateFromCurrentPlan()
     {
         $ass = $this->getAssignmentObject();
-        $prg = $this->parent_gui->getStudyProgramme();
 
-        if (!(
-            in_array($ass->getUserId(), $this->parent_gui->editIndividualPlan())
-            ||
-            $this->ilAccess->checkAccess("manage_members", "", $this->ref_id)
+        if (!in_array(
+            $ass->getUserId(),
+            $this->permissions->getUserIdsSuscepibleTo(ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN)
         )) {
             throw new ilStudyProgrammePositionBasedAccessViolationException(
                 "may not access individual plan of user"
             );
         }
 
+        $prg = $this->parent_gui->getStudyProgramme();
         $progress = $prg->getProgressForAssignment($ass->getId());
         $prg->updateProgressFromSettings(
             $progress->getId(),
@@ -330,28 +336,19 @@ class ilObjStudyProgrammeIndividualPlanGUI
 
     protected function buildFrame($tab, $content)
     {
+        $tabs = [];
+        if ($this->permissions->may(ilOrgUnitOperation::OP_VIEW_INDIVIDUAL_PLAN)) {
+            $tabs[] = 'view';
+        }
+        if ($this->permissions->may(ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN)) {
+            $tabs[] = 'manage';
+        }
+
         $tpl = new ilTemplate("tpl.indivdual_plan_frame.html", true, true, "Modules/StudyProgramme");
         $ass = $this->getAssignmentObject();
         $user_id = $ass->getUserId();
         $tpl->setVariable("USERNAME", ilObjUser::_lookupFullname($user_id));
-        $tabs = [];
 
-        $ref_id = ilObjStudyProgramme::getRefIdFor($ass->getRootId());
-        if ($this->ilAccess->checkAccess("manage_members", "", $ref_id)) {
-            $tabs[] = 'view';
-            $tabs[] = 'manage';
-        }
-
-        if ($this->parent_gui->getStudyProgramme()->getPositionSettingsIsActiveForPrg()) {
-            if (in_array($user_id, $this->parent_gui->viewIndividualPlan())) {
-                $tabs[] = 'view';
-            }
-            if (in_array($user_id, $this->parent_gui->editIndividualPlan())) {
-                $tabs[] = 'manage';
-            }
-        }
-
-        $tabs = array_unique($tabs);
         foreach ($tabs as $_tab) {
             $tpl->setCurrentBlock("sub_tab");
             $tpl->setVariable("CLASS", $_tab == $tab ? "active" : "");

@@ -52,11 +52,6 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
     public $tabs_gui;
 
     /**
-     * @var ilAccessHandler
-     */
-    protected $ilAccess;
-
-    /**
      * @var ilToolbarGUI
      */
     protected $toolbar;
@@ -126,13 +121,16 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
      */
     protected $autocategories_gui;
 
+    /**
+     * @var ilPRGPermissionsHelper
+     */
+    protected $permissions;
 
     public function __construct()
     {
         global $DIC;
         $tpl = $DIC['tpl'];
         $ilCtrl = $DIC['ilCtrl'];
-        $ilAccess = $DIC['ilAccess'];
         $ilToolbar = $DIC['ilToolbar'];
         $ilLocator = $DIC['ilLocator'];
         $tree = $DIC['tree'];
@@ -146,7 +144,6 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
 
         $this->tpl = $tpl;
         $this->ctrl = $ilCtrl;
-        $this->ilAccess = $ilAccess;
         $this->ilLocator = $ilLocator;
         $this->tree = $tree;
         $this->toolbar = $ilToolbar;
@@ -164,8 +161,9 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
         $this->tree_gui = ilStudyProgrammeDIC::dic()['ilObjStudyProgrammeTreeGUI'];
         $this->type_gui = ilStudyProgrammeDIC::dic()['ilStudyProgrammeTypeGUI'];
         $this->autocategories_gui = ilStudyProgrammeDIC::dic()['ilObjStudyProgrammeAutoCategoriesGUI'];
-
         $this->type_repository = ilStudyProgrammeDIC::dic()['model.Type.ilStudyProgrammeTypeRepository'];
+        
+        $this->permissions = ilStudyProgrammeDIC::specificDicFor($this->object)['permissionhelper'];
     }
 
 
@@ -187,7 +185,10 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
         switch ($next_class) {
             case "ilinfoscreengui":
                 $this->tabs_gui->activateTab(self::TAB_INFO);
-                $this->denyAccessIfNotAnyOf(array("read", "visible"));
+                $this->denyAccessIfNotAnyOf([
+                    $this->permissions::ROLEPERM_VIEW,
+                    $this->permissions::ROLEPERM_READ
+                ]);
                 $info = new ilInfoScreenGUI($this);
                 $this->fillInfoScreen($info);
                 $this->ctrl->forwardCommand($info);
@@ -212,7 +213,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
                 $this->ctrl->forwardCommand($gui);
                 break;
             case "ilobjstudyprogrammesettingsgui":
-                $this->denyAccessIfNot("write");
+                $this->denyAccessIfNot($this->permissions::ROLEPERM_WRITE);
                 $this->getSubTabs('settings');
                 $this->tabs_gui->activateTab(self::TAB_SETTINGS);
                 $this->tabs_gui->activateSubTab('settings');
@@ -221,7 +222,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
                 break;
 
             case "ilobjstudyprogrammeautocategoriesgui":
-                $this->denyAccessIfNot("write");
+                $this->denyAccessIfNot($this->permissions::ROLEPERM_WRITE);
                 $this->getSubTabs('settings');
                 $this->tabs_gui->activateTab(self::TAB_SETTINGS);
                 $this->tabs_gui->activateSubTab('auto_content');
@@ -231,7 +232,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
                 break;
 
             case "ilobjstudyprogrammemembersgui":
-                $this->denyAccessIfNot("manage_members", ilOrgUnitOperation::OP_VIEW_MEMBERS);
+                $this->denyAccessIfNot(ilOrgUnitOperation::OP_VIEW_MEMBERS);
                 $this->getSubTabs('members');
 
                 $this->tabs_gui->activateTab(self::TAB_MEMBERS);
@@ -244,7 +245,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
                 break;
 
             case "ilobjstudyprogrammeautomembershipsgui":
-                $this->denyAccessIfNot("manage_members");
+                $this->denyAccessIfNot(ilOrgUnitOperation::OP_MANAGE_MEMBERS);
                 $this->getSubTabs('members');
 
                 $this->tabs_gui->activateTab(self::TAB_MEMBERS);
@@ -258,7 +259,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
 
 
             case "ilobjstudyprogrammetreegui":
-                $this->denyAccessIfNot("write");
+                $this->denyAccessIfNot($this->permissions::ROLEPERM_WRITE);
 
                 $this->getSubTabs($cmd);
                 $this->setContentSubTabs();
@@ -282,7 +283,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
                 $this->ctrl->forwardCommand($gui);
                 break;
             case 'ilobjecttranslationgui':
-                $this->denyAccessIfNot("write");
+                $this->denyAccessIfNot($this->permissions::ROLEPERM_WRITE);
                 $this->getSubTabs('settings');
                 $this->tabs_gui->activateTab(self::TAB_SETTINGS);
                 $this->tabs_gui->activateSubTab('settings_trans');
@@ -291,7 +292,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
                 break;
             case "ilcertificategui":
                 $this->getSubTabs('settings');
-                $this->denyAccessIfNot("write");
+                $this->denyAccessIfNot($this->permissions::ROLEPERM_WRITE);
                 $this->tabs_gui->activateTab(self::TAB_SETTINGS);
                 $this->tabs_gui->activateSubTab('certificate');
                 $guiFactory = new ilCertificateGUIFactory();
@@ -431,7 +432,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
      */
     protected function view()
     {
-        $this->denyAccessIfNot("read");
+        $this->denyAccessIfNot($this->permissions::ROLEPERM_READ);
         $this->tabs_gui->activateTab(self::TAB_VIEW_CONTENT);
         parent::renderObject();
     }
@@ -462,7 +463,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
      */
     protected function editAdvancedSettings()
     {
-        if (!$this->ilAccess->checkAccess("write", "", $this->ref_id)) {
+        if (!$this->checkAccess($this->permissions::ROLEPERM_WRITE)) {
             ilUtil::sendFailure($this->lng->txt("permission_denied"), true);
             $this->ctrl->redirect($this);
         }
@@ -484,7 +485,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
      */
     protected function updateAdvancedSettings()
     {
-        if (!$this->ilAccess->checkAccess("write", "", $this->ref_id)) {
+        if (!$this->checkAccess($this->permissions::ROLEPERM_WRITE)) {
             ilUtil::sendFailure($this->lng->txt("permission_denied"), true);
             $this->ctrl->redirect($this);
         }
@@ -544,44 +545,28 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
     // HELPERS
     ////////////////////////////////////
 
-    protected function checkAccess($a_which)
+    protected function checkAccess(string $permission) : bool
     {
-        return $this->ilAccess->checkAccess($a_which, "", $this->ref_id);
+        return $this->permissions->may($permission);
     }
 
-    protected function denyAccessIfNot($a_perm, $position_permission = null)
+    protected function denyAccessIfNot(string $permission) : void
     {
-        $perm = array($a_perm);
-        if (!is_null($position_permission)) {
-            $position_permission = array($position_permission);
-        }
-
-        return $this->denyAccessIfNotAnyOf($perm, $position_permission);
+        $this->denyAccessIfNotAnyOf([$permission]);
     }
 
-    protected function denyAccessIfNotAnyOf($a_perms, $position_permissions = null)
+    protected function denyAccessIfNotAnyOf(array $permissions) : void
     {
-        foreach ($a_perms as $perm) {
-            if ($this->checkAccess($perm)) {
-                return;
+        if (!$this->permissions->mayAnyOf($permissions)) {
+            if ($this->permissions->may($this->permissions::ROLEPERM_VIEW)) {
+                ilUtil::sendFailure($this->lng->txt("msg_no_perm_write"));
+                $this->ctrl->redirectByClass('ilinfoscreengui', '');
+            } else {
+                $this->ilias->raiseError($this->lng->txt("msg_no_perm_read"), $this->ilias->error_obj->WARNING);
             }
         }
-        if (!is_null($position_permissions)) {
-            $ref_id = (int) $this->object->getRefId();
-            foreach ($position_permissions as $perm) {
-                if ($this->ilAccess->checkPositionAccess($perm, $ref_id)) {
-                    return true;
-                }
-            }
-        }
-
-        if ($this->checkAccess("visible")) {
-            ilUtil::sendFailure($this->lng->txt("msg_no_perm_write"));
-            $this->ctrl->redirectByClass('ilinfoscreengui', '');
-        }
-
-        $this->ilias->raiseError($this->lng->txt("msg_no_perm_read"), $this->ilias->error_obj->WARNING);
     }
+
 
     const TAB_VIEW_CONTENT = "view_content";
     const SUBTAB_VIEW_TREE = "view_tree";
@@ -597,11 +582,11 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
     public function getTabs()
     {
         $this->help->setScreenIdComponent("prg");
-        if ($this->checkAccess("read")) {
+        if ($this->checkAccess($this->permissions::ROLEPERM_READ)) {
             $this->tabs_gui->addTab(self::TAB_VIEW_CONTENT, $this->lng->txt("content"), $this->getLinkTarget("view"));
         }
 
-        if ($this->checkAccess("read")) {
+        if ($this->checkAccess($this->permissions::ROLEPERM_READ)) {
             $this->tabs_gui->addTab(
                 self::TAB_INFO,
                 $this->lng->txt("info_short"),
@@ -609,7 +594,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
             );
         }
 
-        if ($this->checkAccess("write")) {
+        if ($this->checkAccess($this->permissions::ROLEPERM_WRITE)) {
             $this->tabs_gui->addTab(
                 self::TAB_SETTINGS,
                 $this->lng->txt("settings"),
@@ -617,13 +602,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
             );
         }
 
-        if (
-            $this->checkAccess("manage_members") ||
-            $this->ilAccess->checkPositionAccess(
-                ilOrgUnitOperation::OP_VIEW_MEMBERS,
-                (int) $this->object->getRefId()
-            )
-        ) {
+        if ($this->checkAccess(ilOrgUnitOperation::OP_VIEW_MEMBERS)) {
             $this->tabs_gui->addTab(
                 self::TAB_MEMBERS,
                 $this->lng->txt("members"),
@@ -631,7 +610,9 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
             );
         }
 
-        if ($this->object->hasAdvancedMetadata()) {
+        if ($this->object->hasAdvancedMetadata()
+            && $this->checkAccess($this->permissions::ROLEPERM_WRITE)
+        ) {
             $this->tabs_gui->addTab(
                 self::TAB_METADATA,
                 $this->lng->txt('meta_data'),
@@ -653,11 +634,11 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
             case self::TAB_VIEW_CONTENT:
             case self::SUBTAB_VIEW_TREE:
             case 'view':
-                if ($this->checkAccess("read")) {
+                if ($this->checkAccess($this->permissions::ROLEPERM_READ)) {
                     $this->tabs_gui->addSubTab(self::TAB_VIEW_CONTENT, $this->lng->txt("view"), $this->getLinkTarget("view"));
                 }
 
-                if ($this->checkAccess("write")) {
+                if ($this->checkAccess($this->permissions::ROLEPERM_WRITE)) {
                     $this->tabs_gui->addSubTab(self::SUBTAB_VIEW_TREE, $this->lng->txt("cntr_manage"), $this->getLinkTarget(self::SUBTAB_VIEW_TREE));
                 }
                 break;
@@ -690,7 +671,9 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
 
             case 'members':
                 $this->tabs_gui->addSubTab('edit_participants', $this->lng->txt('edit_participants'), $this->getLinkTarget('members'));
-                $this->tabs_gui->addSubTab('auto_memberships', $this->lng->txt('auto_memberships'), $this->getLinkTarget('memberships'));
+                if ($this->permissions->may(ilOrgUnitOperation::OP_MANAGE_MEMBERS)) {
+                    $this->tabs_gui->addSubTab('auto_memberships', $this->lng->txt('auto_memberships'), $this->getLinkTarget('memberships'));
+                }
                 break;
         }
     }
@@ -776,7 +759,7 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
 
     protected function edit()
     {
-        $this->denyAccessIfNot("write");
+        $this->denyAccessIfNot($this->permissions::ROLEPERM_WRITE);
 
         $link = $this->ctrl->getLinkTargetByClass(ilObjStudyProgrammeSettingsGUI::class, 'view');
         $this->ctrl->redirectToURL($link);
@@ -806,10 +789,10 @@ class ilObjStudyProgrammeGUI extends ilContainerGUI
         global $DIC;
         $ilNavigationHistory = $DIC['ilNavigationHistory'];
 
-        if (!$this->getCreationMode() &&
-            $this->ilAccess->checkAccess('read', '', $_GET['ref_id'])) {
+        if (!$this->getCreationMode()
+            && $this->checkAccess($this->permissions::ROLEPERM_READ)
+        ) {
             $link = ilLink::_getLink($_GET["ref_id"], "iass");
-
             $ilNavigationHistory->addItem(
                 $_GET['ref_id'],
                 $link,

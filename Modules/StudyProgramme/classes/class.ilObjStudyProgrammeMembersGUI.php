@@ -15,6 +15,8 @@ declare(strict_types=1);
  */
 class ilObjStudyProgrammeMembersGUI
 {
+    const DEFAULT_CMD = "view";
+
     const ACTION_MARK_ACCREDITED = "mark_accredited";
     const ACTION_UNMARK_ACCREDITED = "unmark_accredited";
     const ACTION_SHOW_INDIVIDUAL_PLAN = "show_individual_plan";
@@ -90,11 +92,15 @@ class ilObjStudyProgrammeMembersGUI
      */
     protected $data_factory;
 
+    /**
+     * @var ilPRGPermissionsHelper
+     */
+    protected $permissions;
+
     public function __construct(
         \ilGlobalTemplateInterface $tpl,
         \ilCtrl $ilCtrl,
         \ilToolbarGUI $ilToolbar,
-        \ilAccess $access,
         \ilLanguage $lng,
         \ilObjUser $user,
         \ilTabsGUI $tabs,
@@ -102,7 +108,6 @@ class ilObjStudyProgrammeMembersGUI
         ilStudyProgrammeAssignmentRepository $sp_user_assignment_db,
         ilStudyProgrammeRepositorySearchGUI $repository_search_gui,
         ilObjStudyProgrammeIndividualPlanGUI $individual_plan_gui,
-        ilStudyProgrammePositionBasedAccess $position_based_access,
         ilPRGMessagePrinter $messages,
         \ILIAS\Data\Factory $data_factory,
         ilConfirmationGUI $confirmation_gui
@@ -110,7 +115,6 @@ class ilObjStudyProgrammeMembersGUI
         $this->tpl = $tpl;
         $this->ctrl = $ilCtrl;
         $this->toolbar = $ilToolbar;
-        $this->access = $access;
         $this->lng = $lng;
         $this->user = $user;
         $this->tabs = $tabs;
@@ -124,8 +128,8 @@ class ilObjStudyProgrammeMembersGUI
         $this->individual_plan_gui = $individual_plan_gui;
 
         $this->progress_objects = array();
-        $this->position_based_access = $position_based_access;
         $this->object = null;
+        $this->permissions = null;
 
         $lng->loadLanguageModule("prg");
     }
@@ -139,6 +143,7 @@ class ilObjStudyProgrammeMembersGUI
     {
         $this->ref_id = $ref_id;
         $this->object = \ilObjStudyProgramme::getInstanceByRefId($ref_id);
+        $this->permissions = ilStudyProgrammeDIC::specificDicFor($this->object)['permissionhelper'];
     }
 
     public function executeCommand() : void
@@ -147,10 +152,8 @@ class ilObjStudyProgrammeMembersGUI
         $next_class = $this->ctrl->getNextClass($this);
 
         if ($cmd == "") {
-            $cmd = "view";
+            $cmd = $this->getDefaultCommand();
         }
-
-        # TODO: Check permission of user!!
 
         switch ($next_class) {
             case "ilstudyprogrammerepositorysearchgui":
@@ -238,7 +241,7 @@ class ilObjStudyProgrammeMembersGUI
 
     protected function getDefaultCommand() : string
     {
-        return "view";
+        return self::DEFAULT_CMD;
     }
 
     protected function getAssignmentsById() : array
@@ -260,7 +263,7 @@ class ilObjStudyProgrammeMembersGUI
             "view",
             "",
             $this->sp_user_progress_db,
-            $this->position_based_access,
+            $this->permissions,
             $this->data_factory
         );
         return $table;
@@ -273,9 +276,8 @@ class ilObjStudyProgrammeMembersGUI
      */
     protected function view() : string
     {
-        if (
-            $this->getStudyProgramme()->isActive()
-            && $this->mayManageMembers()
+        if ($this->getStudyProgramme()->isActive()
+            && $this->permissions->may(ilOrgUnitOperation::OP_MANAGE_MEMBERS)
         ) {
             $this->initSearchGUI();
             $this->initMailToMemberButton($this->toolbar, true);
@@ -303,7 +305,6 @@ class ilObjStudyProgrammeMembersGUI
         $table->resetFilter();
         $this->ctrl->redirect($this, "view");
     }
-
 
     /**
      * Assigns a users to SP
@@ -404,30 +405,27 @@ class ilObjStudyProgrammeMembersGUI
         $this->ctrl->redirect($this, "view");
     }
 
+    /**
+     *  @param int[] $users
+     */
     protected function getAddableUsers(array $users) : array
     {
-        if ($this->mayManageMembers()) {
-            return $users;
-        }
+        $to_add = $this->permissions->filterUserIds(
+            $users,
+            ilOrgUnitOperation::OP_MANAGE_MEMBERS
+        );
 
-        if ($this->getStudyProgramme()->getPositionSettingsIsActiveForPrg()) {
-            $to_add = $this->position_based_access->filterUsersAccessibleForOperation(
-                $this->getStudyProgramme(),
-                ilOrgUnitOperation::OP_MANAGE_MEMBERS,
-                $users
+        $cnt_not_added = count($users) - count($to_add);
+        if ($cnt_not_added > 0) {
+            ilUtil::sendInfo(
+                sprintf(
+                    $this->lng->txt('could_not_add_users_no_permissons'),
+                    $cnt_not_added
+                ),
+                true
             );
-            $cnt_not_added = count($users) - count($to_add);
-            if ($cnt_not_added > 0) {
-                ilUtil::sendInfo(
-                    sprintf(
-                        $this->lng->txt('could_not_add_users_no_permissons'),
-                        $cnt_not_added
-                    ),
-                    true
-                );
-            }
-            return $to_add;
         }
+        return $to_add;
     }
 
     /**
@@ -718,12 +716,13 @@ class ilObjStudyProgrammeMembersGUI
     protected function remove(int $prgrs_id) : void
     {
         $prgrs = $this->getProgressObject($prgrs_id);
-        $usr_id = $prgrs->getUserId();
-        if (
-            $this->object->getAccessControlByOrguPositionsGlobal() &&
-            !in_array($usr_id, $this->manageMembers()) &&
-            !$this->mayManageMembers()
-        ) {
+
+        if (!in_array(
+            $prgrs->getUserId(),
+            $this->permissions->getUserIdsSuscepibleTo(ilOrgUnitOperation::OP_MANAGE_MEMBERS)
+        )) {
+            var_dump($this->permissions->getUserIdsSuscepibleTo(ilOrgUnitOperation::OP_MANAGE_MEMBERS));
+            die('why not');
             throw new ilStudyProgrammePositionBasedAccessViolationException(
                 'No permission to manage membership of user'
             );
@@ -834,123 +833,13 @@ class ilObjStudyProgrammeMembersGUI
         return $link;
     }
 
-    public function visibleUsers() : array
-    {
-        return array_unique(array_merge(
-            $this->viewMembers(),
-            $this->readLearningProgress(),
-            $this->viewIndividualPlan(),
-            $this->editIndividualPlan(),
-            $this->manageMembers()
-        ));
-    }
-
-    protected $view_members;
-    public function viewMembers()
-    {
-        if (!$this->view_members) {
-            $this->view_members =
-                array_unique(array_merge(
-                    $this->position_based_access->getUsersInPrgAccessibleForOperation(
-                        $this->object,
-                        ilOrgUnitOperation::OP_VIEW_MEMBERS
-                    ),
-                    $this->manageMembers()
-                ));
-        }
-        return $this->view_members;
-    }
-
-    protected $read_learning_progress;
-    public function readLearningProgress()
-    {
-        if (!$this->read_learning_progress) {
-            $this->read_learning_progress =
-                array_unique(array_merge(
-                    $this->position_based_access->getUsersInPrgAccessibleForOperation(
-                        $this->object,
-                        ilOrgUnitOperation::OP_READ_LEARNING_PROGRESS
-                    ),
-                    $this->viewIndividualPlan(),
-                    [$this->user->getId()]
-                ));
-        }
-        return $this->read_learning_progress;
-    }
-
-    protected $view_individual_plan;
-    public function viewIndividualPlan()
-    {
-        if (!$this->view_individual_plan) {
-            $this->view_individual_plan =
-                array_unique(array_merge(
-                    $this->position_based_access->getUsersInPrgAccessibleForOperation(
-                        $this->object,
-                        ilOrgUnitOperation::OP_VIEW_INDIVIDUAL_PLAN
-                    ),
-                    $this->editIndividualPlan()
-                ));
-        }
-        return $this->view_individual_plan;
-    }
-
-    protected $edit_individual_plan;
-    public function editIndividualPlan()
-    {
-        if (!$this->edit_individual_plan) {
-            $this->edit_individual_plan =
-                $this->position_based_access->getUsersInPrgAccessibleForOperation(
-                    $this->object,
-                    ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN
-                );
-        }
-        return $this->edit_individual_plan;
-    }
-
-    protected $manage_members;
-    public function manageMembers()
-    {
-        if (!$this->manage_members) {
-            $this->manage_members =
-                $this->position_based_access->getUsersInPrgAccessibleForOperation(
-                    $this->object,
-                    ilOrgUnitOperation::OP_MANAGE_MEMBERS
-                );
-        }
-        return $this->manage_members;
-    }
-
-    public function mayManageMembers() : bool
-    {
-        return $this->access->checkAccessOfUser(
-            $this->user->getId(),
-            'manage_members',
-            '',
-            $this->object->getRefId()
-        )
-        ||
-        count($this->manageMembers()) > 0;
-    }
-
-    public function getLocalMembers() : array
-    {
-        return $this->object->getMembers();
-    }
-
-    public function isOperationAllowedForUser(int $usr_id, string $operation) : bool
-    {
-        return $this->mayManageMembers()
-            || $this->position_based_access->isUserAccessibleForOperationAtPrg($usr_id, $this->object, $operation);
-    }
 
     protected function mayCurrentUserEditProgress(int $progress_id) : bool
     {
-        return
-            $this->mayManageMembers()
-            || in_array(
-                $this->getProgressObject($progress_id)->getUserId(),
-                $this->editIndividualPlan()
-            );
+        return in_array(
+            $this->getProgressObject($progress_id)->getUserId(),
+            $this->permissions->getUserIdsSuscepibleTo(ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN)
+        );
     }
 
     protected function getMessageCollection(string $topic) : ilPRGMessageCollection

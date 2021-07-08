@@ -72,6 +72,11 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
      */
     protected $prg;
 
+    /**
+     * @var ilPRGPermissionsHelper
+     */
+    protected $permissions;
+
     public function __construct(
         int $prg_obj_id,
         int $prg_ref_id,
@@ -79,7 +84,8 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         string $parent_cmd = '',
         string $template_context = '',
         ilStudyProgrammeProgressRepository $sp_user_progress_db,
-        ilStudyProgrammePositionBasedAccess $position_based_access,
+        //ilStudyProgrammePositionBasedAccess $position_based_access,
+        ilPRGPermissionsHelper $permissions,
         \ILIAS\Data\Factory $data_factory
     ) {
         $this->setId("sp_member_list");
@@ -87,8 +93,9 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
         $this->prg_obj_id = $prg_obj_id;
         $this->prg_ref_id = $prg_ref_id;
-        $this->position_based_access = $position_based_access;
+        //$this->position_based_access = $position_based_access;
         $this->data_factory = $data_factory;
+        $this->permissions = $permissions;
 
         $this->prg = ilObjStudyProgramme::getInstanceByRefId($prg_ref_id);
         $this->prg_has_lp_children = $parent_obj->getStudyProgramme()->hasLPChildren();
@@ -218,12 +225,16 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
     protected function fillRow($a_set) : void
     {
         $usr_id = (int) $a_set['usr_id'];
+        /*
+                $may_read_learning_progress =
+                    //!$this->prg->getAccessControlByOrguPositionsGlobal() ||
+                    $this->getParentObject()->mayManageMembers() ||
+                    in_array($usr_id, $this->getParentObject()->readLearningProgress())
+                ;
+        */
+        $may_read_learning_progress = $this->permissions->may(ilOrgUnitOperation::OP_READ_LEARNING_PROGRESS);
 
-        $may_read_learning_progress =
-            //!$this->prg->getAccessControlByOrguPositionsGlobal() ||
-            $this->getParentObject()->mayManageMembers() ||
-            in_array($usr_id, $this->getParentObject()->readLearningProgress())
-        ;
+
 
         $this->tpl->setCurrentBlock("checkb");
         $this->tpl->setVariable("ID", $a_set["prgrs_id"]);
@@ -365,26 +376,9 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
         $parent = $this->getParentObject();
         $l = new ilAdvancedSelectionListGUI();
 
-        $view_individual_plan = false;
-        $edit_individual_plan = false;
-        
-        if ($parent->mayManageMembers()) {
-            $view_individual_plan = true;
-            $edit_individual_plan = true;
-        }
-
-        if ($this->isPermissionControlledByOrguPosition()) {
-            $view_individual_plan = $parent->isOperationAllowedForUser(
-                $usr_id,
-                ilOrgUnitOperation::OP_VIEW_INDIVIDUAL_PLAN
-            );
-
-            $edit_individual_plan = $parent->isOperationAllowedForUser(
-                $usr_id,
-                ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN
-            );
-        }
-
+        $view_individual_plan = $this->permissions->may(ilOrgUnitOperation::OP_VIEW_INDIVIDUAL_PLAN);
+        $edit_individual_plan = $this->permissions->may(ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN);
+        $addremove_users = $this->permissions->may(ilOrgUnitOperation::OP_MANAGE_MEMBERS);
 
         foreach ($actions as $action) {
             switch ($action) {
@@ -395,23 +389,17 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
                     }
                     break;
                 case ilObjStudyProgrammeMembersGUI::ACTION_SHOW_INDIVIDUAL_PLAN:
-                    if (!$view_individual_plan && !$edit_individual_plan) {
+                    if (!$view_individual_plan) {
                         continue 2;
                     }
                     break;
 
                 case ilObjStudyProgrammeMembersGUI::ACTION_REMOVE_USER:
-                    $manage_members =
-                        $parent->mayManageMembers() ||
-                        $parent->isOperationAllowedForUser($usr_id, ilOrgUnitOperation::OP_MANAGE_MEMBERS)
-                        && in_array($usr_id, $this->getParentObject()->getLocalMembers());
-
-                    if (!$manage_members) {
+                    if (!$addremove_users) {
                         continue 2;
                     }
                     break;
             }
-
 
             $target = $this->getLinkTargetForAction($action, $prgrs_id, $ass_id);
             $l->addItem($this->lng->txt("prg_$action"), $action, $target);
@@ -620,16 +608,21 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
     protected function getWhere(int $prg_id) : string
     {
         $q = "WHERE prgrs.prg_id = " . $this->db->quote($prg_id, "integer") . PHP_EOL;
-
-        if ($this->prg->getAccessControlByOrguPositionsGlobal() && !$this->parent_obj->mayManageMembers()) {
-            $visible = $this->getParentObject()->visibleUsers();
-            if (count($visible) > 0) {
-                $q .= "	AND " . $this->db->in("prgrs.usr_id", $visible, false, "integer") . PHP_EOL;
-            } else {
-                $q .= " AND FALSE" . PHP_EOL;
-            }
+            
+        //get all potentially visible users:
+        $visible = [];
+        foreach ($this->permissions::ORGU_OPERATIONS as $op) {
+            $visible = array_merge(
+                $visible,
+                $this->permissions->getUserIdsSuscepibleTo($op)
+            );
         }
 
+        if (count($visible) > 0) {
+            $q .= "	AND " . $this->db->in("prgrs.usr_id", $visible, false, "integer") . PHP_EOL;
+        } else {
+            $q .= " AND FALSE" . PHP_EOL;
+        }
         return $q;
     }
 
@@ -666,14 +659,17 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
      */
     protected function getMultiCommands() : array
     {
-        $edit_individual_plan = false;
-        $manage_members = $this->parent_obj->mayManageMembers();
+        /*
+                $edit_individual_plan = false;
+                $manage_members = $this->parent_obj->mayManageMembers();
 
-
-        if ($this->isPermissionControlledByOrguPosition()) {
-            $edit_individual_plan = count($this->getParentObject()->editIndividualPlan()) > 0;
-            $manage_members = $manage_members || count($this->getParentObject()->manageMembers()) > 0;
-        }
+                if ($this->isPermissionControlledByOrguPosition()) {
+                    $edit_individual_plan = count($this->getParentObject()->editIndividualPlan()) > 0;
+                    $manage_members = $manage_members || count($this->getParentObject()->manageMembers()) > 0;
+                }
+        */
+        $edit_individual_plan = $this->permissions->may(ilOrgUnitOperation::OP_EDIT_INDIVIDUAL_PLAN);
+        $manage_members = $this->permissions->may(ilOrgUnitOperation::OP_MANAGE_MEMBERS);
 
         $permissions_for_edit_individual_plan = [
             'updateFromCurrentPlanMulti' => $this->lng->txt('prg_multi_update_from_current_plan'),
@@ -862,15 +858,11 @@ class ilStudyProgrammeMembersTableGUI extends ilTable2GUI
 
     protected function getOrguValidUsersFilter() : string
     {
-        if ($this->getParentObject()->mayManageMembers()) {
+        if ($this->permissions->may($this->permissions::ROLEPERM_MANAGE_MEMBERS)) {
             return '';
         }
+        $valid_user_ids = $this->permissions->getUserIdsSuscepibleTo(ilOrgUnitOperation::OP_VIEW_MEMBERS);
 
-        $valid_user_ids = $this->position_based_access->getUsersInPrgAccessibleForOperation(
-            $this->getParentObject()->object,
-            ilOrgUnitOperation::OP_VIEW_MEMBERS
-        );
-        
         if (count($valid_user_ids) < 1) {
             return ' AND false';
         }

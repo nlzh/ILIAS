@@ -93,11 +93,6 @@ class ilObjStudyProgramme extends ilContainer
     public $object_factory;
 
     /**
-     * @var ilOrgUnitObjectTypePositionSetting | null
-     */
-    protected $ps;
-
-    /**
      * @var ilObjStudyProgramme[]
      */
     protected $reference_children = [];
@@ -155,7 +150,6 @@ class ilObjStudyProgramme extends ilContainer
         $this->logger = ilLoggerFactory::getLogger($this->type);
 
         $this->object_factory = ilObjectFactoryWrapper::singleton();
-        $this->ps = ilStudyProgrammeDIC::dic()['ilOrgUnitObjectTypePositionSetting'];
 
         $this->custom_icon_factory = $DIC['object.customicons.factory'];
 
@@ -458,23 +452,6 @@ class ilObjStudyProgramme extends ilContainer
         return null;
     }
 
-    public function getAccessControlByOrguPositionsGlobal() : bool
-    {
-        return
-            $this->getPositionSettingsIsActiveForPrg() &&
-            !$this->getPositionSettingsIsChangeableForPrg()
-        ;
-    }
-
-    public function getPositionSettingsIsActiveForPrg() : bool
-    {
-        return $this->ps->isActive();
-    }
-
-    public function getPositionSettingsIsChangeableForPrg() : bool
-    {
-        return $this->ps->isChangeableForObject();
-    }
 
     ////////////////////////////////////
     // TREE NAVIGATION

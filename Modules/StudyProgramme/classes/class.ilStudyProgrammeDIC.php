@@ -16,6 +16,23 @@ class ilStudyProgrammeDIC
         return self::$dic;
     }
 
+    public static function specificDicFor(\ilObjStudyProgramme $prg) : Container
+    {
+        global $DIC;
+        $dic = new Container();
+
+        $dic['permissionhelper'] = function ($dic) use ($prg, $DIC) {
+            return new ilPRGPermissionsHelper(
+                $DIC['ilAccess'],
+                new ilOrgUnitPositionAccess(),
+                $prg
+            );
+        };
+
+        return $dic;
+    }
+
+
     protected static function buildDIC() : Container
     {
         global $DIC;
@@ -97,7 +114,6 @@ class ilStudyProgrammeDIC
                 $DIC['tpl'],
                 $DIC['ilCtrl'],
                 $DIC['ilToolbar'],
-                $DIC['ilAccess'],
                 $DIC['lng'],
                 $DIC['ilUser'],
                 $DIC['ilTabs'],
@@ -105,7 +121,6 @@ class ilStudyProgrammeDIC
                 $dic['ilStudyProgrammeUserAssignmentDB'],
                 $dic['ilStudyProgrammeRepositorySearchGUI'],
                 $dic['ilObjStudyProgrammeIndividualPlanGUI'],
-                $dic['ilStudyProgrammePositionBasedAccess'],
                 $dic['PRGMessages'],
                 $dic['DataFactory'],
                 new ilConfirmationGUI()
@@ -162,7 +177,6 @@ class ilStudyProgrammeDIC
                 $DIC['ilCtrl'],
                 $DIC['lng'],
                 $DIC['ilUser'],
-                $DIC['ilAccess'],
                 $dic['ilStudyProgrammeUserProgressDB'],
                 $dic['ilStudyProgrammeUserAssignmentDB'],
                 $dic['PRGMessages']
@@ -196,9 +210,7 @@ class ilStudyProgrammeDIC
         $dic['ilOrgUnitObjectTypePositionSetting'] = function ($dic) {
             return new ilOrgUnitObjectTypePositionSetting('prg');
         };
-        $dic['ilStudyProgrammePositionBasedAccess'] = function ($dic) {
-            return new ilStudyProgrammePositionBasedAccess(new ilOrgUnitPositionAccess());
-        };
+
         $dic['ilStudyProgrammeMailMemberSearchGUI'] = function ($dic) use ($DIC) {
             return new ilStudyProgrammeMailMemberSearchGUI(
                 $DIC['ilCtrl'],
